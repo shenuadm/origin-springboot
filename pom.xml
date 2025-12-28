@@ -51,7 +51,6 @@
         <mybatis-flex.version>1.10.9</mybatis-flex.version>
         <hikari.version>5.1.0</hikari.version>
         <postgresql.version>42.7.3</postgresql.version>
-        <p6spy.version>3.9.1</p6spy.version>
         <jjwt.version>0.11.2</jjwt.version>
     </properties>
 
@@ -142,12 +141,6 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>p6spy</groupId>
-                <artifactId>p6spy</artifactId>
-                <version>${p6spy.version}</version>
             </dependency>
 
             <!--   JWT   -->
