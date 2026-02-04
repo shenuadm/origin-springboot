@@ -10,18 +10,18 @@
     </parent>
 
     <artifactId>origin-web</artifactId>
-    <name>origin-web</name>
-    <description>origin-web (入口项目，负责前台展示相关功能，打包也放在这个模块负责)</description>
+    <name>${project.artifactId}</name>
+    <description>入口项目，负责前台展示相关功能，打包也放在这个模块负责</description>
 
     <dependencies>
         <dependency>
             <groupId>com.cosmos</groupId>
-            <artifactId>origin-module-common</artifactId>
+            <artifactId>origin-common</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.cosmos</groupId>
-            <artifactId>origin-module-manage</artifactId>
+            <artifactId>origin-admin</artifactId>
         </dependency>
 
         <!-- Web 依赖 -->

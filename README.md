@@ -1,8 +1,6 @@
 ## 项目介绍
 
-每个技术人都应该有属于自己的技术底座！相比较直接使用第三方平台，自行搭建更有成就感！
-
-- **单体版：Cosmos-Origin (宇宙原点)**
+- **技术底座**
 
 ### 功能模块
 
@@ -10,7 +8,7 @@
 
 ### 技术栈
 
-后端：Spring Boot 3.3.8、JDK 21、Maven 3、MySQL 8.0、Mybatis Flex、flexmark、HikariCP、Lombok、Mapstruct、JWT、Spring Security、Elasticsearch、Jackson、Logback、Guava、Minio、Hibernate Validator...
+后端：Spring Boot 3.5.7、JDK 25、Maven 3、PostgreSQL 42、Mybatis Flex、flexmark、HikariCP、Lombok、Mapstruct、JWT、Spring Security、Elasticsearch、Jackson、Logback、Guava、Minio、Hibernate Validator...
 
 前端：Node、Vue 3、Vite、Element Plus、tailwindcss、vue-router、Pinia、axios、Echarts、Animate.css、Flowbit...
 

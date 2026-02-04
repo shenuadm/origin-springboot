@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.8</version>
+        <version>3.5.7</version>
         <relativePath/>
     </parent>
 
@@ -23,12 +23,14 @@
     <modules>
         <!-- 入口模块 -->
         <module>origin-web</module>
-        <!-- 通用模块 -->
-        <module>origin-module-common</module>
         <!-- JWT 模块 -->
-        <module>origin-module-jwt</module>
+        <module>origin-jwt</module>
         <!-- 管理后台 -->
-        <module>origin-module-manage</module>
+        <module>origin-admin</module>
+        <!-- 认证服务 -->
+        <module>origin-auth</module>
+        <!-- 平台基础框架 -->
+        <module>origin-framework</module>
     </modules>
 
     <!-- 版本号统一管理 -->
@@ -75,19 +77,25 @@
 
             <dependency>
                 <groupId>com.cosmos</groupId>
-                <artifactId>origin-module-manage</artifactId>
+                <artifactId>origin-admin</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.cosmos</groupId>
-                <artifactId>origin-module-common</artifactId>
+                <artifactId>origin-common</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.cosmos</groupId>
-                <artifactId>origin-module-jwt</artifactId>
+                <artifactId>origin-jwt</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-auth</artifactId>
                 <version>${revision}</version>
             </dependency>
 

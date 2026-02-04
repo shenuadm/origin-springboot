@@ -38,7 +38,8 @@ springdoc:
       packages-to-scan:
         # 指定扫描的包
         - com.cosmos.origin.web.controller
-        - com.cosmos.origin.manage.controller
+        - com.cosmos.origin.admin.controller
+        - com.cosmos.origin.auth
 # knife4j 增强配置
 knife4j:
   enable: true
