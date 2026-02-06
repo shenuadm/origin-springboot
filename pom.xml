@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.12</version>
+        <version>3.3.13</version>
         <relativePath/>
     </parent>
 
@@ -201,6 +201,13 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </repository>
+
+        <!-- Maven 中央仓库，用于获取最新 release 版本（优先级高于镜像） -->
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2</url>
         </repository>
 
         <!-- 针对非 Spring AI 框架，如 Spring Boot 等其他依赖，走国内仓库源，提升下载速度，
