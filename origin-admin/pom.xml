@@ -48,6 +48,12 @@
             <artifactId>UserAgentUtils</artifactId>
         </dependency>
 
+        <!-- IP 地址解析库，用于登录日志记录 IP 归属地 -->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+        </dependency>
+
         <!-- 单元测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

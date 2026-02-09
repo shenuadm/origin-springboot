@@ -54,6 +54,7 @@
         <postgresql.version>42.7.8</postgresql.version>
         <jjwt.version>0.11.2</jjwt.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
+        <ip2region.version>3.3.1</ip2region.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -163,6 +164,13 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${user-agent-utils.version}</version>
+            </dependency>
+
+            <!-- IP 地址解析库 -->
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

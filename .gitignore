@@ -33,3 +33,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### IP2Region 数据库文件 ###
+*.xdb

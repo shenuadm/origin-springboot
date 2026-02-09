@@ -3,6 +3,7 @@ package com.cosmos.origin.admin.service;
 import com.cosmos.origin.admin.domain.dos.LoginLogDO;
 import com.cosmos.origin.admin.domain.mapper.LoginLogMapper;
 import com.cosmos.origin.admin.enums.LoginStatusEnum;
+import com.cosmos.origin.admin.utils.IpLocationUtil;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -93,13 +94,14 @@ public class LoginLogService {
     }
 
     /**
-     * 解析 IP 地址位置（简化版，实际项目中可调用 IP 地址库）
+     * 解析 IP 地址位置
+     * <p>
+     * 使用 ip2region 离线 IP 地址库解析 IP 归属地
+     *
+     * @param ip IP 地址
+     * @return IP 归属地
      */
     private String parseLocation(String ip) {
-        if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
-            return "本地";
-        }
-        // 实际项目中可集成 IP2Region 或类似库
-        return "未知";
+        return IpLocationUtil.getLocation(ip);
     }
 }
