@@ -86,9 +86,10 @@ public class LoginAttemptService {
 
             // 达到最大尝试次数，锁定账号（第5次失败时锁定）
             if (attempts >= DEFAULT_MAX_ATTEMPTS) {
-                redisTemplate.opsForValue().set(lockedKey, "locked", DEFAULT_LOCK_DURATION_MINUTES, TimeUnit.MINUTES);
-                redisTemplate.delete(attemptKey);
                 log.warn("用户 [{}] 登录失败次数达到 {} 次，账号已被锁定 {} 分钟", username, DEFAULT_MAX_ATTEMPTS, DEFAULT_LOCK_DURATION_MINUTES);
+                redisTemplate.opsForValue().set(lockedKey, "locked", DEFAULT_LOCK_DURATION_MINUTES, TimeUnit.MINUTES);
+                // 注意：删除尝试次数记录应该在打印日志之后，避免后续查询时获取不到次数
+                redisTemplate.delete(attemptKey);
             }
         }
     }

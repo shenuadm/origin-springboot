@@ -91,11 +91,18 @@ public class WebSecurityConfig {
                         String username = getUsernameFromRequest(request);
                         log.debug("用户 [{}] 登录失败: {}", username, exception.getMessage());
 
-                        // 记录失败次数（在记录日志之前，先记录失败）
-                        if (loginAttemptService != null) {
+                        // 检查是否为锁定异常，如果是锁定异常则不增加失败次数
+                        boolean isLockedExceptionType = exception instanceof org.springframework.security.authentication.LockedException;
+
+                        // 记录失败次数（只有非锁定状态下的失败才增加计数）
+                        if (loginAttemptService != null && !isLockedExceptionType) {
                             loginAttemptService.loginFailed(username);
 
                             // 获取尝试信息并保存到 request，供失败处理器使用
+                            Map<String, Object> attemptInfoMap = loginAttemptService.getAttemptInfoAfterFailure(username);
+                            request.setAttribute("LOGIN_ATTEMPT_INFO_MAP", attemptInfoMap);
+                        } else if (loginAttemptService != null && isLockedExceptionType) {
+                            // 账号已锁定，直接获取锁定信息
                             Map<String, Object> attemptInfoMap = loginAttemptService.getAttemptInfoAfterFailure(username);
                             request.setAttribute("LOGIN_ATTEMPT_INFO_MAP", attemptInfoMap);
                         }
