@@ -9,7 +9,6 @@ import com.cosmos.origin.jwt.filter.RateLimitFilter;
 import com.cosmos.origin.jwt.filter.TokenAuthenticationFilter;
 import com.cosmos.origin.jwt.handler.RestAccessDeniedHandler;
 import com.cosmos.origin.jwt.handler.RestAuthenticationEntryPoint;
-import com.cosmos.origin.web.filter.LoginAttemptCheckFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +46,6 @@ public class WebSecurityConfig {
     private final LoginLogService loginLogService;
     private final LoginAttemptService loginAttemptService;
 
-    // 登录检查过滤器（可选）
-    private final LoginAttemptCheckFilter loginAttemptCheckFilter;
-
     /**
      * 核心配置
      */
@@ -69,7 +65,15 @@ public class WebSecurityConfig {
                     // customizer.setUsernameParameter("email");
                     // customizer.setPasswordParameter("passwd");
 
-                    // 2. 设置登录成功回调（记录日志）
+                    // 2. 设置账号锁定检查函数（在密码验证前执行）
+                    customizer.setLockCheckFunction(username -> {
+                        if (loginAttemptService != null) {
+                            loginAttemptService.checkLocked(username);
+                        }
+                        return null;
+                    });
+
+                    // 3. 设置登录成功回调（记录日志）
                     customizer.setOnLoginSuccess((request, authentication) -> {
                         String username = authentication.getName();
                         log.debug("用户 [{}] 登录成功", username);
@@ -82,7 +86,7 @@ public class WebSecurityConfig {
                         }
                     });
 
-                    // 3. 设置登录失败回调（记录日志和限流）
+                    // 4. 设置登录失败回调（记录日志和限流）
                     customizer.setOnLoginFailure((request, exception) -> {
                         String username = getUsernameFromRequest(request);
                         log.debug("用户 [{}] 登录失败: {}", username, exception.getMessage());
@@ -139,18 +143,11 @@ public class WebSecurityConfig {
 
                     authorize.anyRequest().authenticated();
                 })
-                // 错误处理
-                .exceptionHandling(m -> {
-                    m.authenticationEntryPoint(authEntryPoint);
-                    m.accessDeniedHandler(deniedHandler);
-                })
                 // 前后端分离，无需创建会话
                 .sessionManagement(session -> session.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
-                // 添加登录尝试检查过滤器（在认证过滤器之前）
-                .addFilterBefore(loginAttemptCheckFilter, UsernamePasswordAuthenticationFilter.class)
                 // 添加 Token 校验过滤器
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                // 配置异常处理，处理 LoginAttemptExceededException
+                // 配置异常处理
                 .exceptionHandling(m -> {
                     m.authenticationEntryPoint(authEntryPoint);
                     m.accessDeniedHandler(deniedHandler);

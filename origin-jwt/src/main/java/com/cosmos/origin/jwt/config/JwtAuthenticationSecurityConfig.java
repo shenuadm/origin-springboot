@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 自定义登录过滤器配置类
@@ -44,13 +44,13 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
 
     /**
      * -- GETTER --
-     *  获取默认成功处理器
+     * 获取默认成功处理器
      */
     @Getter
     private final RestAuthenticationSuccessHandler defaultSuccessHandler;
     /**
      * -- GETTER --
-     *  获取默认失败处理器
+     * 获取默认失败处理器
      */
     @Getter
     private final RestAuthenticationFailureHandler defaultFailureHandler;
@@ -105,6 +105,14 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
     private BiConsumer<HttpServletRequest, AuthenticationException> onLoginFailure;
 
     /**
+     * 账号锁定检查函数（在密码验证前执行）
+     * 参数：username
+     * 如果账号被锁定，应抛出 LockedException
+     */
+    @Setter
+    private Function<String, Void> lockCheckFunction;
+
+    /**
      * 过滤器实例（配置完成后可获取）
      */
     @Getter
@@ -128,6 +136,11 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
         filter.setUsernameParameter(usernameParameter);
         filter.setPasswordParameter(passwordParameter);
         filter.setAuthenticationManager(httpSecurity.getSharedObject(AuthenticationManager.class));
+
+        // 设置账号锁定检查函数
+        if (lockCheckFunction != null) {
+            filter.setLockCheckFunction(lockCheckFunction);
+        }
 
         // 设置处理器（包装以支持回调功能）
         AuthenticationSuccessHandler successHandler = createSuccessHandler();

@@ -9,16 +9,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.lang.NonNull;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * 自定义登录过滤器
@@ -50,6 +51,12 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Getter
     @Setter
     private String passwordParameter = "password";
+
+    /**
+     * 账号锁定检查函数（在密码验证前执行）
+     */
+    @Setter
+    private Function<String, Void> lockCheckFunction;
 
     /**
      * 指定登录URL的构造器
@@ -103,6 +110,11 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         // 将用户名保存到请求属性中，供失败处理器使用
         request.setAttribute("LOGIN_USERNAME", username);
+
+        // 在密码验证前检查账号是否被锁定
+        if (lockCheckFunction != null) {
+            lockCheckFunction.apply(username);
+        }
 
         // 将用户名、密码封装到 Token 中
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
