@@ -84,11 +84,11 @@ public class LoginAttemptService {
 
             log.warn("用户 [{}] 登录失败，当前尝试次数: {}/{}", username, attempts, DEFAULT_MAX_ATTEMPTS);
 
-            // 超过最大尝试次数，锁定账号
+            // 达到最大尝试次数，锁定账号（第5次失败时锁定）
             if (attempts >= DEFAULT_MAX_ATTEMPTS) {
                 redisTemplate.opsForValue().set(lockedKey, "locked", DEFAULT_LOCK_DURATION_MINUTES, TimeUnit.MINUTES);
                 redisTemplate.delete(attemptKey);
-                log.warn("用户 [{}] 登录失败次数过多，账号已被锁定 {} 分钟", username, DEFAULT_LOCK_DURATION_MINUTES);
+                log.warn("用户 [{}] 登录失败次数达到 {} 次，账号已被锁定 {} 分钟", username, DEFAULT_MAX_ATTEMPTS, DEFAULT_LOCK_DURATION_MINUTES);
             }
         }
     }

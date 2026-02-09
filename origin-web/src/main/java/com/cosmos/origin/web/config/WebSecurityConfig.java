@@ -96,11 +96,27 @@ public class WebSecurityConfig {
                             request.setAttribute("LOGIN_ATTEMPT_INFO_MAP", attemptInfoMap);
                         }
 
-                        // 记录失败日志
+                        // 记录失败日志，根据账号是否被锁定记录正确的状态
                         if (loginLogService != null) {
-                            String message = exception instanceof org.springframework.security.authentication.BadCredentialsException
-                                    ? "用户名或密码错误" : exception.getMessage();
-                            loginLogService.recordLoginLog(username, LoginStatusEnum.FAILED, message, request);
+                            // 判断账号是否已被锁定
+                            boolean isLocked = loginAttemptService != null && loginAttemptService.isLocked(username);
+                            
+                            LoginStatusEnum status;
+                            String message;
+                            
+                            if (isLocked) {
+                                // 账号已被锁定
+                                status = LoginStatusEnum.LOCKED;
+                                long lockRemainingMinutes = loginAttemptService.getLockRemainingMinutes(username);
+                                message = String.format("登录失败次数过多，账号已被锁定，请 %d 分钟后重试", lockRemainingMinutes);
+                            } else {
+                                // 登录失败但未锁定
+                                status = LoginStatusEnum.FAILED;
+                                message = exception instanceof org.springframework.security.authentication.BadCredentialsException
+                                        ? "用户名或密码错误" : exception.getMessage();
+                            }
+                            
+                            loginLogService.recordLoginLog(username, status, message, request);
                         }
                     });
                 })
