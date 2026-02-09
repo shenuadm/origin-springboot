@@ -1,9 +1,10 @@
 package com.cosmos.origin.admin.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.lionsoul.ip2region.xdb.LongByteArray;
 import org.lionsoul.ip2region.xdb.Searcher;
+import org.lionsoul.ip2region.xdb.Version;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.InputStream;
 
@@ -19,17 +20,18 @@ import java.io.InputStream;
 public class IpLocationUtil {
 
     private static Searcher searcher;
-    private static final String DB_PATH = "docs/ip2region/ip2region.xdb";
+    private static final String DB_PATH = "ip2region/ip2region.xdb";
 
     static {
         try {
             // 从 classpath 加载 xdb 文件到内存
             ClassPathResource resource = new ClassPathResource(DB_PATH);
             InputStream inputStream = resource.getInputStream();
-            byte[] dbBinStr = FileCopyUtils.copyToByteArray(inputStream);
+            // 加载为 LongByteArray
+            LongByteArray dbContent = Searcher.loadContentFromInputStream(inputStream);
 
-            // 使用完全基于内存的查询算法
-            searcher = Searcher.newWithBuffer(dbBinStr);
+            // 使用完全基于内存的查询算法 
+            searcher = Searcher.newWithBuffer(Version.IPv4, dbContent);
             log.info("ip2region 数据库加载成功，数据库路径: {}", DB_PATH);
         } catch (Exception e) {
             log.error("ip2region 数据库加载失败", e);
