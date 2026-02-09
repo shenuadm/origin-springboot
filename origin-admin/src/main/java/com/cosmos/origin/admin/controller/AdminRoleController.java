@@ -1,6 +1,6 @@
 package com.cosmos.origin.admin.controller;
 
-import com.cosmos.origin.common.aspect.ApiOperationLog;
+import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
 import com.cosmos.origin.admin.model.vo.role.AddRoleReqVO;

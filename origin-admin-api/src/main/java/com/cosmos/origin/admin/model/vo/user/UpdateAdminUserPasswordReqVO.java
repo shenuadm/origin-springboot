@@ -22,4 +22,3 @@ public class UpdateAdminUserPasswordReqVO {
     @Schema(description = "密码", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 }
-

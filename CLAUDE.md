@@ -8,34 +8,28 @@ Cosmos-Origin 是一个技术底座单体版项目，采用 Spring Boot 3.5.10 +
 
 ## 项目架构
 
-这是一个多模块 Maven 项目，采用分层架构设计：
+这是一个采用 **模块化单体 (Modular Monolith)** 架构设计的项目，兼顾了单体开发的便利性和微服务演进的灵活性。
 
 ### 核心模块结构
 
 ```
 origin-springboot (父工程)
 ├── origin-framework (基础框架层)
-│   ├── origin-common (通用工具组件)
-│   └── origin-biz-operationlog-spring-boot-starter (接口日志组件)
-├── origin-jwt (JWT 认证模块)
+│   ├── origin-common (通用工具组件，Starter)
+│   ├── origin-biz-operationlog-spring-boot-starter (接口日志组件，Starter)
+│   └── origin-spring-cloud-starter (微服务治理组件，预留)
+├── origin-jwt (JWT 认证组件，Starter)
+├── origin-admin-api (管理后台接口层，包含 VO、Enums)
+├── origin-admin (管理后台业务实现)
 ├── origin-auth (认证服务模块)
-├── origin-admin (管理后台业务模块)
-└── origin-web (Web 入口模块，启动类)
+└── origin-web (单体运行入口，唯一的启动模块)
 ```
 
-### 模块职责
+### 设计理念：单体架构，微服务演进
 
-- **origin-framework**: 平台基础设施层，封装通用功能和工具类，供业务模块使用
-  - **origin-common**: 提供全局异常处理、统一返回结果封装、API 日志切面、自定义校验器等通用功能
-  - **origin-biz-operationlog-spring-boot-starter**: 业务操作日志记录组件
-
-- **origin-jwt**: JWT 认证模块，包含 JWT 过滤器、Token 生成/验证、登录成功/失败处理器、限流过滤器等
-
-- **origin-auth**: 用户认证服务模块
-
-- **origin-admin**: 管理后台业务模块，包含用户管理、角色管理等业务逻辑
-
-- **origin-web**: 应用入口模块，包含启动类 `OriginWebApplication`、安全配置、Knife4j 配置等
+1.  **Starter 化装配**：基础组件（Common, JWT, Log）采用 Spring Boot Starter 模式封装，通过 `AutoConfiguration` 自动装配，无需在启动类手动扫描，方便模块独立拆分或跨项目复用。
+2.  **接口与实现分离**：业务模块拆分为 `api` 层（DTO/Enum/Client）和业务实现层。单体模式下直接依赖实现类，演进到微服务时，只需在 `api` 层增加 Feign 接口并将依赖切换为远程调用。
+3.  **去中心化配置**：各模块自持配置逻辑，入口模块 `origin-web` 仅负责运行时的环境聚合。
 
 ### 关键架构模式
 

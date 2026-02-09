@@ -1,6 +1,5 @@
 package com.cosmos.origin.admin.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -10,7 +9,6 @@ import lombok.Getter;
  * @date 2025/11/05
  */
 @Getter
-@AllArgsConstructor
 public enum RoleTypeEnum {
 
     SYSTEM_ADMIN("ROLE_SYSTEM_ADMIN", "系统管理员"),
@@ -23,4 +21,9 @@ public enum RoleTypeEnum {
 
     private final String roleKey;
     private final String roleName;
+
+    RoleTypeEnum(String roleKey, String roleName) {
+        this.roleKey = roleKey;
+        this.roleName = roleName;
+    }
 }

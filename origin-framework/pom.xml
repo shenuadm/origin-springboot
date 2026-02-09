@@ -22,6 +22,8 @@
         <module>origin-common</module>
         <!-- 接口日志组件 -->
         <module>origin-biz-operationlog-spring-boot-starter</module>
+        <!-- 微服务治理组件 -->
+        <module>origin-spring-cloud-starter</module>
     </modules>
 
 </project>

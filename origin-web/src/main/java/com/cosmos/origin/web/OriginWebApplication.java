@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 @Slf4j
-@ComponentScan({"com.cosmos.origin.*"}) // 多模块项目中，必需手动指定扫描 com.cosmos.origin 包下面的所有类
 @SpringBootApplication
 public class OriginWebApplication {
 

@@ -1,6 +1,5 @@
 package com.cosmos.origin.admin.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -10,7 +9,6 @@ import lombok.Getter;
  * @date 2025/02/06
  */
 @Getter
-@AllArgsConstructor
 public enum LoginStatusEnum {
 
     /**
@@ -30,4 +28,9 @@ public enum LoginStatusEnum {
 
     private final Integer code;
     private final String description;
+
+    LoginStatusEnum(Integer code, String description) {
+        this.code = code;
+        this.description = description;
+    }
 }
