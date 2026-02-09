@@ -70,6 +70,8 @@ public class WebSecurityConfig {
                 Boolean rememberMe = (Boolean) request.getAttribute("REMEMBER_ME");
                 String rolesStr = (String) request.getAttribute("USER_ROLES");
 
+                log.debug("准备保存会话 - 用户名: {}, 角色字符串: {}", username, rolesStr);
+
                 // 查询用户信息
                 UserDO userDO = userMapper.findByUsername(username);
                 if (userDO == null) {
@@ -81,6 +83,8 @@ public class WebSecurityConfig {
                 java.util.List<String> roles = rolesStr != null && !rolesStr.isEmpty() 
                         ? java.util.Arrays.asList(rolesStr.split(",")) 
                         : java.util.Collections.emptyList();
+
+                log.debug("解析后的角色列表: {}", roles);
 
                 // 构建会话信息
                 String ip = RequestUtil.getClientIp(request);
@@ -101,6 +105,7 @@ public class WebSecurityConfig {
 
                 // 保存会话到 Redis
                 userSessionService.saveSession(sessionVO, expireMinutes);
+                log.debug("会话保存完成 - 用户: {}, 角色: {}", username, roles);
             } catch (Exception e) {
                 log.error("保存用户会话失败", e);
             }

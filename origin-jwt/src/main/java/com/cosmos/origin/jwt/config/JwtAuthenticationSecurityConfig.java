@@ -168,10 +168,7 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
         AuthenticationSuccessHandler delegate = customSuccessHandler != null ? customSuccessHandler : defaultSuccessHandler;
 
         return (request, response, authentication) -> {
-            // 1. 执行原有成功处理逻辑
-            delegate.onAuthenticationSuccess(request, response, authentication);
-
-            // 2. 执行回调（如果有）
+            // 1. 先执行回调（设置 USER_ROLES 等属性），确保 delegate 能获取到这些信息
             if (onLoginSuccess != null) {
                 try {
                     onLoginSuccess.accept(request, authentication);
@@ -179,6 +176,9 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
                     log.error("登录成功回调执行失败", e);
                 }
             }
+
+            // 2. 再执行原有成功处理逻辑（此时 request 中已有角色等信息）
+            delegate.onAuthenticationSuccess(request, response, authentication);
         };
     }
 
