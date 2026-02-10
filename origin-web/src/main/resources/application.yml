@@ -39,6 +39,25 @@ login:
     # 登录策略配置：single-单设备登录（互踢），multiple-多设备登录（默认: multiple）
     strategy: multiple
 
+# 事件驱动自定义线程池配置（可选配置，不配置则使用默认值）
+origin:
+  event:
+    thread-pool:
+      # 核心线程数，默认为 CPU 核心数
+      core-pool-size: 4
+      # 最大线程数，默认为 CPU 核心数的 2 倍
+      max-pool-size: 8
+      # 队列容量，默认为 200
+      queue-capacity: 200
+      # 线程空闲时间（秒），默认为 60 秒
+      keep-alive-seconds: 60
+      # 线程名前缀，默认为 "event-executor-"
+      thread-name-prefix: "event-executor-"
+      # 是否等待任务完成后再关闭线程池，默认为 true
+      wait-for-tasks-to-complete-on-shutdown: true
+      # 等待任务完成的超时时间（秒），默认为 60 秒
+      await-termination-seconds: 60
+
 # springdoc-openapi 配置
 springdoc:
   swagger-ui:

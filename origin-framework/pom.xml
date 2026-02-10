@@ -26,6 +26,8 @@
         <module>origin-spring-cloud-starter</module>
         <!-- 对象存储服务组件 -->
         <module>origin-oss-spring-boot-starter</module>
+        <!-- 事件驱动服务组件 -->
+        <module>origin-event-spring-boot-starter</module>
     </modules>
 
 </project>

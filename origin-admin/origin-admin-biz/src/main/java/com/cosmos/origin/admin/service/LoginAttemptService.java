@@ -37,7 +37,7 @@ public class LoginAttemptService {
 
     // 配置项：是否开启登录次数限制功能
     @Getter
-    @Value("${login.attempt.enabled:true}")
+    @Value("${login.attempt.enabled}")
     private boolean enabled;
 
     // 配置项：最大尝试次数

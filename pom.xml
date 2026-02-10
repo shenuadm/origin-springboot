@@ -132,6 +132,12 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-event-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- 常用工具库 -->
             <dependency>
                 <groupId>com.google.guava</groupId>
