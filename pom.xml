@@ -59,6 +59,7 @@
         <jjwt.version>0.11.2</jjwt.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
         <ip2region.version>3.3.1</ip2region.version>
+        <minio.version>8.2.1</minio.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -124,6 +125,12 @@
             <dependency>
                 <groupId>com.cosmos</groupId>
                 <artifactId>origin-auth</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-oss</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -196,6 +203,13 @@
                 <groupId>org.lionsoul</groupId>
                 <artifactId>ip2region</artifactId>
                 <version>${ip2region.version}</version>
+            </dependency>
+
+            <!-- 对象存储 Minio -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

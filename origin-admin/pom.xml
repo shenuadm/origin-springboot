@@ -34,6 +34,11 @@
             <artifactId>origin-jwt</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-oss</artifactId>
+        </dependency>
+
         <!-- MyBatis-Flex -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>

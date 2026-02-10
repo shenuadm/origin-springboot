@@ -31,3 +31,12 @@ spring:
       # 连接超时时间（如果 Redis 不可用，快速失败）
       connect-timeout: 2000ms
       timeout: 2000ms
+
+#=================================================================
+# minio
+#=================================================================
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: quanxiaoha
+  secretKey: quanxiaoha
+  bucketName: weblog

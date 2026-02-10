@@ -24,6 +24,8 @@
         <module>origin-biz-operationlog-spring-boot-starter</module>
         <!-- 微服务治理组件 -->
         <module>origin-spring-cloud-starter</module>
+        <!-- 对象存储服务组件 -->
+        <module>origin-oss</module>
     </modules>
 
 </project>
