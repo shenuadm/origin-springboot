@@ -148,6 +148,12 @@
 
             <dependency>
                 <groupId>com.cosmos</groupId>
+                <artifactId>origin-websocket-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cosmos</groupId>
                 <artifactId>origin-example</artifactId>
                 <version>${revision}</version>
             </dependency>

@@ -16,6 +16,11 @@
     <dependencies>
         <dependency>
             <groupId>com.cosmos</groupId>
+            <artifactId>origin-websocket-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
             <artifactId>origin-common</artifactId>
         </dependency>
 

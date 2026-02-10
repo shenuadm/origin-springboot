@@ -26,7 +26,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -50,7 +49,6 @@ public class WebSecurityConfig {
     private final JwtAuthenticationSecurityConfig jwtAuthenticationSecurityConfig;
     private final RestAuthenticationEntryPoint authEntryPoint;
     private final RestAccessDeniedHandler deniedHandler;
-    private final UserDetailsService userDetailsService;
 
     // 登录日志和限流服务（可选）
     private final LoginLogService loginLogService;
@@ -80,8 +78,8 @@ public class WebSecurityConfig {
                 }
 
                 // 解析角色列表
-                java.util.List<String> roles = rolesStr != null && !rolesStr.isEmpty() 
-                        ? java.util.Arrays.asList(rolesStr.split(",")) 
+                java.util.List<String> roles = rolesStr != null && !rolesStr.isEmpty()
+                        ? java.util.Arrays.asList(rolesStr.split(","))
                         : java.util.Collections.emptyList();
 
                 log.debug("解析后的角色列表: {}", roles);
@@ -209,6 +207,8 @@ public class WebSecurityConfig {
                     authorize.requestMatchers("/login", "/logout", "/test").permitAll();
                     // Knife4j 接口文档
                     authorize.requestMatchers("/doc.html", "/v3/api-docs/**", "/favicon.ico", "/webjars/**", "/.well-known/**").permitAll();
+                    // websocket 接口
+                    authorize.requestMatchers("/ws/**").permitAll();
                     // 管理后台接口需要系统管理员权限
                     authorize.requestMatchers("/manage/user/**").hasAuthority(RoleTypeEnum.SYSTEM_ADMIN.getRoleKey());
                     authorize.requestMatchers("/manage/role/**").hasAuthority(RoleTypeEnum.SYSTEM_ADMIN.getRoleKey());

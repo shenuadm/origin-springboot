@@ -30,6 +30,8 @@
         <module>origin-event-spring-boot-starter</module>
         <!-- 定时任务服务组件 -->
         <module>origin-scheduler-spring-boot-starter</module>
+        <!-- WebSocket 服务组件 -->
+        <module>origin-websocket-spring-boot-starter</module>
     </modules>
 
 </project>
