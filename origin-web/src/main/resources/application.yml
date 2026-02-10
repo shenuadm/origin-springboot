@@ -80,6 +80,7 @@ springdoc:
         # 指定扫描的包
         - com.cosmos.origin.web.controller
         - com.cosmos.origin.admin.controller
+        - com.cosmos.origin.websocket.controller
 # knife4j 增强配置
 knife4j:
   enable: true

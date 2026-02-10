@@ -5,6 +5,8 @@ import com.cosmos.origin.websocket.domain.dos.ChatMessageDO;
 import com.cosmos.origin.websocket.domain.mapper.ChatMessageMapper;
 import com.cosmos.origin.websocket.enums.ChatRoomMessageTypeEnum;
 import com.cosmos.origin.websocket.model.vo.chatroom.ChatMessageVO;
+import com.cosmos.origin.websocket.model.vo.chatroom.OnlineUserVO;
+import com.cosmos.origin.websocket.model.vo.chatroom.OnlineUsersMessageVO;
 import com.cosmos.origin.websocket.model.vo.chatroom.UserInfoVO;
 import com.cosmos.origin.websocket.utils.SpringContext;
 import jakarta.websocket.*;
@@ -15,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -28,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2026/02/10
  */
 @Slf4j
-@ServerEndpoint("/ws/chat")
+@ServerEndpoint("/ws/chat") // 定义 WebSocket 端点
 public class ChatWebSocketServer {
 
     /**
@@ -49,7 +52,7 @@ public class ChatWebSocketServer {
     /**
      * 时间格式化
      */
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     /**
      * 连接建立成功调用的方法
@@ -76,6 +79,8 @@ public class ChatWebSocketServer {
 
         // 广播系统消息，告诉所有人，有用户加入了聊天室
         broadcastMessage(buildMessage(ChatRoomMessageTypeEnum.SYSTEM.getCode(), nickname, null, "加入了聊天室"));
+        // 广播在线用户列表
+        broadcastOnlineUsers();
     }
 
     /**
@@ -175,6 +180,8 @@ public class ChatWebSocketServer {
 
             // 广播系统消息，告诉所有在线用户，有人离开了
             broadcastMessage(buildMessage(ChatRoomMessageTypeEnum.SYSTEM.getCode(), nickname, null, "离开了聊天室"));
+            // 广播在线用户列表
+            broadcastOnlineUsers();
         }
     }
 
@@ -202,5 +209,35 @@ public class ChatWebSocketServer {
      */
     private void broadcastMessage(String message) {
         SESSION_MAP.values().forEach(session -> sendMessage(session, message));
+    }
+
+    /**
+     * 广播在线用户列表
+     */
+    private void broadcastOnlineUsers() {
+        // 构建在线用户列表 VO
+        OnlineUsersMessageVO msg = OnlineUsersMessageVO.builder()
+                .type(ChatRoomMessageTypeEnum.ONLINE_USERS.getCode())
+                .onlineCount(ONLINE_COUNT.get())
+                .users(getOnlineUsers())
+                .build();
+
+        // 广播消息
+        broadcastMessage(JsonUtil.toJsonString(msg));
+    }
+
+    /**
+     * 获取在线用户列表
+     */
+    public static List<OnlineUserVO> getOnlineUsers() {
+        List<OnlineUserVO> users = new ArrayList<>();
+        USER_INFO_MAP.forEach((sessionId, userInfo) -> {
+            users.add(OnlineUserVO.builder()
+                    .nickname(userInfo.getNickname())
+                    .avatar(userInfo.getAvatar())
+                    .online(true)
+                    .build());
+        });
+        return users;
     }
 }

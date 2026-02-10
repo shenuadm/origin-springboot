@@ -20,6 +20,11 @@
             <artifactId>origin-common</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-operationlog-spring-boot-starter</artifactId>
+        </dependency>
+
         <!-- Spring Boot Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

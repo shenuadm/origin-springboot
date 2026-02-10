@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
- * 聊天室消息
+ * 在线用户列表消息
  *
  * @author 一陌千尘
  * @date 2026/02/10
@@ -15,12 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChatMessageVO {
-
-    /**
-     * 消息 ID
-     */
-    private Long id;
+public class OnlineUsersMessageVO {
 
     /**
      * 消息类型
@@ -28,24 +25,9 @@ public class ChatMessageVO {
     private Integer type;
 
     /**
-     * 昵称
+     * 在线用户列表
      */
-    private String nickname;
-
-    /**
-     * 头像
-     */
-    private String avatar;
-
-    /**
-     * 消息内容
-     */
-    private String content;
-
-    /**
-     * 发送时间
-     */
-    private String time;
+    private List<OnlineUserVO> users;
 
     /**
      * 在线人数

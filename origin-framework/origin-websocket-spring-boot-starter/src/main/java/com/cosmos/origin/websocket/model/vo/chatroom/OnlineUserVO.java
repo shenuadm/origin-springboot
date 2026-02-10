@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 聊天室消息
+ * 在线用户
  *
  * @author 一陌千尘
  * @date 2026/02/10
@@ -15,17 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChatMessageVO {
-
-    /**
-     * 消息 ID
-     */
-    private Long id;
-
-    /**
-     * 消息类型
-     */
-    private Integer type;
+public class OnlineUserVO {
 
     /**
      * 昵称
@@ -38,17 +28,7 @@ public class ChatMessageVO {
     private String avatar;
 
     /**
-     * 消息内容
+     * 是否在线
      */
-    private String content;
-
-    /**
-     * 发送时间
-     */
-    private String time;
-
-    /**
-     * 在线人数
-     */
-    private Integer onlineCount;
+    private Boolean online;
 }
