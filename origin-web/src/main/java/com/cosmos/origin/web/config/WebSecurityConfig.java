@@ -209,8 +209,7 @@ public class WebSecurityConfig {
                     // websocket 接口
                     authorize.requestMatchers("/ws/**").permitAll();
                     // 管理后台接口需要系统管理员权限
-                    authorize.requestMatchers("/manage/user/**").hasAuthority(RoleTypeEnum.SYSTEM_ADMIN.getRoleKey());
-                    authorize.requestMatchers("/manage/role/**").hasAuthority(RoleTypeEnum.SYSTEM_ADMIN.getRoleKey());
+                    authorize.requestMatchers("/manage/**").hasAuthority(RoleTypeEnum.SYSTEM_ADMIN.getRoleKey());
 
                     authorize.anyRequest().authenticated();
                 })

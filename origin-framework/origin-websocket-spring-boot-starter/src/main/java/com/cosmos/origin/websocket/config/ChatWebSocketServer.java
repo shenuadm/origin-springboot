@@ -1,6 +1,9 @@
 package com.cosmos.origin.websocket.config;
 
+import com.cosmos.origin.admin.api.WebSocketUserServiceApi;
+import com.cosmos.origin.admin.model.vo.websocket.UserInfoForWebSocketVO;
 import com.cosmos.origin.common.utils.JsonUtil;
+import com.cosmos.origin.jwt.utils.JwtTokenHelper;
 import com.cosmos.origin.websocket.domain.dos.ChatMessageDO;
 import com.cosmos.origin.websocket.domain.mapper.ChatMessageMapper;
 import com.cosmos.origin.websocket.enums.ChatRoomMessageTypeEnum;
@@ -17,10 +20,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -64,13 +64,31 @@ public class ChatWebSocketServer {
         // 保存会话，使用会话 ID 作为 Key
         SESSION_MAP.put(sessionId, session);
 
-        // 获取昵称、头像
+        // 获取 Token，解析用户名
         Map<String, List<String>> params = session.getRequestParameterMap();
-        String nickname = getFieldValueFromParam("nickname", params);
-        String avatar = getFieldValueFromParam("avatar", params);
+        String token = getFieldValueFromParam("token", params);
+        JwtTokenHelper jwtTokenHelper = SpringContext.getBean(JwtTokenHelper.class);
+        String username = jwtTokenHelper.getUsernameByToken(token);
+
+        // 从用户服务获取用户信息
+        WebSocketUserServiceApi userService = SpringContext.getBean(WebSocketUserServiceApi.class);
+        Optional<UserInfoForWebSocketVO> userInfoOpt = userService.findByUsername(username);
+
+        // 设置昵称和头像
+        String nickname;
+        String avatar;
+        if (userInfoOpt.isPresent()) {
+            UserInfoForWebSocketVO userInfo = userInfoOpt.get();
+            nickname = userInfo.getNickname();
+            avatar = userInfo.getAvatar();
+        } else {
+            // 如果查不到用户信息，使用用户名作为昵称
+            nickname = username;
+            avatar = null;
+        }
 
         // 保存用户信息
-        USER_INFO_MAP.put(sessionId, new UserInfoVO(nickname, avatar));
+        USER_INFO_MAP.put(sessionId, new UserInfoVO(username, nickname, avatar));
 
         // 在线人数+1
         int count = ONLINE_COUNT.incrementAndGet();
@@ -115,13 +133,14 @@ public class ChatWebSocketServer {
             return;
         }
 
+        String username = userInfoVO.getUsername();
         String nickname = userInfoVO.getNickname();
         String avatar = userInfoVO.getAvatar();
 
         log.info("## 收到用户 [sessionId:{}] [昵称:{}] 的消息: {}", sessionId, nickname, message);
 
         // 保存消息到数据库
-        saveMessage(nickname, avatar, message);
+        saveMessage(username, nickname, avatar, message);
 
         // 广播聊天消息，通知所有在线用户
         broadcastMessage(buildMessage(ChatRoomMessageTypeEnum.CHAT.getCode(), nickname, avatar, message));
@@ -130,8 +149,9 @@ public class ChatWebSocketServer {
     /**
      * 保存消息到数据库
      */
-    private void saveMessage(String nickname, String avatar, String content) {
+    private void saveMessage(String username, String nickname, String avatar, String content) {
         ChatMessageDO chatMessage = ChatMessageDO.builder()
+                .username(username)
                 .nickname(nickname)
                 .avatar(avatar)
                 .content(content)
