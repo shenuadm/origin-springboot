@@ -193,8 +193,7 @@ public class WebSecurityConfig {
                             } else {
                                 // 登录失败但未锁定
                                 status = LoginStatusEnum.FAILED;
-                                message = exception instanceof org.springframework.security.authentication.BadCredentialsException
-                                        ? "用户名或密码错误" : exception.getMessage();
+                                message = extractErrorMessage(exception);
                             }
 
                             loginLogService.recordLoginLog(username, status, message, request);
@@ -234,6 +233,37 @@ public class WebSecurityConfig {
     private String getUsernameFromRequest(HttpServletRequest request) {
         String username = (String) request.getAttribute("LOGIN_USERNAME");
         return username != null ? username : "unknown";
+    }
+
+    /**
+     * 提取异常的错误信息
+     * <p>
+     * 处理 InternalAuthenticationServiceException 包装的情况，
+     * 提取内层异常的实际错误信息
+     *
+     * @param exception 认证异常
+     * @return 错误信息
+     */
+    private String extractErrorMessage(org.springframework.security.core.AuthenticationException exception) {
+        // 用户名或密码错误
+        if (exception instanceof org.springframework.security.authentication.BadCredentialsException) {
+            return "用户名或密码错误";
+        }
+
+        // 处理 InternalAuthenticationServiceException 包装的情况
+        if (exception instanceof org.springframework.security.authentication.InternalAuthenticationServiceException) {
+            Throwable cause = exception.getCause();
+            if (cause instanceof com.cosmos.origin.common.exception.BizException bizException) {
+                return bizException.getErrorMessage();
+            }
+            // 如果内层异常不是 BizException，返回内层异常的消息
+            if (cause != null) {
+                return cause.getMessage();
+            }
+        }
+
+        // 默认返回异常消息
+        return exception.getMessage();
     }
 
     /**
