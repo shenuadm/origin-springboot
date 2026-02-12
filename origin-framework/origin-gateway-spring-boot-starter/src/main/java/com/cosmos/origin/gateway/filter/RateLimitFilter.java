@@ -1,5 +1,6 @@
 package com.cosmos.origin.gateway.filter;
 
+import com.cosmos.origin.common.utils.RequestUtil;
 import com.cosmos.origin.gateway.properties.GatewayProperties;
 import com.cosmos.origin.gateway.utils.RateLimitUtils;
 import jakarta.servlet.*;
@@ -75,28 +76,7 @@ public class RateLimitFilter implements Filter {
         if (userId != null && !userId.isEmpty()) {
             return "user:" + userId;
         }
-        return "ip:" + getClientIp(request);
-    }
-
-    /**
-     * 获取客户端IP
-     */
-    private String getClientIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        // 多个代理情况，取第一个IP
-        if (ip != null && ip.contains(",")) {
-            ip = ip.split(",")[0].trim();
-        }
-        return ip;
+        return "ip:" + RequestUtil.getClientIp(request);
     }
 
     /**

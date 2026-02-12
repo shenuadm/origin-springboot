@@ -4,6 +4,7 @@ import com.cosmos.origin.admin.domain.dos.LoginLogDO;
 import com.cosmos.origin.admin.domain.mapper.LoginLogMapper;
 import com.cosmos.origin.admin.enums.LoginStatusEnum;
 import com.cosmos.origin.admin.utils.IpLocationUtil;
+import com.cosmos.origin.common.utils.RequestUtil;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -36,7 +37,7 @@ public class LoginLogService {
     public void recordLoginLog(String username, LoginStatusEnum status, String message, HttpServletRequest request) {
         try {
             String userAgentStr = request.getHeader("User-Agent");
-            String ip = getClientIp(request);
+            String ip = RequestUtil.getClientIp(request);
 
             // 解析UserAgent
             String browser = "Unknown";
@@ -64,33 +65,6 @@ public class LoginLogService {
         } catch (Exception e) {
             log.error("记录登录日志失败", e);
         }
-    }
-
-    /**
-     * 获取客户端真实IP
-     */
-    private String getClientIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        // 多个代理情况，取第一个IP
-        if (ip != null && ip.contains(",")) {
-            ip = ip.split(",")[0].trim();
-        }
-        return ip;
     }
 
     /**

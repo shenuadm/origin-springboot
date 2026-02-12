@@ -3,6 +3,11 @@
 # ===========================================
 server:
   port: 8081
+logging:
+  level:
+    # com.cosmos.origin.gateway.interceptor.AccessLogInterceptor: WARN
+    # 或完全关闭
+    com.cosmos.origin.gateway.interceptor.AccessLogInterceptor: OFF
 
 # ===========================================
 # Spring 核心配置
@@ -94,16 +99,16 @@ origin:
       default-limit: 100                    # 默认限流阈值（每秒请求数）
       time-window: 1                        # 限流时间窗口（秒）
       limit-message: "请求过于频繁，请稍后再试"   # 限流提示信息
-      path-limits:                          # 特定接口限流配置
+      path-limits: # 特定接口限流配置
         /api/user/login: 10                 # 登录接口限流 10/s
         /api/user/register: 10              # 注册接口限流 10/s
         /api/order/create: 20               # 下单接口限流 20/s
-    white-list:                             # 白名单路径
+    white-list: # 白名单路径
       - /health
       - /public
       - /swagger-ui
       - /v3/api-docs
-    black-list: []                          # 黑名单（IP或用户ID）
+    black-list: [ ]                          # 黑名单（IP或用户ID）
 
 # ===========================================
 # API 文档配置（SpringDoc + Knife4j）

@@ -1,7 +1,6 @@
 package com.cosmos.origin.comment.controller;
 
 import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
-import com.cosmos.origin.comment.model.vo.FindCommentListReqVO;
 import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;
 import com.cosmos.origin.comment.service.CommentService;
 import com.cosmos.origin.common.utils.Response;

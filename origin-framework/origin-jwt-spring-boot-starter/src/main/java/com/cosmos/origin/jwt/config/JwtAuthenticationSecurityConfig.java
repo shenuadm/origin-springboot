@@ -3,9 +3,7 @@ package com.cosmos.origin.jwt.config;
 import com.cosmos.origin.jwt.filter.JwtAuthenticationFilter;
 import com.cosmos.origin.jwt.handler.RestAuthenticationFailureHandler;
 import com.cosmos.origin.jwt.handler.RestAuthenticationSuccessHandler;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +21,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.IOException;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -188,22 +185,18 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
     private AuthenticationFailureHandler createFailureHandler() {
         AuthenticationFailureHandler delegate = customFailureHandler != null ? customFailureHandler : defaultFailureHandler;
 
-        return new AuthenticationFailureHandler() {
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                                AuthenticationException exception) throws IOException, ServletException {
-                // 1. 先执行回调（记录失败次数等），确保 delegate 能获取到最新信息
-                if (onLoginFailure != null) {
-                    try {
-                        onLoginFailure.accept(request, exception);
-                    } catch (Exception e) {
-                        log.error("登录失败回调执行失败", e);
-                    }
+        return (request, response, exception) -> {
+            // 1. 先执行回调（记录失败次数等），确保 delegate 能获取到最新信息
+            if (onLoginFailure != null) {
+                try {
+                    onLoginFailure.accept(request, exception);
+                } catch (Exception e) {
+                    log.error("登录失败回调执行失败", e);
                 }
-
-                // 2. 执行原有失败处理逻辑（此时回调已设置好尝试信息）
-                delegate.onAuthenticationFailure(request, response, exception);
             }
+
+            // 2. 执行原有失败处理逻辑（此时回调已设置好尝试信息）
+            delegate.onAuthenticationFailure(request, response, exception);
         };
     }
 

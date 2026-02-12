@@ -249,13 +249,11 @@ public class ChatWebSocketServer {
      */
     public static List<OnlineUserVO> getOnlineUsers() {
         List<OnlineUserVO> users = new ArrayList<>();
-        USER_INFO_MAP.forEach((sessionId, userInfo) -> {
-            users.add(OnlineUserVO.builder()
-                    .nickname(userInfo.getNickname())
-                    .avatar(userInfo.getAvatar())
-                    .online(true)
-                    .build());
-        });
+        USER_INFO_MAP.forEach((sessionId, userInfo) -> users.add(OnlineUserVO.builder()
+                .nickname(userInfo.getNickname())
+                .avatar(userInfo.getAvatar())
+                .online(true)
+                .build()));
         return users;
     }
 }

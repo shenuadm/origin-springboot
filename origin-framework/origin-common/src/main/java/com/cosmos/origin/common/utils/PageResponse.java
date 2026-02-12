@@ -33,7 +33,7 @@ public class PageResponse<T> extends Response<List<T>> {
      * @param <T>  数据类型
      * @return 响应
      */
-    public static <T> PageResponse<T> success(Page page, List<T> data) {
+    public static <T> PageResponse<T> success(Page<?> page, List<T> data) {
         PageResponse<T> response = new PageResponse<>();
         response.setSuccess(true);
         response.setCurrent(Objects.isNull(page) ? 1L : page.getPageNumber());

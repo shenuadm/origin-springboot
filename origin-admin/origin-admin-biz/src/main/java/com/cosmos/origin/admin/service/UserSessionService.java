@@ -324,7 +324,7 @@ public class UserSessionService {
         List<UserSessionVO> sessions = new ArrayList<>();
         Set<String> keys = redisTemplate.keys(USER_SESSION_KEY_PREFIX + "*");
 
-        if (keys != null && !keys.isEmpty()) {
+        if (!keys.isEmpty()) {
             for (String key : keys) {
                 String sessionJson = redisTemplate.opsForValue().get(key);
                 if (sessionJson != null) {
@@ -426,7 +426,7 @@ public class UserSessionService {
         if ("single".equalsIgnoreCase(loginStrategy)) {
             // 单设备模式：检查唯一的会话
             String userSessionKey = USER_SESSION_KEY_PREFIX + username;
-            return Boolean.TRUE.equals(redisTemplate.hasKey(userSessionKey));
+            return redisTemplate.hasKey(userSessionKey);
         } else {
             // 多设备模式：检查是否有任意一个设备在线
             String userTokensSetKey = USER_TOKENS_SET_KEY_PREFIX + username;
