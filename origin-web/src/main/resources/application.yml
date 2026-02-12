@@ -3,6 +3,8 @@
 # ===========================================
 server:
   port: 8081
+
+# 日志配置
 logging:
   level:
     # com.cosmos.origin.gateway.interceptor.AccessLogInterceptor: WARN
@@ -14,10 +16,24 @@ logging:
 # ===========================================
 spring:
   application:
-    name: "技术底座单体版"
+    name: "技术底座"
   profiles:
     # 默认激活的环境
     active: dev
+    # 包含微服务模式配置（当激活microservice profile时）
+    group:
+      microservice:
+        - microservice
+        - dev
+  cloud:
+    gateway:
+      # 单体模式下禁用Spring Cloud Gateway
+      enabled: false
+    nacos:
+      config:
+        # 禁用 Nacos 配置导入检查（单体应用暂不使用配置中心）
+        import-check:
+          enabled: false
   servlet:
     multipart:
       # 限制单个上传文件的最大大小为 100MB

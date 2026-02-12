@@ -7,28 +7,50 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * Redis 自动配置类
+ * 提供 RedisTemplate 和 RedissonClient 配置
+ * 在 RedissonAutoConfiguration 之前执行，确保我们先创建 RedisTemplate
  *
  * @author cosmos
  */
 @AutoConfiguration
+@AutoConfigureBefore(name = "org.redisson.spring.starter.RedissonAutoConfiguration")
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisAutoConfiguration {
 
     /**
-     * 配置 RedisTemplate
+     * 配置 RedisConnectionFactory
+     * 使用 Lettuce 客户端
      */
     @Bean
+    @ConditionalOnMissingBean(RedisConnectionFactory.class)
+    public RedisConnectionFactory redisConnectionFactory(RedisProperties redisProperties) {
+        LettuceConnectionFactory factory = new LettuceConnectionFactory();
+        factory.setHostName(redisProperties.getHost());
+        factory.setPort(redisProperties.getPort());
+        factory.setDatabase(redisProperties.getDatabase());
+        if (redisProperties.getPassword() != null) {
+            factory.setPassword(redisProperties.getPassword());
+        }
+        return factory;
+    }
+
+    /**
+     * 配置 RedisTemplate
+     */
+    @Bean(name = "redisTemplate")
     @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();

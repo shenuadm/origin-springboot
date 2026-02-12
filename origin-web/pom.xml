@@ -49,6 +49,8 @@
             <artifactId>origin-jwt-spring-boot-starter</artifactId>
         </dependency>
 
+        <!-- 微服务依赖由 Maven Profile 控制，见下方 profiles 配置 -->
+
         <!-- Log4j2 日志 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -112,6 +114,25 @@
     </dependencies>
 
     <build>
+        <!-- 资源过滤配置，支持 application.yml 中的属性占位符 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>application.yml</include>
+                    <include>application-*.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>application.yml</exclude>
+                    <exclude>application-*.yml</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -123,4 +144,132 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- ===========================================
+         Maven Profile 架构模式切换
+         使用方式:
+         - 单体模式: mvn clean package -P monolith
+         - 微服务模式: mvn clean package -P microservice
+         =========================================== -->
+    <profiles>
+        <!-- 单体模式（默认） -->
+        <profile>
+            <id>monolith</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- 设置 Spring Profile 为单体模式 -->
+                <spring.profiles.active>monolith</spring.profiles.active>
+                <maven.resource.delimiter>@</maven.resource.delimiter>
+            </properties>
+            <dependencies>
+                <!-- 单体模式不需要微服务依赖 -->
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>com.cosmos.origin.web.OriginWebApplication</mainClass>
+                            <layout>JAR</layout>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- 微服务模式 -->
+        <profile>
+            <id>microservice</id>
+            <properties>
+                <!-- 设置 Spring Profile 为微服务模式 -->
+                <spring.profiles.active>microservice</spring.profiles.active>
+                <maven.resource.delimiter>@</maven.resource.delimiter>
+            </properties>
+            <dependencies>
+                <!-- 微服务模式下排除 origin-gateway-spring-boot-starter 中的 Spring MVC 依赖 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-gateway-spring-boot-starter</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-web</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <!-- 微服务模式下排除 JWT starter 中的 Spring Security MVC 依赖 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-jwt-spring-boot-starter</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-security</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <!-- 微服务模式下排除其他模块的 Spring MVC 依赖 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-admin-biz</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-web</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-comment-biz</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-web</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <!-- Spring WebFlux（响应式Web支持） -->
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-webflux</artifactId>
+                </dependency>
+                <!-- Spring Cloud 微服务治理 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-spring-cloud-starter</artifactId>
+                </dependency>
+                <!-- Nacos 服务注册与发现 -->
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                </dependency>
+                <!-- Nacos 配置中心 -->
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                </dependency>
+                <!-- Spring Cloud Gateway -->
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-gateway</artifactId>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>com.cosmos.origin.web.OriginWebApplication</mainClass>
+                            <layout>JAR</layout>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

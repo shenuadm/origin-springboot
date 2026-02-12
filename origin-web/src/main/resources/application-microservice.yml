@@ -1,0 +1,53 @@
+# ===========================================
+# 微服务模式专属配置
+# ===========================================
+spring:
+  application:
+    name: "技术底座微服务版"
+  # 微服务模式使用响应式Web应用类型（Spring Cloud Gateway要求）
+  main:
+    web-application-type: reactive
+    # 允许bean定义覆盖，解决Security配置冲突
+    allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude:
+      # 排除Spring MVC的Security自动配置
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      # 排除Spring MVC的Actuator安全自动配置
+      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
+      # 排除WebSocket自动配置（微服务模式下使用响应式WebSocket）
+      - org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration
+      - com.cosmos.origin.websocket.config.WebSocketAutoConfiguration
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+      config:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+        import-check:
+          enabled: false
+    gateway:
+      server:
+        webflux:
+          enabled: true
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+
+# ===========================================
+# 微服务模式禁用部分单体功能
+# ===========================================
+origin:
+  gateway:
+    # 微服务模式下限流通过Gateway过滤器实现
+    rate-limit:
+      enabled: false

@@ -144,10 +144,15 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: \${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: \${NACOS_NAMESPACE:}
+        group: \${NACOS_GROUP:DEFAULT_GROUP}
       config:
-        server-addr: localhost:8848
+        server-addr: \${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: \${NACOS_NAMESPACE:}
+        group: \${NACOS_GROUP:DEFAULT_GROUP}
         file-extension: yaml
+        prefix: \${spring.application.name}
 
 server:
   port: ${PORT}
@@ -166,7 +171,7 @@ EOF
 cat > $SERVICE_DIR/src/main/resources/application-dev.yml << EOF
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/origin_${SERVICE_NAME}
+    url: \${DB_URL:jdbc:postgresql://localhost:5432/origin_${SERVICE_NAME}}
     username: \${DB_USERNAME:root}
     password: \${DB_PASSWORD:wzw123!@#}
     driver-class-name: org.postgresql.Driver
@@ -186,16 +191,35 @@ spring:
         max-idle: 8
         min-idle: 0
 
+# 日志配置
 logging:
   level:
     root: INFO
     com.cosmos.origin.${SERVICE_NAME}: DEBUG
+    com.alibaba.nacos: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 EOF
 
 echo "服务 origin-${SERVICE_NAME}-service 生成完成！"
 echo ""
+echo "=========================================="
 echo "下一步操作："
-echo "1. 在根 pom.xml 的 <modules> 中添加: <module>origin-${SERVICE_NAME}-service</module>"
-echo "2. 在 origin-${SERVICE_NAME}-api 中添加 Feign 接口"
-echo "3. 执行: mvn clean install -pl origin-${SERVICE_NAME}-service -am"
-echo "4. 运行: cd origin-${SERVICE_NAME}-service && mvn spring-boot:run"
+echo "=========================================="
+echo ""
+echo "1. 在根 pom.xml 的 <modules> 中添加:"
+echo "   <module>origin-${SERVICE_NAME}-service</module>"
+echo ""
+echo "2. 在 origin-${SERVICE_NAME}-api 中添加 Feign 接口:"
+echo "   @FeignClient(name = \"origin-${SERVICE_NAME}-service\")"
+echo "   public interface ${CLASS_NAME}FeignApi { ... }"
+echo ""
+echo "3. 编译服务模块:"
+echo "   mvn clean install -pl origin-${SERVICE_NAME}-service -am"
+echo ""
+echo "4. 运行服务（确保 Nacos 已启动）:"
+echo "   cd origin-${SERVICE_NAME}-service"
+echo "   mvn spring-boot:run"
+echo ""
+echo "5. Docker 部署:"
+echo "   创建 Dockerfile 后执行: docker-compose up -d"

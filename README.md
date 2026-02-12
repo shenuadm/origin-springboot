@@ -1,15 +1,37 @@
 ## 项目概述
 
-origin-springboot 是一个技术底座单体版项目，采用 Spring Boot 3.5.10 + PostgreSQL + JWT + MyBatis Flex 技术栈构建。项目主要功能包括用户登录、角色管理、用户管理、评论管理、操作日志等模块。
+origin-springboot 是一个技术底座项目，采用 Spring Boot 3.5.10 + PostgreSQL + JWT + MyBatis Flex 技术栈构建。项目支持**单体模式**和**微服务模式**两种架构，可根据业务需求灵活切换。
+
+主要功能包括用户登录、角色管理、用户管理、评论管理、操作日志等模块。
+
+## 架构模式
+
+本项目支持两种架构模式，通过 Maven Profile 切换：
+
+| 模式 | 说明 | 适用场景 |
+|------|------|----------|
+| **单体模式** (monolith) | 所有模块本地加载，使用 Servlet + Spring MVC | 小型项目、快速开发、团队规模小 |
+| **微服务模式** (microservice) | 服务通过 Nacos 注册发现，使用 Spring Cloud Gateway + WebFlux | 大型项目、分布式部署、团队规模大 |
+
+### 模式切换
+
+```bash
+# 单体模式（默认）
+mvn clean package -P monolith -DskipTests
+
+# 微服务模式
+mvn clean package -P microservice -DskipTests
+```
 
 ## 快速开始
 
 ### 环境要求
 
 - JDK 17+
-- Maven 3.6+
+- Maven 3.9+
 - PostgreSQL 12+
-- Redis 6+ (可选，用于登录限流)
+- Redis 6+ (用于登录限流、会话管理)
+- Nacos 2.3+ (微服务模式必需)
 
 ### 启动步骤
 
@@ -34,14 +56,35 @@ origin-springboot 是一个技术底座单体版项目，采用 Spring Boot 3.5.
 
 4. **编译运行**
    ```bash
-   mvn clean install -DskipTests
+   # 单体模式（默认）
+   mvn clean package -P monolith -DskipTests
    cd origin-web
    mvn spring-boot:run
+   
+   # 或者运行打包后的 jar
+   java -jar target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
    ```
 
 5. **访问应用**
    - 应用地址: http://localhost:8081
    - API 文档: http://localhost:8081/doc.html
+
+### 微服务模式启动
+
+1. **启动 Nacos**
+   ```bash
+   docker run -d --name nacos -p 8848:8848 -e MODE=standalone nacos/nacos-server:v2.3.0
+   ```
+
+2. **编译打包**
+   ```bash
+   mvn clean package -P microservice -DskipTests
+   ```
+
+3. **运行应用**
+   ```bash
+   java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=microservice,dev
+   ```
 
 ## 项目架构
 
@@ -109,21 +152,21 @@ origin-springboot (父工程)
 ### 构建和运行
 
 ```bash
-# 编译整个项目
-mvn clean install
+# 单体模式编译打包（默认）
+mvn clean package -P monolith -DskipTests
 
-# 编译并跳过测试
-mvn clean install -DskipTests
+# 微服务模式编译打包
+mvn clean package -P microservice -DskipTests
 
-# 运行应用（在 origin-web 目录下）
-cd origin-web
-mvn spring-boot:run
-
-# 或者直接运行打包后的 jar
-java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar
-
-# 指定环境运行（dev/prod）
+# 运行单体模式应用
 java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+
+# 运行微服务模式应用（需先启动 Nacos）
+java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=microservice,dev
+
+# 或者在 origin-web 目录下直接运行
+cd origin-web
+mvn spring-boot:run -P monolith
 ```
 
 ### 测试
@@ -176,11 +219,13 @@ mvn compile
 - **应用入口**: `origin-web/src/main/java/com/cosmos/origin/web/OriginWebApplication.java`
 - **组件扫描**: 必须扫描 `com.cosmos.origin.*` 包才能识别所有模块的组件
 - **配置文件**:
-  - `origin-web/src/main/resources/application.yml` (主配置)
+  - `origin-web/src/main/resources/application.yml` (主配置，单体模式)
+  - `origin-web/src/main/resources/application-microservice.yml` (微服务模式专属配置)
   - `application-dev.yml` (开发环境)
   - `application-prod.yml` (生产环境)
 - **API 文档**: 启动后访问 `http://localhost:8081/doc.html`
 - **JWT 配置**: 在 `application.yml` 中配置 JWT 密钥、过期时间等
+- **架构模式切换**: 通过 Maven Profile (`-P monolith` / `-P microservice`) 切换
 
 ### 技术栈版本
 
@@ -256,7 +301,7 @@ return Response.success(data);
 return Response.fail("错误信息");
 ```
 
-## 环境变量配置
+### 环境变量配置
 
 项目支持通过环境变量配置敏感信息，优先级高于配置文件中的默认值。
 
@@ -290,6 +335,14 @@ return Response.fail("错误信息");
 |----------|------|--------|
 | `JWT_SECRET` | JWT 签名密钥 | 配置文件中的默认值（建议生产环境必配） |
 
+### Nacos 配置（微服务模式）
+
+| 环境变量 | 说明 | 默认值 |
+|----------|------|--------|
+| `NACOS_SERVER_ADDR` | Nacos 服务器地址 | `127.0.0.1:8848` |
+| `NACOS_NAMESPACE` | Nacos 命名空间 | `` (空，使用默认) |
+| `NACOS_GROUP` | Nacos 配置分组 | `DEFAULT_GROUP` |
+
 ### 配置示例
 
 **Windows:**
@@ -297,6 +350,7 @@ return Response.fail("错误信息");
 set DB_PASSWORD=mypassword
 set JWT_SECRET=my-secret-key
 set REDIS_PASSWORD=my-redis-password
+set NACOS_SERVER_ADDR=127.0.0.1:8848
 ```
 
 **Linux/Mac:**
@@ -304,10 +358,11 @@ set REDIS_PASSWORD=my-redis-password
 export DB_PASSWORD=mypassword
 export JWT_SECRET=my-secret-key
 export REDIS_PASSWORD=my-redis-password
+export NACOS_SERVER_ADDR=127.0.0.1:8848
 ```
 
 **IDEA 中配置:**
 在 Run Configuration 的 Environment variables 中添加：
 ```
-DB_PASSWORD=mypassword;JWT_SECRET=my-secret-key
+DB_PASSWORD=mypassword;JWT_SECRET=my-secret-key;NACOS_SERVER_ADDR=127.0.0.1:8848
 ```

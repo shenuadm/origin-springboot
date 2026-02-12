@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -32,9 +33,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
- * Spring Security 配置类
+ * Spring Security 配置类（仅单体模式使用）
  * <p>
  * 演示了如何使用 .with(config, customizer) 进行多种自定义配置
+ * <p>
+ * 微服务模式使用 Spring Cloud Gateway 的响应式安全机制，不加载此配置
  *
  * @author 一陌千尘
  * @date 2025/11/04
@@ -43,6 +46,7 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Profile("!microservice")
 public class WebSecurityConfig {
 
     private final JwtAuthenticationSecurityConfig jwtAuthenticationSecurityConfig;

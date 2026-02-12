@@ -12,7 +12,7 @@
  Target Server Version : 170006 (170006)
  File Encoding         : 65001
 
- Date: 11/02/2026 17:59:42
+ Date: 12/02/2026 18:49:16
 */
 
 
@@ -98,10 +98,7 @@ COMMENT ON TABLE "public"."t_comment" IS '评论表';
 -- ----------------------------
 -- Records of t_comment
 -- ----------------------------
-INSERT INTO "public"."t_comment" VALUES (9, '你好', '', '一陌千尘', '/test/1', '2026-02-11 16:40:55.195538', '2026-02-11 16:40:55.195538', NULL, NULL, '', 2, 'origin', 'f');
-INSERT INTO "public"."t_comment" VALUES (10, '你好555', '', '一陌千尘555', '/test/1', '2026-02-11 16:41:22.2781', '2026-02-11 16:41:22.2781', 9, 9, '', 2, 'origin', 'f');
-INSERT INTO "public"."t_comment" VALUES (11, '你好666', '', '一陌千尘666', '/test/1', '2026-02-11 16:42:09.017488', '2026-02-11 16:42:09.017488', 10, 10, '', 2, 'origin', 'f');
-INSERT INTO "public"."t_comment" VALUES (12, '你好666', '', '一陌千尘666', '/test/1', '2026-02-11 16:43:10.49804', '2026-02-11 16:43:10.49804', 10, 9, '', 2, 'origin', 'f');
+INSERT INTO "public"."t_comment" VALUES (13, '你好666', '', '一陌千尘666', '/test/1', '2026-02-12 09:27:44.249212', '2026-02-12 09:28:39.83206', NULL, NULL, '审核通过', 2, 'origin', 'f');
 
 -- ----------------------------
 -- Table structure for t_login_log
@@ -228,7 +225,7 @@ INSERT INTO "public"."t_user_role_rel" VALUES (5, 6, 5);
 -- ----------------------------
 ALTER SEQUENCE "public"."t_comment_id_seq"
 OWNED BY "public"."t_comment"."id";
-SELECT setval('"public"."t_comment_id_seq"', 12, true);
+SELECT setval('"public"."t_comment_id_seq"', 13, true);
 
 -- ----------------------------
 -- Alter sequences owned by
