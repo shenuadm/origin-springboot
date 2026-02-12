@@ -1,9 +1,13 @@
-package com.cosmos.origin.admin.service;
+package com.cosmos.origin.oss.service;
 
 import com.cosmos.origin.common.utils.Response;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface AdminFileService {
+/**
+ * 文件服务接口
+ * 提供文件上传等通用文件操作能力
+ */
+public interface FileService {
 
     /**
      * 上传文件
@@ -13,4 +17,3 @@ public interface AdminFileService {
      */
     Response<?> uploadFile(MultipartFile file);
 }
-

@@ -134,6 +134,7 @@ springdoc:
       packages-to-scan:
         - com.cosmos.origin.comment.controller
         - com.cosmos.origin.websocket.controller
+        - com.cosmos.origin.oss.controller
 
 # ===========================================
 # 评论功能配置
