@@ -1,9 +1,9 @@
 package com.cosmos.origin.comment.controller;
 
 import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
-import com.cosmos.origin.comment.model.vo.*;
+import com.cosmos.origin.comment.model.vo.FindCommentListReqVO;
+import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;
 import com.cosmos.origin.comment.service.CommentService;
-import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,28 +32,7 @@ public class CommentController {
     // @PostMapping("/list")
     // @Operation(summary = "查询评论列表数据")
     // @ApiOperationLog(description = "查询评论列表数据")
-    // public Response<?> findPageComments(@RequestBody @Validated FindCommentListReqVO findCommentListReqVO) {
+    // public Response<?> findCommentList(@RequestBody @Validated FindCommentListReqVO findCommentListReqVO) {
     //     return commentService.findCommentList(findCommentListReqVO);
     // }
-
-    @PostMapping("/page")
-    @Operation(summary = "查询评论分页数据")
-    @ApiOperationLog(description = "查询评论分页数据")
-    public PageResponse<?> findCommentPageList(@RequestBody @Validated FindCommentPageListReqVO findCommentPageListReqVO) {
-        return commentService.findCommentPageList(findCommentPageListReqVO);
-    }
-
-    @PostMapping("/delete")
-    @Operation(summary = "评论删除")
-    @ApiOperationLog(description = "评论删除")
-    public Response<?> deleteComment(@RequestBody @Validated DeleteCommentReqVO deleteCommentReqVO) {
-        return commentService.deleteComment(deleteCommentReqVO);
-    }
-
-    @PostMapping("/examine")
-    @Operation(summary = "评论审核")
-    @ApiOperationLog(description = "评论审核")
-    public Response<?> examinePass(@RequestBody @Validated ExamineCommentReqVO examineCommentReqVO) {
-        return commentService.examine(examineCommentReqVO);
-    }
 }

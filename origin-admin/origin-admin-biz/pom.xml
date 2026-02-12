@@ -39,6 +39,17 @@
             <artifactId>origin-oss-spring-boot-starter</artifactId>
         </dependency>
 
+        <!-- 评论模块，用于管理后台审核、删除评论 -->
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-comment-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-comment-biz</artifactId>
+        </dependency>
+
         <!-- MyBatis-Flex -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>
