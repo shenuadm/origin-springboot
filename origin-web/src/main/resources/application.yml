@@ -121,13 +121,19 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: 'default'
+    # 后台管理接口组
+    - group: 'admin'
+      display-name: 'Admin 后台管理接口'
+      paths-to-match: '/admin/**'
+      packages-to-scan:
+        - com.cosmos.origin.admin.controller
+    # 前台接口组
+    - group: 'web'
+      display-name: 'Web 前台接口'
       paths-to-match: '/**'
       packages-to-scan:
-        # 指定扫描的包
-        - com.cosmos.origin.admin.controller
-        - com.cosmos.origin.websocket.controller
         - com.cosmos.origin.comment.controller
+        - com.cosmos.origin.websocket.controller
 
 # ===========================================
 # 评论功能配置

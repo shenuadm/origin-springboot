@@ -12,56 +12,56 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/user")
 @Tag(name = "Admin 用户模块")
 @RequiredArgsConstructor
 public class AdminUserController {
 
     private final AdminUserService userService;
 
-    @PutMapping("/password/update")
+    @PutMapping("/update_password")
     @Operation(summary = "修改用户密码")
     @ApiOperationLog(description = "修改用户密码")
     public Response<?> updatePassword(@RequestBody @Validated UpdateAdminUserPasswordReqVO updateAdminUserPasswordReqVO) {
         return userService.updatePassword(updateAdminUserPasswordReqVO);
     }
 
-    @PostMapping("/user/info")
+    @PostMapping("/info")
     @Operation(summary = "获取当前登录用户信息")
     @ApiOperationLog(description = "获取当前登录用户信息")
     public Response<?> findUserInfo() {
         return userService.findUserInfo();
     }
 
-    @PostMapping("/user/page")
+    @PostMapping("/page")
     @Operation(summary = "用户分页数据获取")
     @ApiOperationLog(description = "用户分页数据获取")
     public PageResponse<?> findUserPageList(@RequestBody @Validated FindUserPageListReqVO findUserPageListReqVO) {
         return userService.findUserPageList(findUserPageListReqVO);
     }
 
-    @PostMapping("/user/add")
+    @PostMapping("/add")
     @Operation(summary = "添加用户")
     @ApiOperationLog(description = "添加用户")
     public Response<?> addUser(@RequestBody @Validated AddUserReqVO addUserReqVO) {
         return userService.addUser(addUserReqVO);
     }
 
-    @PutMapping("/user/update")
+    @PutMapping("/update")
     @Operation(summary = "更新用户")
     @ApiOperationLog(description = "更新用户")
     public Response<?> updateUser(@RequestBody @Validated UpdateUserReqVO updateUserReqVO) {
         return userService.updateUser(updateUserReqVO);
     }
 
-    @DeleteMapping("/user/delete")
+    @DeleteMapping("/delete")
     @Operation(summary = "删除用户")
     @ApiOperationLog(description = "删除用户")
     public Response<?> deleteUser(@RequestBody @Validated DeleteUserReqVO deleteUserReqVO) {
         return userService.deleteUser(deleteUserReqVO);
     }
 
-    @PostMapping("/user/unlock")
+    @PostMapping("/unlock")
     @Operation(summary = "手动解锁用户账号（管理员使用）")
     @ApiOperationLog(description = "手动解锁用户账号")
     public Response<?> unlockUser(@RequestBody @Validated UnlockUserReqVO unlockUserReqVO) {

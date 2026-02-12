@@ -52,7 +52,7 @@ origin-springboot 是一个技术底座单体版项目，采用 Spring Boot 3.5.
 ```
 origin-springboot (父工程)
 ├── origin-framework (基础框架层)
-│   ├── origin-common (通用工具组件)
+│   ├── origin-common (通用工具组件，提供 RequestUtil、JsonUtil 等工具类)
 │   ├── origin-jwt-spring-boot-starter (JWT认证组件，Starter)
 │   ├── origin-jackson-spring-boot-starter (Jackson序列化组件，Starter)
 │   ├── origin-event-spring-boot-starter (事件驱动组件，Starter)
@@ -101,6 +101,8 @@ origin-springboot (父工程)
 7. **事件驱动**: 内置事件发布订阅机制，支持异步事件处理，解耦业务逻辑
 
 8. **定时任务**: 支持动态定时任务调度，可配置线程池参数
+
+9. **工具类复用**: `RequestUtil` 统一处理客户端 IP 获取，`JsonUtil` 统一处理 JSON 序列化，避免代码重复
 
 ## 常用命令
 
@@ -161,6 +163,7 @@ mvn compile
 - **VO**: 视图对象
   - ReqVO: 请求参数对象，位于 `model.vo.*` 包下，需要进行参数校验
   - RspVO: 响应结果对象，位于 `model.vo.*` 包下
+- **Util**: 工具类，位于 `origin-common` 模块的 `utils` 包下，供全项目复用
 
 ### 命名规范
 
@@ -227,6 +230,31 @@ mvn compile
 - 在 Controller 方法上添加 `@ApiOperationLog(description = "功能描述")` 自动记录 API 请求日志
 - 日志会自动记录：请求入参、出参、耗时、请求类、请求方法
 - 每个请求分配唯一 traceId 用于链路追踪
+- 访问日志（AccessLog）可通过调整日志级别关闭：`logging.level.com.cosmos.origin.gateway.interceptor.AccessLogInterceptor=WARN`
+
+### 工具类使用
+
+项目提供以下通用工具类，位于 `origin-common` 模块：
+
+| 工具类 | 路径 | 功能说明 |
+|--------|------|----------|
+| `RequestUtil` | `com.cosmos.origin.common.utils.RequestUtil` | 获取客户端真实 IP（支持 X-Forwarded-For 等代理头） |
+| `JsonUtil` | `com.cosmos.origin.common.utils.JsonUtil` | JSON 序列化/反序列化（基于 Jackson） |
+| `Response` | `com.cosmos.origin.common.utils.Response` | 统一响应结果封装 |
+| `PageResponse` | `com.cosmos.origin.common.utils.PageResponse` | 分页响应结果封装 |
+
+**使用示例：**
+```java
+// 获取客户端 IP
+String clientIp = RequestUtil.getClientIp(request);
+
+// JSON 序列化
+String json = JsonUtil.toJsonString(obj);
+
+// 统一响应
+return Response.success(data);
+return Response.fail("错误信息");
+```
 
 ## 环境变量配置
 

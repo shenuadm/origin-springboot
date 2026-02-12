@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # 数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: origin-postgres
+    environment:
+      POSTGRES_DB: origin
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: wzw123!@#
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docs/sql/origin.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - origin-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: origin-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - origin-network
+
+  # 单体应用（当前模式）
+  origin-web:
+    build:
+      context: .
+      dockerfile: origin-web/Dockerfile
+    container_name: origin-web
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:postgresql://postgres:5432/origin
+      - DB_USERNAME=root
+      - DB_PASSWORD=wzw123!@#
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=wzw123!@#
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - origin-network
+
+  # ==================== 微服务模式（使用 Nacos） ====================
+  # 如需微服务架构，请先启动 Nacos：
+  # docker run -d --name nacos -p 8848:8848 -e MODE=standalone nacos/nacos-server:v2.3.0
+  # 
+  # 然后在 application.yml 中配置：
+  # spring:
+  #   cloud:
+  #     nacos:
+  #       discovery:
+  #         server-addr: localhost:8848
+  #       config:
+  #         server-addr: localhost:8848
+  # 
+  # 最后取消注释以下服务：
+  # 
+  # # API 网关
+  # origin-gateway:
+  #   build:
+  #     context: .
+  #     dockerfile: origin-gateway/Dockerfile
+  #   container_name: origin-gateway
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=dev
+  #     - NACOS_SERVER=localhost:8848
+  #   networks:
+  #     - origin-network
+  # 
+  # # 认证服务
+  # origin-auth-service:
+  #   build:
+  #     context: .
+  #     dockerfile: origin-auth-service/Dockerfile
+  #   container_name: origin-auth-service
+  #   ports:
+  #     - "8082:8082"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=dev
+  #     - DB_URL=jdbc:postgresql://postgres:5432/origin_auth
+  #     - NACOS_SERVER=localhost:8848
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - origin-network
+  # 
+  # # 评论服务
+  # origin-comment-service:
+  #   build:
+  #     context: .
+  #     dockerfile: origin-comment-service/Dockerfile
+  #   container_name: origin-comment-service
+  #   ports:
+  #     - "8083:8083"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=dev
+  #     - DB_URL=jdbc:postgresql://postgres:5432/origin_comment
+  #     - NACOS_SERVER=localhost:8848
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - origin-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  origin-network:
+    driver: bridge

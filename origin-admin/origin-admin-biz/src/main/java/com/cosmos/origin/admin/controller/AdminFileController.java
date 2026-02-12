@@ -14,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/file")
 @Tag(name = "Admin 文件模块")
 public class AdminFileController {
 
     private final AdminFileService fileService;
 
-    @PostMapping("/file/upload")
+    @PostMapping("/upload")
     @Operation(summary = "文件上传")
     @ApiOperationLog(description = "文件上传")
     public Response<?> uploadFile(@RequestParam MultipartFile file) {
