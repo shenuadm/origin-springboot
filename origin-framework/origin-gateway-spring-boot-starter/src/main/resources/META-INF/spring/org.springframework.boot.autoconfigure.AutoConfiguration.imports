@@ -1,0 +1,2 @@
+com.cosmos.origin.gateway.config.GatewayAutoConfiguration
+com.cosmos.origin.gateway.config.GatewayWebMvcConfiguration

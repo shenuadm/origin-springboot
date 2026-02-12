@@ -10,14 +10,25 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>origin-jackson-spring-boot-starter</artifactId>
+    <artifactId>origin-gateway-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
-    <description>Jackson 序列化 Spring Boot Starter，提供自定义的 JSON 序列化和反序列化配置</description>
+    <description>API 网关 Spring Boot Starter，提供限流、熔断、路由等功能</description>
 
     <dependencies>
         <dependency>
             <groupId>com.cosmos</groupId>
             <artifactId>origin-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-redis-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- Spring Boot AutoConfigure -->
@@ -26,10 +37,18 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
-        <!-- Jackson JSR310 日期时间模块 -->
+        <!-- Sentinel 限流熔断 -->
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <version>2022.0.0.0</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

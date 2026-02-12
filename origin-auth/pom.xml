@@ -22,6 +22,34 @@
             <artifactId>origin-common</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-jwt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-redis-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Spring Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- 参数校验 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- 单元测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

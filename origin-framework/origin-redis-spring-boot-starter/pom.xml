@@ -10,14 +10,27 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>origin-jackson-spring-boot-starter</artifactId>
+    <artifactId>origin-redis-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
-    <description>Jackson 序列化 Spring Boot Starter，提供自定义的 JSON 序列化和反序列化配置</description>
+    <description>Redis 分布式缓存 Spring Boot Starter，提供缓存、分布式锁等功能</description>
 
     <dependencies>
         <dependency>
             <groupId>com.cosmos</groupId>
             <artifactId>origin-common</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Data Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- Redisson 分布式锁 -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.23.5</version>
         </dependency>
 
         <!-- Spring Boot AutoConfigure -->
@@ -26,10 +39,16 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
-        <!-- Jackson JSR310 日期时间模块 -->
+        <!-- Lombok -->
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- Jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
 

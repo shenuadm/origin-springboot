@@ -64,6 +64,24 @@ origin:
       thread-name-prefix: "example-scheduler-"    # 线程名前缀
       wait-for-tasks-to-complete-on-shutdown: true # 是否等待任务完成后再关闭线程池
       await-termination-seconds: 60 # 等待任务完成后再关闭线程池的超时时间（秒）
+  # 网关配置
+  gateway:
+    enabled: true                           # 是否启用网关功能
+    rate-limit:
+      enabled: true                         # 是否启用限流
+      default-limit: 100                    # 默认限流阈值（每秒请求数）
+      time-window: 1                        # 限流时间窗口（秒）
+      limit-message: "请求过于频繁，请稍后再试"   # 限流提示信息
+      path-limits:                          # 特定接口限流配置
+        /api/user/login: 10                 # 登录接口限流 10/s
+        /api/user/register: 10              # 注册接口限流 10/s
+        /api/order/create: 20               # 下单接口限流 20/s
+    white-list:                             # 白名单路径
+      - /health
+      - /public
+      - /swagger-ui
+      - /v3/api-docs
+    black-list: []                          # 黑名单（IP或用户ID）
 
 # springdoc-openapi 配置
 springdoc:

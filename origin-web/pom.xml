@@ -21,6 +21,16 @@
 
         <dependency>
             <groupId>com.cosmos</groupId>
+            <artifactId>origin-redis-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-gateway-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
             <artifactId>origin-common</artifactId>
         </dependency>
 
@@ -83,18 +93,8 @@
             </exclusions>
         </dependency>
 
-        <!-- Spring Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <!-- 排除默认的 Logback 依赖 -->
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!-- Spring Web - 由 origin-gateway-spring-boot-starter 传递引入，无需重复声明 -->
+        <!-- 如需排除 Logback，可在 gateway starter 中配置 -->
 
         <!-- 单元测试 -->
         <dependency>
