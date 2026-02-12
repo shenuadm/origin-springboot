@@ -64,6 +64,10 @@
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <!-- SpringDoc OpenAPI 版本 -->
         <springdoc.version>2.7.0</springdoc.version>
+        <!-- Redisson 版本 -->
+        <redisson.version>3.23.5</redisson.version>
+        <!-- Sentinel 版本 -->
+        <sentinel.version>2022.0.0.0</sentinel.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -276,6 +280,20 @@
                 <groupId>io.github.toolgood</groupId>
                 <artifactId>toolgood-words</artifactId>
                 <version>${toolgood-words.version}</version>
+            </dependency>
+
+            <!-- Redisson 分布式锁 -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+            <!-- Sentinel 限流熔断 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

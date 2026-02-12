@@ -45,6 +45,7 @@
         </dependency>
 
         <!-- 评论模块，用于管理后台审核、删除评论 -->
+        <!-- 注意：admin-biz 直接依赖 comment-biz，因为需要直接访问 CommentDO 和 CommentMapper -->
         <dependency>
             <groupId>com.cosmos</groupId>
             <artifactId>origin-comment-api</artifactId>
