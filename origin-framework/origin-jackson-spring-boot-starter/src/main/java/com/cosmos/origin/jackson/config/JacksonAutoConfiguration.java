@@ -1,4 +1,4 @@
-package com.cosmos.origin.common.config;
+package com.cosmos.origin.jackson.config;
 
 import com.cosmos.origin.common.constant.DateConstants;
 import com.cosmos.origin.common.utils.JsonUtil;
@@ -14,8 +14,9 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.YearMonthSerializer;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,13 +25,19 @@ import java.time.YearMonth;
 import java.util.TimeZone;
 
 /**
- * 自定义 Jackson
+ * Jackson 自动配置类
+ * 提供自定义的 JSON 序列化和反序列化配置
  *
  * @author 一陌千尘
  * @date 2025/10/30
  */
-@Configuration
-public class JacksonConfig {
+@Slf4j
+@AutoConfiguration
+public class JacksonAutoConfiguration {
+
+    public JacksonAutoConfiguration() {
+        log.info("========== Jackson 自动配置已加载 ==========");
+    }
 
     @Bean
     public ObjectMapper objectMapper() {

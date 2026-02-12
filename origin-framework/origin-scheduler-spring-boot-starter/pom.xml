@@ -12,15 +12,10 @@
 
     <artifactId>origin-scheduler-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
-    <description>定时任务服务 Spring Boot Starter，提供自定义线程池和 @Scheduled 定时任务 + 事件发布订阅功能</description>
+    <description>定时任务服务 Spring Boot Starter，提供自定义线程池和 @Scheduled 定时任务 + 事件发布订阅功能
+    </description>
 
     <dependencies>
-        <!-- Spring Boot Starter -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
         <!-- Spring Context，用于定时任务和事件发布订阅 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -44,6 +39,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+
+        <!-- Spring Boot AutoConfigure -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -51,15 +52,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
             </plugin>
         </plugins>
     </build>

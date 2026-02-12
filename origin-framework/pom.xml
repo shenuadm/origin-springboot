@@ -20,6 +20,8 @@
     <modules>
         <!-- 通用工具组件 -->
         <module>origin-common</module>
+        <!-- Jackson 序列化组件 -->
+        <module>origin-jackson-spring-boot-starter</module>
         <!-- 接口日志组件 -->
         <module>origin-operationlog-spring-boot-starter</module>
         <!-- 微服务治理组件 -->

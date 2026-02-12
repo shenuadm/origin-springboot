@@ -19,8 +19,8 @@ public class JsonUtil {
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
-        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 忽略未知属性
+        OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false); // 允许空 bean
         OBJECT_MAPPER.registerModules(new JavaTimeModule()); // 解决 LocalDateTime 的序列化问题
     }
 
@@ -42,5 +42,18 @@ public class JsonUtil {
     @SneakyThrows
     public static String toJsonString(Object obj) {
         return OBJECT_MAPPER.writeValueAsString(obj);
+    }
+
+    /**
+     * 将 JSON 字符串转换为对象
+     *
+     * @param json  JSON 字符串
+     * @param clazz 目标类
+     * @param <T>   泛型类型
+     * @return 目标对象
+     */
+    @SneakyThrows
+    public static <T> T parseObject(String json, Class<T> clazz) {
+        return OBJECT_MAPPER.readValue(json, clazz);
     }
 }

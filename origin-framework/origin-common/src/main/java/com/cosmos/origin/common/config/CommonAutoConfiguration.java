@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Import;
 
 @AutoConfiguration
 @Import({
-        JacksonConfig.class,
         MybatisFlexConfig.class,
         GlobalExceptionHandler.class
 })

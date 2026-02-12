@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!-- 指定父项目为 origin-springboot -->
+    <!-- 指定父项目为 origin-framework -->
     <parent>
         <groupId>com.cosmos</groupId>
-        <artifactId>origin-springboot</artifactId>
+        <artifactId>origin-framework</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <!-- 指定打包方式 -->
-    <packaging>jar</packaging>
-
-    <artifactId>origin-auth</artifactId>
+    <artifactId>origin-jackson-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
-    <description>认证服务（负责处理用户登录、注册、账号注销等）</description>
+    <description>Jackson 序列化 Spring Boot Starter，提供自定义的 JSON 序列化和反序列化配置</description>
 
     <dependencies>
         <dependency>
@@ -22,11 +20,10 @@
             <artifactId>origin-common</artifactId>
         </dependency>
 
-        <!-- 单元测试 -->
+        <!-- Spring Boot AutoConfigure -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
     </dependencies>
 
