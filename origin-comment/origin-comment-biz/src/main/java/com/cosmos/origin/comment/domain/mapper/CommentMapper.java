@@ -50,4 +50,28 @@ public interface CommentMapper extends BaseMapper<CommentDO> {
 
         return paginate(page, wrapper);
     }
+
+    /**
+     * 根据 reply_comment_id 查询评论
+     *
+     * @param replyCommentId 回复评论 ID
+     * @return 评论列表
+     */
+    default List<CommentDO> selectByReplyCommentId(Long replyCommentId) {
+        return selectListByQuery(QueryWrapper.create()
+                .eq(CommentDO::getReplyCommentId, replyCommentId)
+                .orderBy(CommentDO::getCreateTime, false)
+        );
+    }
+
+    /**
+     * 根据 parent_comment_id 删除
+     *
+     * @param id 父评论 ID
+     * @return 删除结果
+     */
+    default int deleteByParentCommentId(Long id) {
+        return deleteByQuery(QueryWrapper.create()
+                .eq(CommentDO::getParentCommentId, id));
+    }
 }
