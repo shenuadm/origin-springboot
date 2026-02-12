@@ -15,10 +15,10 @@
     <description>对象存储服务 Spring Boot Starter，支持 Minio 等对象存储</description>
 
     <dependencies>
-        <!-- Spring Boot Web，用于文件上传 -->
+        <!-- 依赖 origin-common 获取基础能力 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-common</artifactId>
         </dependency>
 
         <!-- Lombok -->

@@ -1,7 +1,6 @@
 package com.cosmos.origin.websocket.config;
 
-import com.cosmos.origin.admin.api.WebSocketUserServiceApi;
-import com.cosmos.origin.admin.model.vo.websocket.UserInfoForWebSocketVO;
+import com.cosmos.origin.common.spi.WebSocketUserServiceProvider;
 import com.cosmos.origin.common.utils.JsonUtil;
 import com.cosmos.origin.jwt.utils.JwtTokenHelper;
 import com.cosmos.origin.websocket.domain.dos.ChatMessageDO;
@@ -70,21 +69,20 @@ public class ChatWebSocketServer {
         JwtTokenHelper jwtTokenHelper = SpringContext.getBean(JwtTokenHelper.class);
         String username = jwtTokenHelper.getUsernameByToken(token);
 
-        // 从用户服务获取用户信息
-        WebSocketUserServiceApi userService = SpringContext.getBean(WebSocketUserServiceApi.class);
-        Optional<UserInfoForWebSocketVO> userInfoOpt = userService.findByUsername(username);
-
-        // 设置昵称和头像
-        String nickname;
-        String avatar;
-        if (userInfoOpt.isPresent()) {
-            UserInfoForWebSocketVO userInfo = userInfoOpt.get();
-            nickname = userInfo.getNickname();
-            avatar = userInfo.getAvatar();
-        } else {
-            // 如果查不到用户信息，使用用户名作为昵称
-            nickname = username;
-            avatar = null;
+        // 从用户服务获取用户信息（通过SPI接口，由业务模块实现）
+        String nickname = username;
+        String avatar = null;
+        try {
+            WebSocketUserServiceProvider userService = SpringContext.getBean(WebSocketUserServiceProvider.class);
+            Optional<WebSocketUserServiceProvider.UserInfo> userInfoOpt = userService.findByUsername(username);
+            if (userInfoOpt.isPresent()) {
+                WebSocketUserServiceProvider.UserInfo userInfo = userInfoOpt.get();
+                nickname = userInfo.getNickname();
+                avatar = userInfo.getAvatar();
+            }
+        } catch (Exception e) {
+            // 如果服务未实现或发生异常，使用用户名作为昵称
+            log.debug("WebSocketUserServiceProvider not available or error, using username as nickname");
         }
 
         // 保存用户信息

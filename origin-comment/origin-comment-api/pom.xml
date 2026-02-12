@@ -26,10 +26,11 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Boot Starter Validation -->
+        <!-- Spring Boot Starter Validation（仅API校验注解使用，不传递） -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- Spring Cloud OpenFeign -->
