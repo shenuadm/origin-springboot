@@ -48,6 +48,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(ResponseCodeEnum.USERNAME_NOT_FOUND.getErrorMessage());
         }
 
+        // 判断用户是否被禁用（status: 0-启用 1-禁用）
+        if (userDO.getStatus() != null && userDO.getStatus() == 1) {
+            throw new BizException(ResponseCodeEnum.USER_DISABLED);
+        }
+
         // 查询用户角色
         List<RoleDO> roleDOS = roleMapper.selectListByQuery(QueryWrapper.create()
                 .select(RoleDO::getRoleKey)
