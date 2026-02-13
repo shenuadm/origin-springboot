@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
@@ -39,45 +38,19 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
      */
     public JwtAuthenticationFilter(String loginProcessingUrl) {
         super(createLoginMatcher(loginProcessingUrl));
-        this.loginProcessingUrl = loginProcessingUrl;
     }
 
     /**
-     * 登录URL，默认 /login
-     */
-    @Getter
-    @Setter
-    private String loginProcessingUrl;
-
-    /**
-     * 用户名字段名，默认 username
-     */
-    @Getter
-    @Setter
-    private String usernameParameter = JwtSecurityConstants.USERNAME_PARAMETER;
-
-    /**
-     * 密码字段名，默认 password
-     */
-    @Getter
-    @Setter
-    private String passwordParameter = JwtSecurityConstants.PASSWORD_PARAMETER;
-
-    /**
-     * 记住我字段名，默认 rememberMe
-     */
-    @Getter
-    @Setter
-    private String rememberMeParameter = JwtSecurityConstants.REMEMBER_ME_PARAMETER;
-
-    /**
-     * 账号锁定检查函数（在密码验证前执行）
+     * 账号锁定检查函数
      */
     @Setter
     private Function<String, Void> lockCheckFunction;
 
     /**
      * 创建登录请求匹配器
+     *
+     * @param loginProcessingUrl 登录处理URL
+     * @return {@link RequestMatcher } 登录请求匹配器
      */
     private static RequestMatcher createLoginMatcher(String loginProcessingUrl) {
         return new RequestMatcher() {
@@ -97,6 +70,15 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         };
     }
 
+    /**
+     * 尝试进行身份验证
+     *
+     * @param request  登录请求
+     * @param response 登录响应
+     * @return {@link Authentication } 身份验证对象
+     * @throws AuthenticationException 身份验证异常
+     * @throws IOException             输入输出异常
+     */
     @Override
     public Authentication attemptAuthentication(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) throws AuthenticationException, IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -104,7 +86,9 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         JsonNode jsonNode = mapper.readTree(request.getInputStream());
 
         // 使用自定义参数名获取用户名和密码
+        String usernameParameter = JwtSecurityConstants.USERNAME_PARAMETER;
         JsonNode usernameNode = jsonNode.get(usernameParameter);
+        String passwordParameter = JwtSecurityConstants.PASSWORD_PARAMETER;
         JsonNode passwordNode = jsonNode.get(passwordParameter);
 
         // 判断用户名、密码是否为空
@@ -120,7 +104,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         request.setAttribute(JwtSecurityConstants.LOGIN_USERNAME_ATTRIBUTE, username);
 
         // 获取记住我参数并保存到请求属性中
-        JsonNode rememberMeNode = jsonNode.get(rememberMeParameter);
+        JsonNode rememberMeNode = jsonNode.get(JwtSecurityConstants.REMEMBER_ME_PARAMETER);
         boolean rememberMe = rememberMeNode != null && rememberMeNode.asBoolean(false);
         request.setAttribute(JwtSecurityConstants.REMEMBER_ME_ATTRIBUTE, rememberMe);
 

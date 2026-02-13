@@ -41,18 +41,23 @@ import java.util.function.Function;
 public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     /**
-     * -- GETTER --
      * 获取默认成功处理器
      */
-    @Getter
     private final RestAuthenticationSuccessHandler defaultSuccessHandler;
+
     /**
-     * -- GETTER --
      * 获取默认失败处理器
      */
-    @Getter
     private final RestAuthenticationFailureHandler defaultFailureHandler;
+
+    /**
+     * 获取密码编码器
+     */
     private final PasswordEncoder passwordEncoder;
+
+    /**
+     * 获取用户详情服务
+     */
     private final UserDetailsService userDetailsService;
 
     // ========== 可配置属性（通过 customizer 设置） ==========
@@ -108,6 +113,11 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * 配置过滤器
+     *
+     * @param httpSecurity HTTP安全配置对象
+     */
     @Override
     public void configure(HttpSecurity httpSecurity) {
         // 创建过滤器并设置自定义URL和参数名
@@ -179,5 +189,4 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
             delegate.onAuthenticationFailure(request, response, exception);
         };
     }
-
 }
