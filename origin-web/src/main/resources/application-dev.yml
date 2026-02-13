@@ -38,7 +38,7 @@ origin:
   gateway:
     enabled: true
     rate-limit:
-      enabled: true
+      enabled: false
       default-limit: 200              # 开发环境放宽到 200/s
       time-window: 1
       # path-limits:

@@ -5,6 +5,7 @@ import com.cosmos.origin.admin.domain.dos.UserDO;
 import com.cosmos.origin.admin.domain.dos.UserRoleRelDO;
 import com.cosmos.origin.admin.domain.mapper.RoleMapper;
 import com.cosmos.origin.admin.domain.mapper.UserMapper;
+import com.cosmos.origin.common.enums.DeletedEnum;
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -53,7 +54,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .from(RoleDO.class)
                 .innerJoin(UserRoleRelDO.class)
                 .on(RoleDO::getId, UserRoleRelDO::getRoleId)
-                .where(UserRoleRelDO::getUserId).eq(userDO.getId()));
+                .where(UserRoleRelDO::getUserId).eq(userDO.getId())
+                .eq(RoleDO::getIsDeleted, DeletedEnum.NO.getValue()));
         if (CollectionUtils.isEmpty(roleDOS)) {
             throw new BizException(ResponseCodeEnum.USER_NOT_ROLE);
         }

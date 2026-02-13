@@ -4,22 +4,22 @@
 spring:
   application:
     name: "技术底座微服务版"
-  # 微服务模式使用响应式Web应用类型（Spring Cloud Gateway要求）
+  # 微服务模式使用响应式 Web 应用类型（Spring Cloud Gateway要求）
   main:
     web-application-type: reactive
-    # 允许bean定义覆盖，解决Security配置冲突
+    # 允许 bean 定义覆盖，解决 Security 配置冲突
     allow-bean-definition-overriding: true
   autoconfigure:
     exclude:
-      # 排除Spring MVC的Security自动配置
+      # 排除 Spring MVC 的 Security 自动配置
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
-      # 排除Spring MVC的Actuator安全自动配置
+      # 排除 Spring MVC 的 Actuator 安全自动配置
       - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
-      # 排除WebSocket自动配置（微服务模式下使用响应式WebSocket）
+      # 排除 WebSocket 自动配置（微服务模式下使用响应式 WebSocket）
       - org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration
       - com.cosmos.origin.websocket.config.WebSocketAutoConfiguration
-      # 排除Spring Cloud Gateway的Redis限流自动配置（使用自定义限流方案）
+      # 排除 Spring Cloud Gateway 的 Redis 限流自动配置（使用自定义限流方案）
       - org.springframework.cloud.gateway.config.GatewayRedisAutoConfiguration
   cloud:
     nacos:
@@ -50,6 +50,6 @@ spring:
 # ===========================================
 origin:
   gateway:
-    # 微服务模式下限流通过Gateway过滤器实现
+    # 微服务模式下限流通过 Gateway 过滤器实现
     rate-limit:
       enabled: false

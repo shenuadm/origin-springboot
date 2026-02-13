@@ -5,6 +5,7 @@ import com.cosmos.origin.admin.domain.mapper.UserMapper;
 import com.cosmos.origin.admin.model.vo.user.*;
 import com.cosmos.origin.admin.service.AdminUserService;
 import com.cosmos.origin.admin.service.LoginAttemptService;
+import com.cosmos.origin.common.enums.DeletedEnum;
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
@@ -89,7 +90,8 @@ public class AdminUserServiceImpl implements AdminUserService {
         // 执行分页查询
         Page<UserDO> userDOPage = userMapper.paginate(page, QueryWrapper.create()
                 .like(UserDO::getNickname, findUserPageListReqVO.getNickname())
-                .orderBy(UserDO::getCreateTime, false));
+                .orderBy(UserDO::getCreateTime, false)
+                .eq(UserDO::getIsDeleted, DeletedEnum.NO.getValue()));
 
         List<UserDO> userDOS = userDOPage.getRecords();
 

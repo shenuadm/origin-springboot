@@ -127,12 +127,7 @@ public class WebSecurityConfig {
                 // 登录认证配置（使用 .with 自定义）
                 // ============================================
                 .with(jwtAuthenticationSecurityConfig, customizer -> {
-                    // 1. 修改登录 URL 和参数名（可选）
-                    // customizer.setLoginProcessingUrl(JwtSecurityConstants.DEFAULT_LOGIN_URL);
-                    // customizer.setUsernameParameter("email");
-                    // customizer.setPasswordParameter("passwd");
-
-                    // 2. 设置账号锁定检查函数（在密码验证前执行）
+                    // 1. 设置账号锁定检查函数（在密码验证前执行）
                     customizer.setLockCheckFunction(username -> {
                         if (loginAttemptService != null) {
                             loginAttemptService.checkLocked(username);
@@ -140,7 +135,7 @@ public class WebSecurityConfig {
                         return null;
                     });
 
-                    // 3. 设置登录成功回调（记录日志）
+                    // 2. 设置登录成功回调（记录日志）
                     customizer.setOnLoginSuccess((request, authentication) -> {
                         String username = authentication.getName();
                         log.debug("用户 [{}] 登录成功", username);
@@ -160,7 +155,7 @@ public class WebSecurityConfig {
                         }
                     });
 
-                    // 4. 设置登录失败回调（记录日志和限流）
+                    // 3. 设置登录失败回调（记录日志和限流）
                     customizer.setOnLoginFailure((request, exception) -> {
                         String username = getUsernameFromRequest(request);
                         log.debug("用户 [{}] 登录失败: {}", username, exception.getMessage());

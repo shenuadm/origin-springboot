@@ -7,6 +7,7 @@ import com.cosmos.origin.admin.model.vo.role.DeleteRoleReqVO;
 import com.cosmos.origin.admin.model.vo.role.FindRolePageListReqVO;
 import com.cosmos.origin.admin.model.vo.role.UpdateRoleReqVO;
 import com.cosmos.origin.admin.service.AdminRoleService;
+import com.cosmos.origin.common.enums.DeletedEnum;
 import com.cosmos.origin.common.model.vo.SelectRspVO;
 import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
@@ -39,7 +40,8 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         // 执行分页查询
         Page<RoleDO> page = new Page<>(current, size);
         Page<RoleDO> roleDOPage = roleMapper.paginate(page, QueryWrapper.create()
-                .like(RoleDO::getRoleName, findRolePageListReqVO.getRoleName()));
+                .like(RoleDO::getRoleName, findRolePageListReqVO.getRoleName())
+                .eq(RoleDO::getIsDeleted, DeletedEnum.NO.getValue()));
         return PageResponse.success(roleDOPage, roleDOPage.getRecords());
     }
 

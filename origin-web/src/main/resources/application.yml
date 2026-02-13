@@ -27,11 +27,11 @@ spring:
         - dev
   autoconfigure:
     exclude:
-      # 排除Spring Cloud Gateway的Redis限流自动配置（单体模式下不使用）
+      # 排除 Spring Cloud Gateway 的 Redis 限流自动配置（单体模式下不使用）
       - org.springframework.cloud.gateway.config.GatewayRedisAutoConfiguration
   cloud:
     gateway:
-      # 单体模式下禁用Spring Cloud Gateway
+      # 单体模式下禁用 Spring Cloud Gateway
       server:
         webflux:
           enabled: false
@@ -117,7 +117,7 @@ origin:
   gateway:
     enabled: true                           # 是否启用网关功能
     rate-limit:
-      enabled: true                         # 是否启用限流
+      enabled: false                         # 是否启用限流
       default-limit: 100                    # 默认限流阈值（每秒请求数）
       time-window: 1                        # 限流时间窗口（秒）
       limit-message: "请求过于频繁，请稍后再试"   # 限流提示信息
@@ -125,10 +125,11 @@ origin:
       #   /login: 10                      # 登录接口限流 10/s
       #   /register: 10                   # 注册接口限流 10/s
     white-list: # 白名单路径
-      - /health
-      - /public
       - /swagger-ui
-      - /v3/api-docs
+      - /v3/api-docs/**
+      - /favicon.ico
+      - /webjars/**
+      - /.well-known/**
     black-list: [ ]                          # 黑名单（IP或用户ID）
 
 # ===========================================

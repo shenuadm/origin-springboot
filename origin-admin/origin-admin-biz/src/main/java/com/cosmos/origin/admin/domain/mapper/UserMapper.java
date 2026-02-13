@@ -1,6 +1,7 @@
 package com.cosmos.origin.admin.domain.mapper;
 
 import com.cosmos.origin.admin.domain.dos.UserDO;
+import com.cosmos.origin.common.enums.DeletedEnum;
 import com.mybatisflex.core.BaseMapper;
 import com.mybatisflex.core.query.QueryWrapper;
 
@@ -22,7 +23,8 @@ public interface UserMapper extends BaseMapper<UserDO> {
      */
     default UserDO findByUsername(String username) {
         return selectOneByQuery(QueryWrapper.create()
-                .eq(UserDO::getUsername, username));
+                .eq(UserDO::getUsername, username)
+                .eq(UserDO::getIsDeleted, DeletedEnum.NO.getValue()));
     }
 
     /**
@@ -35,7 +37,8 @@ public interface UserMapper extends BaseMapper<UserDO> {
     default int updatePasswordByUsername(String username, String password) {
         // 查询用户
         UserDO userDO = selectOneByQuery(QueryWrapper.create()
-                .eq(UserDO::getUsername, username));
+                .eq(UserDO::getUsername, username)
+                .eq(UserDO::getIsDeleted, DeletedEnum.NO.getValue()));
         if (Objects.isNull(userDO)) {
             return 0;
         }
