@@ -98,12 +98,12 @@ origin-springboot (父工程)
 │   ├── origin-common (通用工具组件，提供 RequestUtil、JsonUtil 等工具类)
 │   ├── origin-jwt-spring-boot-starter (JWT认证组件，Starter)
 │   ├── origin-jackson-spring-boot-starter (Jackson序列化组件，Starter)
-│   ├── origin-event-spring-boot-starter (事件驱动组件，Starter)
 │   ├── origin-operationlog-spring-boot-starter (操作日志组件，Starter)
-│   ├── origin-oss-spring-boot-starter (对象存储组件，Starter)
+│   ├── origin-event-spring-boot-starter (事件驱动组件，Starter)
 │   ├── origin-scheduler-spring-boot-starter (定时任务组件，Starter)
 │   ├── origin-websocket-spring-boot-starter (WebSocket组件，Starter)
-│   ├── origin-redis-spring-boot-starter (Redis缓存组件，Starter)
+│   ├── origin-redis-spring-boot-starter (Redis缓存与分布式锁组件，Starter)
+│   ├── origin-oss-spring-boot-starter (对象存储组件，Starter)
 │   ├── origin-gateway-spring-boot-starter (API网关组件，Starter)
 │   └── origin-spring-cloud-starter (微服务治理组件，Starter)
 ├── origin-auth (认证服务模块)
@@ -119,7 +119,8 @@ origin-springboot (父工程)
 
 ### 设计理念：单体架构，微服务演进
 
-1.  **Starter 化装配**：基础组件（Common, JWT, Log）采用 Spring Boot Starter 模式封装，通过 `AutoConfiguration` 自动装配，无需在启动类手动扫描，方便模块独立拆分或跨项目复用。
+1.  **Starter 化装配**：基础组件（Common, JWT, Jackson, Log）采用 Spring Boot Starter 模式封装，通过 `AutoConfiguration` 自动装配，无需在启动类手动扫描，方便模块独立拆分或跨项目复用。
+    - `origin-jackson-spring-boot-starter`: 提供全局日期格式化、序列化配置等
 2.  **接口与实现分离**：业务模块拆分为 `api` 层（DTO/Enum/Client）和业务实现层。单体模式下直接依赖实现类，演进到微服务时，只需在 `api` 层增加 Feign 接口并将依赖切换为远程调用。
 3.  **去中心化配置**：各模块自持配置逻辑，入口模块 `origin-web` 仅负责运行时的环境聚合。
 
@@ -146,6 +147,12 @@ origin-springboot (父工程)
 8. **定时任务**: 支持动态定时任务调度，可配置线程池参数
 
 9. **工具类复用**: `RequestUtil` 统一处理客户端 IP 获取，`JsonUtil` 统一处理 JSON 序列化，避免代码重复
+
+10. **分布式锁**: 基于 Redisson 实现分布式锁，支持注解式使用 `@RedissonLock`
+
+11. **限流熔断**: 基于 Sentinel 实现流量控制、熔断降级（微服务模式）
+
+12. **敏感词过滤**: 内置敏感词过滤组件，支持文本内容检测
 
 ## 常用命令
 
@@ -234,15 +241,22 @@ mvn compile
 | Spring Boot | 3.5.10 |
 | Java | 17 |
 | Spring Cloud | 2025.0.0 |
+| Spring Cloud Alibaba | 2023.0.1.0 |
 | Spring AI | 1.1.1 |
 | MyBatis Flex | 1.11.5 |
 | PostgreSQL | 42.7.8 |
 | HikariCP | 7.0.2 |
 | JWT (jjwt) | 0.11.2 |
+| Redisson | 3.27.0 |
+| Sentinel | 2022.0.0.0 |
 | Knife4j | 4.6.0 |
+| SpringDoc OpenAPI | 2.7.0 |
 | MinIO | 8.2.1 |
 | Lombok | 1.18.42 |
 | Guava | 33.5.0-jre |
+| Hutool | 5.8.43 |
+| IP2Region | 3.3.1 |
+| 敏感词过滤 | 3.1.0.1 |
 
 ### 数据库
 
@@ -277,6 +291,26 @@ mvn compile
 - 每个请求分配唯一 traceId 用于链路追踪
 - 访问日志（AccessLog）可通过调整日志级别关闭：`logging.level.com.cosmos.origin.gateway.interceptor.AccessLogInterceptor=WARN`
 
+### 限流熔断（微服务模式）
+
+项目集成了 Sentinel 实现限流熔断功能：
+
+```java
+// 限流规则
+@SentinelResource(value = "api resource", blockHandler = "handleBlock")
+public Response api() {
+    return Response.success(data);
+}
+
+// 熔断降级
+@SentinelResource(value = "api resource", fallback = "handleFallback")
+public Response api() {
+    return Response.success(data);
+}
+```
+
+Sentinel 控制台默认端口：`8080`（需单独启动）
+
 ### 工具类使用
 
 项目提供以下通用工具类，位于 `origin-common` 模块：
@@ -299,6 +333,54 @@ String json = JsonUtil.toJsonString(obj);
 // 统一响应
 return Response.success(data);
 return Response.fail("错误信息");
+
+// 分布式锁
+@RedissonLock(keys = "#userId")
+public void processUser(Long userId) {
+    // 业务逻辑
+}
+```
+
+### 分布式锁使用
+
+项目集成了 Redisson 分布式锁，支持注解式使用：
+
+```java
+// 简单锁
+@RedissonLock(keys = "#userId")
+public void processUser(Long userId) {
+    // 业务逻辑
+}
+
+// 公平锁
+@RedissonLock(keys = "#orderId", isFair = true)
+public void processOrder(Long orderId) {
+    // 业务逻辑
+}
+
+// 带超时时间
+@RedissonLock(keys = "#userId", waitTime = 30, leaseTime = 60)
+public void processWithTimeout(Long userId) {
+    // 业务逻辑
+}
+```
+
+### 敏感词过滤
+
+项目集成了敏感词过滤组件，用于检测文本内容中的敏感词：
+
+```java
+@Autowired
+private SensitiveWordUtil sensitiveWordUtil;
+
+// 检测是否包含敏感词
+boolean hasSensitive = sensitiveWordUtil.containsSensitive(text);
+
+// 获取敏感词列表
+List<String> sensitiveWords = sensitiveWordUtil.findSensitiveWords(text);
+
+// 替换敏感词
+String cleanText = sensitiveWordUtil.replaceSensitive(text, '*');
 ```
 
 ### 环境变量配置
