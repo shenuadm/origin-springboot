@@ -88,7 +88,7 @@ origin:
     admin:
       enabled: true    # 管理模块（用户、角色、权限等）
     comment:
-      enabled: true    # 评论模块
+      enabled: false    # 评论模块
     auth:
       enabled: true    # 认证模块
     oss:

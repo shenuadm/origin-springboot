@@ -6,6 +6,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -48,7 +49,7 @@ public class UserDO extends BaseEntity {
     /**
      * 出生日期
      */
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     /**
      * 手机号
