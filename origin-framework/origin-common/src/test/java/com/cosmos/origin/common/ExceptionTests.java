@@ -1,8 +1,8 @@
 package com.cosmos.origin.common;
 
+import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BaseExceptionInterface;
 import com.cosmos.origin.common.exception.BizException;
-import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

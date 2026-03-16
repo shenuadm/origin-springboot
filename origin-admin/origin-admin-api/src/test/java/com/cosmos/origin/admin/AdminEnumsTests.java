@@ -4,7 +4,8 @@ import com.cosmos.origin.admin.enums.LoginStatusEnum;
 import com.cosmos.origin.admin.enums.RoleTypeEnum;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Admin模块枚举测试

@@ -1,11 +1,6 @@
 package com.cosmos.origin.admin.api;
 
-import com.cosmos.origin.admin.model.vo.user.AddUserReqVO;
-import com.cosmos.origin.admin.model.vo.user.DeleteUserReqVO;
-import com.cosmos.origin.admin.model.vo.user.FindUserPageListReqVO;
-import com.cosmos.origin.admin.model.vo.user.FindUserPageListRspVO;
-import com.cosmos.origin.admin.model.vo.user.UnlockUserReqVO;
-import com.cosmos.origin.admin.model.vo.user.UpdateUserReqVO;
+import com.cosmos.origin.admin.model.vo.user.*;
 import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
