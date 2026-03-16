@@ -158,10 +158,11 @@
     <!-- ===========================================
          Maven Profile 架构模式切换 + 模块化打包
          使用方式:
-         - 单体模式(完整版): mvn clean package -P monolith,full
-         - 单体模式(最小版): mvn clean package -P monolith,minimal
-         - 单体模式(无评论): mvn clean package -P monolith,no-comment
-         - 单体模式(无WebSocket): mvn clean package -P monolith,no-websocket
+         - 单体模式(完整版): mvn clean package -P monolith -DskipTests
+         - 单体模式(最小版): mvn clean package -P monolith,minimal -DskipTests
+         - 单体模式(无评论): mvn clean package -P monolith,no-comment -DskipTests
+         - 单体模式(无WebSocket): mvn clean package -P monolith,no-websocket -DskipTests
+         - 单体模式(无评论和WebSocket): mvn clean package -P monolith,no-comment,no-websocket -DskipTests
          - 微服务模式: mvn clean package -P microservice
          =========================================== -->
     <profiles>
@@ -177,7 +178,7 @@
                 <maven.resource.delimiter>@</maven.resource.delimiter>
                 <!-- 模块开关配置 -->
                 <module.admin>true</module.admin>
-                <module.comment>false</module.comment>
+                <module.comment>true</module.comment>
                 <module.auth>true</module.auth>
                 <module.oss>true</module.oss>
                 <module.websocket>true</module.websocket>
@@ -197,26 +198,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <!-- 完整版（包含所有模块） -->
-        <profile>
-            <id>full</id>
-            <properties>
-                <spring.profiles.active>monolith</spring.profiles.active>
-                <maven.resource.delimiter>@</maven.resource.delimiter>
-                <module.admin>true</module.admin>
-                <module.comment>true</module.comment>
-                <module.auth>true</module.auth>
-                <module.oss>true</module.oss>
-                <module.websocket>true</module.websocket>
-            </properties>
-            <activation>
-                <property>
-                    <name>module.profile</name>
-                    <value>full</value>
-                </property>
-            </activation>
         </profile>
 
         <!-- 最小版（仅包含 admin + auth） -->
