@@ -45,6 +45,29 @@ spring:
               enabled: true
               lower-case-service-id: true
 
+    # Sentinel 控制台配置（微服务模式下启用限流熔断）
+    sentinel:
+      transport:
+        # Sentinel 控制台地址
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8080}
+        # 客户端与控制台通信端口
+        port: 8719
+        # 控制台通信心跳间隔（毫秒）
+        heartbeat-interval-ms: 5000
+      # 暴露给 Sentinel 控制台的端点
+      servlet:
+        filter:
+          url-patterns: /**
+      # 规则持久化配置（可选）
+      # datasource:
+      #   file:
+      #     data-type: json
+      #     rule:
+      #       flow: classpath:flow-rule.json
+      #       degrade: classpath:degrade-rule.json
+      # 启用 eager 模式（启动时即连接控制台）
+      eager: true
+
 # ===========================================
 # 微服务模式禁用部分单体功能
 # ===========================================

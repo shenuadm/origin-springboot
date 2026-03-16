@@ -83,6 +83,19 @@ login:
 # 自定义组件配置（origin-framework）
 # ===========================================
 origin:
+  # 业务模块开关配置（单体模式下按需启用）
+  module:
+    admin:
+      enabled: true    # 管理模块（用户、角色、权限等）
+    comment:
+      enabled: true    # 评论模块
+    auth:
+      enabled: true    # 认证模块
+    oss:
+      enabled: true    # 对象存储模块
+    websocket:
+      enabled: true    # WebSocket 模块
+
   # 事件驱动自定义线程池配置
   event:
     thread-pool:

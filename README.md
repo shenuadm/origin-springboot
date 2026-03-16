@@ -1,8 +1,39 @@
 ## 项目概述
 
-origin-springboot 是一个技术底座项目，采用 Spring Boot 3.5.10 + PostgreSQL + JWT + MyBatis Flex 技术栈构建。项目支持**单体模式**和**微服务模式**两种架构，可根据业务需求灵活切换。
+origin-springboot 是一个现代化的 **Spring Boot 技术底座项目**，采用最新的 Spring Boot 3.5.10 + Spring Cloud 2025 技术栈构建。项目采用 **模块化单体 (Modular Monolith)** 架构设计，支持**单体模式**和**微服务模式**一键切换，兼顾开发效率与架构演进。
 
-主要功能包括用户登录、角色管理、用户管理、评论管理、操作日志等模块。
+### 核心特性
+
+| 特性 | 说明 |
+|------|------|
+| 双模式架构 | 单体/微服务通过 Maven Profile 一键切换 |
+| 模块化设计 | 11 个 Spring Boot Starter 组件，即插即用 |
+| 完整认证授权 | JWT + Spring Security + 登录限流 + 单/多设备登录 |
+| 分布式能力 | Redisson 分布式锁 + Sentinel 限流熔断 |
+| 高效数据访问 | MyBatis Flex + PostgreSQL + HikariCP 连接池 |
+| 完整配套设施 | 操作日志、事件驱动、定时任务、WebSocket、MinIO 对象存储 |
+
+### 技术选型
+
+- **后端**: Spring Boot 3.5.10 | Java 17 | Spring Cloud 2025.0.0
+- **数据库**: PostgreSQL | MyBatis Flex | HikariCP
+- **缓存**: Redis + Redisson
+- **认证**: JWT (jjwt 0.11.2) + Spring Security
+- **网关**: Spring Cloud Gateway (微服务模式)
+- **服务治理**: Nacos + Sentinel
+- **API 文档**: Knife4j 4.6.0 + SpringDoc OpenAPI
+
+### 主要功能模块
+
+- 用户登录认证（JWT + 验证码）
+- 用户/角色/权限管理
+- 评论管理（支持审核、敏感词过滤）
+- 操作日志（AOP 自动记录）
+- 文件上传（MinIO 对象存储）
+- WebSocket 实时通信
+- 动态定时任务
+
+---
 
 ## 架构模式
 
@@ -12,6 +43,26 @@ origin-springboot 是一个技术底座项目，采用 Spring Boot 3.5.10 + Post
 |------|------|----------|
 | **单体模式** (monolith) | 所有模块本地加载，使用 Servlet + Spring MVC | 小型项目、快速开发、团队规模小 |
 | **微服务模式** (microservice) | 服务通过 Nacos 注册发现，使用 Spring Cloud Gateway + WebFlux | 大型项目、分布式部署、团队规模大 |
+
+### 模块开关配置
+
+单体模式下支持通过配置按需启用/禁用业务模块：
+
+```yaml
+# application.yml
+origin:
+  module:
+    admin:
+      enabled: true    # 管理模块（用户、角色、权限等）
+    comment:
+      enabled: true    # 评论模块
+    auth:
+      enabled: true    # 认证模块
+    oss:
+      enabled: true    # 对象存储模块
+    websocket:
+      enabled: true    # WebSocket 模块
+```
 
 ### 模式切换
 
@@ -309,7 +360,41 @@ public Response api() {
 }
 ```
 
-Sentinel 控制台默认端口：`8080`（需单独启动）
+#### Sentinel 控制台集成
+
+项目已集成 Sentinel 控制台配置，微服务模式下自动连接：
+
+```yaml
+# 配置项（application-microservice.yml）
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8080}
+        port: 8719
+      eager: true
+```
+
+**启动 Sentinel 控制台：**
+
+```bash
+# Docker 启动
+docker run -d --name sentinel-dashboard \
+  -p 8080:8080 \
+  -e SENTINEL_USERNAME=sentinel \
+  -e SENTINEL_PASSWORD=sentinel \
+  bladex/sentinel-dashboard:latest
+
+# 或直接启动 JAR
+java -jar sentinel-dashboard-1.8.7.jar \
+  --server.port=8080 \
+  --sentinel.dashboard.auth.username=sentinel \
+  --sentinel.dashboard.auth.password=sentinel
+```
+
+- 控制台地址: http://localhost:8080
+- 默认用户名: sentinel
+- 默认密码: sentinel
 
 ### 工具类使用
 
@@ -343,7 +428,9 @@ public void processUser(Long userId) {
 
 ### 分布式锁使用
 
-项目集成了 Redisson 分布式锁，支持注解式使用：
+项目集成了 Redisson 分布式锁，支持注解式使用和工具类两种方式：
+
+#### 方式一：注解式使用
 
 ```java
 // 简单锁
@@ -363,6 +450,66 @@ public void processOrder(Long orderId) {
 public void processWithTimeout(Long userId) {
     // 业务逻辑
 }
+```
+
+#### 方式二：工具类使用
+
+项目提供了 `DistributedLockUtils` 工具类，支持更灵活的使用方式：
+
+```java
+@Autowired
+private DistributedLockUtils distributedLockUtils;
+
+// 1. 获取锁（使用默认超时 30 秒）
+public void processWithLock(String lockKey) {
+    RLock lock = distributedLockUtils.lock(lockKey);
+    try {
+        // 业务逻辑
+    } finally {
+        distributedLockUtils.unlock(lock);
+    }
+}
+
+// 2. 尝试获取锁（等待 10 秒，超时 30 秒）
+public boolean tryLockExample(String lockKey) {
+    boolean acquired = distributedLockUtils.tryLock(lockKey);
+    if (acquired) {
+        try {
+            // 业务逻辑
+        } finally {
+            distributedLockUtils.unlock(lockKey);
+        }
+    }
+    return acquired;
+}
+
+// 3. 自定义超时时间
+public void customTimeout(String lockKey) {
+    distributedLockUtils.lock(lockKey, 60, TimeUnit.SECONDS);
+    try {
+        // 业务逻辑
+    } finally {
+        distributedLockUtils.unlock(lockKey);
+    }
+}
+
+// 4. 检查锁状态
+public void checkLockStatus(String lockKey) {
+    boolean isLocked = distributedLockUtils.isLocked(lockKey);
+    boolean isHeldByCurrentThread = distributedLockUtils.isHeldByCurrentThread(lockKey);
+}
+```
+
+#### 配置说明
+
+分布式锁的默认超时时间可在配置文件中调整：
+
+```yaml
+# application-dev.yml
+redisson:
+  lock:
+    default-timeout: 30    # 默认锁超时时间（秒）
+    default-wait-time: 10  # 默认等待获取锁时间（秒）
 ```
 
 ### 敏感词过滤
@@ -424,6 +571,12 @@ String cleanText = sensitiveWordUtil.replaceSensitive(text, '*');
 | `NACOS_SERVER_ADDR` | Nacos 服务器地址 | `127.0.0.1:8848` |
 | `NACOS_NAMESPACE` | Nacos 命名空间 | `` (空，使用默认) |
 | `NACOS_GROUP` | Nacos 配置分组 | `DEFAULT_GROUP` |
+
+### Sentinel 配置（微服务模式）
+
+| 环境变量 | 说明 | 默认值 |
+|----------|------|--------|
+| `SENTINEL_DASHBOARD` | Sentinel 控制台地址 | `localhost:8080` |
 
 ### 配置示例
 

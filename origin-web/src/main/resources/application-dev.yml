@@ -53,3 +53,11 @@ minio:
   accessKey: ${MINIO_ACCESS_KEY:minioAdmin}
   secretKey: ${MINIO_SECRET_KEY:wzw123!@#}
   bucketName: origin
+
+#=================================================================
+# 分布式锁配置（Redisson）
+#=================================================================
+redisson:
+  lock:
+    default-timeout: 30    # 默认锁超时时间（秒）
+    default-wait-time: 10  # 默认等待获取锁时间（秒）
