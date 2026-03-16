@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/comment")
 @Tag(name = "评论模块")
-@ConditionalOnProperty(prefix = "origin.module", name = "comment", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(prefix = "origin.module", name = "comment", havingValue = "true")
 public class CommentController {
 
     private final CommentService commentService;

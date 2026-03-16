@@ -162,7 +162,6 @@
          - 单体模式(最小版): mvn clean package -P monolith,minimal -DskipTests
          - 单体模式(无评论): mvn clean package -P monolith,no-comment -DskipTests
          - 单体模式(无WebSocket): mvn clean package -P monolith,no-websocket -DskipTests
-         - 单体模式(无评论和WebSocket): mvn clean package -P monolith,no-comment,no-websocket -DskipTests
          - 微服务模式: mvn clean package -P microservice
          =========================================== -->
     <profiles>

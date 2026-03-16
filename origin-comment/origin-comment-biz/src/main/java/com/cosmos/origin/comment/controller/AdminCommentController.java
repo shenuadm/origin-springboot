@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin/comment")
 @Tag(name = "Admin 评论管理模块")
-@ConditionalOnProperty(prefix = "origin.module", name = "comment", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(prefix = "origin.module", name = "comment", havingValue = "true")
 public class AdminCommentController {
 
     private final AdminCommentService adminCommentService;
