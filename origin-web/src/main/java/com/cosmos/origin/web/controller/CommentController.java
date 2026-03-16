@@ -1,4 +1,4 @@
-package com.cosmos.origin.comment.controller;
+package com.cosmos.origin.web.controller;
 
 import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;

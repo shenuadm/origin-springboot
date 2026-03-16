@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/admin/comment")
-@Tag(name = "评论管理模块")
+@Tag(name = "Admin 评论管理模块")
 public class AdminCommentController {
 
     private final AdminCommentService adminCommentService;
