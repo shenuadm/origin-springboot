@@ -300,35 +300,6 @@
             </activation>
         </profile>
 
-        <!-- 无 OSS 版 -->
-        <profile>
-            <id>no-oss</id>
-            <properties>
-                <spring.profiles.active>monolith</spring.profiles.active>
-                <maven.resource.delimiter>@</maven.resource.delimiter>
-                <module.admin>true</module.admin>
-                <module.comment>true</module.comment>
-                <module.auth>true</module.auth>
-                <module.oss>false</module.oss>
-                <module.websocket>true</module.websocket>
-            </properties>
-            <dependencies>
-                <!-- 排除 OSS 模块 -->
-                <dependency>
-                    <groupId>com.cosmos</groupId>
-                    <artifactId>origin-oss-spring-boot-starter</artifactId>
-                    <version>${project.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-            <activation>
-                <property>
-                    <name>module.profile</name>
-                    <value>no-oss</value>
-                </property>
-            </activation>
-        </profile>
-
         <!-- 微服务模式 -->
         <profile>
             <id>microservice</id>
