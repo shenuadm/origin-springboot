@@ -1,4 +1,4 @@
-package com.cosmos.origin.websocket.service.impl;
+package com.cosmos.origin.web.service.impl;
 
 import com.cosmos.origin.common.utils.Response;
 import com.cosmos.origin.websocket.config.ChatWebSocketServer;
@@ -9,7 +9,8 @@ import com.cosmos.origin.websocket.model.vo.chatroom.ChatMessageVO;
 import com.cosmos.origin.websocket.model.vo.chatroom.FindChatMessagePageListReqVO;
 import com.cosmos.origin.websocket.model.vo.chatroom.FindChatMessagePageListRspVO;
 import com.cosmos.origin.websocket.model.vo.chatroom.OnlineUserVO;
-import com.cosmos.origin.websocket.service.ChatRoomService;
+import com.cosmos.origin.websocket.service.WebSocketSessionService;
+import com.cosmos.origin.web.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,13 +33,8 @@ import java.util.stream.Collectors;
 public class ChatRoomServiceImpl implements ChatRoomService {
 
     private final ChatMessageMapper chatMessageMapper;
+    private final WebSocketSessionService webSocketSessionService;
 
-    /**
-     * 获取历史消息
-     *
-     * @param findChatMessagePageListReqVO 查询历史消息请求参数
-     * @return 查询历史消息响应参数
-     */
     @Override
     public Response<FindChatMessagePageListRspVO> findHistoryMessages(FindChatMessagePageListReqVO findChatMessagePageListReqVO) {
         // 每页展示 10 条消息
@@ -79,8 +75,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public Response<List<OnlineUserVO>> findOnlineUsers() {
-        // 获取所有在线用户
-        List<OnlineUserVO> onlineUsers = ChatWebSocketServer.getOnlineUsers();
+        // 通过接口获取所有在线用户
+        List<OnlineUserVO> onlineUsers = webSocketSessionService.getOnlineUsers();
         return Response.success(CollectionUtils.isEmpty(onlineUsers) ? null : onlineUsers);
     }
 }

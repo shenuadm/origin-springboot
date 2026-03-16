@@ -1,11 +1,11 @@
-package com.cosmos.origin.oss.service.impl;
+package com.cosmos.origin.web.service.impl;
 
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
 import com.cosmos.origin.common.utils.Response;
 import com.cosmos.origin.oss.model.vo.UploadFileRspVO;
-import com.cosmos.origin.oss.service.FileService;
 import com.cosmos.origin.oss.utils.MinioUtil;
+import com.cosmos.origin.web.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文件服务实现类
+ *
+ * @author 一陌千尘
+ * @date 2025/02/06
  */
 @RequiredArgsConstructor
 @Service

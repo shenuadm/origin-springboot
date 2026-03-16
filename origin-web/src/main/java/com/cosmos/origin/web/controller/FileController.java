@@ -1,7 +1,7 @@
-package com.cosmos.origin.oss.controller;
+package com.cosmos.origin.web.controller;
 
 import com.cosmos.origin.common.utils.Response;
-import com.cosmos.origin.oss.service.FileService;
+import com.cosmos.origin.web.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文件上传控制器
+ * <p>
  * 提供通用的文件上传接口
+ *
+ * @author 一陌千尘
+ * @date 2025/02/06
  */
 @RequiredArgsConstructor
 @RestController

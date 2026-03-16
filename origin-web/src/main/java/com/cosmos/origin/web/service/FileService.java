@@ -1,11 +1,15 @@
-package com.cosmos.origin.oss.service;
+package com.cosmos.origin.web.service;
 
 import com.cosmos.origin.common.utils.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文件服务接口
+ * <p>
  * 提供文件上传等通用文件操作能力
+ *
+ * @author 一陌千尘
+ * @date 2025/02/06
  */
 public interface FileService {
 

@@ -40,6 +40,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Spring Cloud OpenFeign（仅编译期使用） -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

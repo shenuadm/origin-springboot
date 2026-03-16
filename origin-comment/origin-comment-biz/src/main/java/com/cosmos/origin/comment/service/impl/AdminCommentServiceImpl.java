@@ -1,13 +1,13 @@
-package com.cosmos.origin.admin.service.impl;
+package com.cosmos.origin.comment.service.impl;
 
-import com.cosmos.origin.admin.model.vo.comment.DeleteCommentReqVO;
-import com.cosmos.origin.admin.model.vo.comment.ExamineCommentReqVO;
-import com.cosmos.origin.admin.model.vo.comment.FindCommentPageListReqVO;
-import com.cosmos.origin.admin.model.vo.comment.FindCommentPageListRspVO;
-import com.cosmos.origin.admin.service.AdminCommentService;
 import com.cosmos.origin.comment.domain.dos.CommentDO;
 import com.cosmos.origin.comment.domain.mapper.CommentMapper;
 import com.cosmos.origin.comment.enums.CommentStatusEnum;
+import com.cosmos.origin.comment.model.vo.DeleteCommentReqVO;
+import com.cosmos.origin.comment.model.vo.ExamineCommentReqVO;
+import com.cosmos.origin.comment.model.vo.FindCommentPageListReqVO;
+import com.cosmos.origin.comment.model.vo.FindCommentPageListRspVO;
+import com.cosmos.origin.comment.service.AdminCommentService;
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
 import com.cosmos.origin.common.utils.PageResponse;
@@ -24,6 +24,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * 评论管理服务实现类
+ *
+ * @author 一陌千尘
+ * @date 2025/02/06
+ */
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -165,5 +171,4 @@ public class AdminCommentServiceImpl implements AdminCommentService {
 
         return Response.success();
     }
-
 }

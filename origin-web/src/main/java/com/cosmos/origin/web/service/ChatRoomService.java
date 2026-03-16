@@ -1,4 +1,4 @@
-package com.cosmos.origin.websocket.service;
+package com.cosmos.origin.web.service;
 
 import com.cosmos.origin.common.utils.Response;
 import com.cosmos.origin.websocket.model.vo.chatroom.FindChatMessagePageListReqVO;
@@ -8,7 +8,7 @@ import com.cosmos.origin.websocket.model.vo.chatroom.OnlineUserVO;
 import java.util.List;
 
 /**
- * 聊天室服务
+ * 聊天室服务接口
  *
  * @author 一陌千尘
  * @date 2026/02/10
