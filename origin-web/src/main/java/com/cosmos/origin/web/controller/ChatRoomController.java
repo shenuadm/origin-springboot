@@ -9,6 +9,7 @@ import com.cosmos.origin.websocket.model.vo.chatroom.OnlineUserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/chat")
 @Tag(name = "聊天室")
+@ConditionalOnProperty(prefix = "origin.module", name = "websocket", havingValue = "true", matchIfMissing = true)
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;

@@ -11,6 +11,7 @@ import com.cosmos.origin.common.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/role")
 @Tag(name = "Admin 角色管理模块")
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "origin.module", name = "admin", havingValue = "true", matchIfMissing = true)
 public class AdminRoleController {
 
     private final AdminRoleService roleService;

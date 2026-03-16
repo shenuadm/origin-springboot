@@ -2,12 +2,14 @@ package com.cosmos.origin.oss.config;
 
 import io.minio.MinioClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration
+@ConditionalOnProperty(prefix = "origin.module", name = "oss", havingValue = "true", matchIfMissing = true)
 @ComponentScan(basePackages = "com.cosmos.origin.oss")
 public class MinioConfig {
 

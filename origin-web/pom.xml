@@ -156,13 +156,16 @@
     </build>
 
     <!-- ===========================================
-         Maven Profile 架构模式切换
+         Maven Profile 架构模式切换 + 模块化打包
          使用方式:
-         - 单体模式: mvn clean package -P monolith
+         - 单体模式(完整版): mvn clean package -P monolith,full
+         - 单体模式(最小版): mvn clean package -P monolith,minimal
+         - 单体模式(无评论): mvn clean package -P monolith,no-comment
+         - 单体模式(无WebSocket): mvn clean package -P monolith,no-websocket
          - 微服务模式: mvn clean package -P microservice
          =========================================== -->
     <profiles>
-        <!-- 单体模式（默认） -->
+        <!-- 单体模式（默认完整版） -->
         <profile>
             <id>monolith</id>
             <activation>
@@ -172,6 +175,12 @@
                 <!-- 设置 Spring Profile 为单体模式 -->
                 <spring.profiles.active>monolith</spring.profiles.active>
                 <maven.resource.delimiter>@</maven.resource.delimiter>
+                <!-- 模块开关配置 -->
+                <module.admin>true</module.admin>
+                <module.comment>false</module.comment>
+                <module.auth>true</module.auth>
+                <module.oss>true</module.oss>
+                <module.websocket>true</module.websocket>
             </properties>
             <dependencies>
                 <!-- 单体模式不需要微服务依赖 -->
@@ -188,6 +197,156 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <!-- 完整版（包含所有模块） -->
+        <profile>
+            <id>full</id>
+            <properties>
+                <spring.profiles.active>monolith</spring.profiles.active>
+                <maven.resource.delimiter>@</maven.resource.delimiter>
+                <module.admin>true</module.admin>
+                <module.comment>true</module.comment>
+                <module.auth>true</module.auth>
+                <module.oss>true</module.oss>
+                <module.websocket>true</module.websocket>
+            </properties>
+            <activation>
+                <property>
+                    <name>module.profile</name>
+                    <value>full</value>
+                </property>
+            </activation>
+        </profile>
+
+        <!-- 最小版（仅包含 admin + auth） -->
+        <profile>
+            <id>minimal</id>
+            <properties>
+                <spring.profiles.active>monolith</spring.profiles.active>
+                <maven.resource.delimiter>@</maven.resource.delimiter>
+                <module.admin>true</module.admin>
+                <module.comment>false</module.comment>
+                <module.auth>true</module.auth>
+                <module.oss>false</module.oss>
+                <module.websocket>false</module.websocket>
+            </properties>
+            <dependencies>
+                <!-- 排除 WebSocket 模块 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-websocket-spring-boot-starter</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <!-- 排除 OSS 模块 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-oss-spring-boot-starter</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <!-- 排除评论模块 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-comment-biz</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <activation>
+                <property>
+                    <name>module.profile</name>
+                    <value>minimal</value>
+                </property>
+            </activation>
+        </profile>
+
+        <!-- 无评论版 -->
+        <profile>
+            <id>no-comment</id>
+            <properties>
+                <spring.profiles.active>monolith</spring.profiles.active>
+                <maven.resource.delimiter>@</maven.resource.delimiter>
+                <module.admin>true</module.admin>
+                <module.comment>false</module.comment>
+                <module.auth>true</module.auth>
+                <module.oss>true</module.oss>
+                <module.websocket>true</module.websocket>
+            </properties>
+            <dependencies>
+                <!-- 排除评论模块 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-comment-biz</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <activation>
+                <property>
+                    <name>module.profile</name>
+                    <value>no-comment</value>
+                </property>
+            </activation>
+        </profile>
+
+        <!-- 无 WebSocket 版 -->
+        <profile>
+            <id>no-websocket</id>
+            <properties>
+                <spring.profiles.active>monolith</spring.profiles.active>
+                <maven.resource.delimiter>@</maven.resource.delimiter>
+                <module.admin>true</module.admin>
+                <module.comment>true</module.comment>
+                <module.auth>true</module.auth>
+                <module.oss>true</module.oss>
+                <module.websocket>false</module.websocket>
+            </properties>
+            <dependencies>
+                <!-- 排除 WebSocket 模块 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-websocket-spring-boot-starter</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <activation>
+                <property>
+                    <name>module.profile</name>
+                    <value>no-websocket</value>
+                </property>
+            </activation>
+        </profile>
+
+        <!-- 无 OSS 版 -->
+        <profile>
+            <id>no-oss</id>
+            <properties>
+                <spring.profiles.active>monolith</spring.profiles.active>
+                <maven.resource.delimiter>@</maven.resource.delimiter>
+                <module.admin>true</module.admin>
+                <module.comment>true</module.comment>
+                <module.auth>true</module.auth>
+                <module.oss>false</module.oss>
+                <module.websocket>true</module.websocket>
+            </properties>
+            <dependencies>
+                <!-- 排除 OSS 模块 -->
+                <dependency>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-oss-spring-boot-starter</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <activation>
+                <property>
+                    <name>module.profile</name>
+                    <value>no-oss</value>
+                </property>
+            </activation>
         </profile>
 
         <!-- 微服务模式 -->

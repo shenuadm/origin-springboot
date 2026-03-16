@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.cosmos.origin")
 @Import(OriginRedisAutoConfiguration.class)
 public class OriginWebApplication {
 

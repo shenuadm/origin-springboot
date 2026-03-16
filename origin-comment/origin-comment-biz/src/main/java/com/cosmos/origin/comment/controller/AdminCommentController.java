@@ -10,6 +10,7 @@ import com.cosmos.origin.common.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin/comment")
 @Tag(name = "Admin 评论管理模块")
+@ConditionalOnProperty(prefix = "origin.module", name = "comment", havingValue = "true", matchIfMissing = false)
 public class AdminCommentController {
 
     private final AdminCommentService adminCommentService;
