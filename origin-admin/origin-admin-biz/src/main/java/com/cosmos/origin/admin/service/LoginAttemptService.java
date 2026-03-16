@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class LoginAttemptService {
+public class LoginAttemptService implements LoginAttemptServiceApi {
 
     private final StringRedisTemplate redisTemplate;
     private final UserMapper userMapper;

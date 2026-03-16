@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserSessionService {
+public class UserSessionService implements UserSessionServiceApi {
 
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;

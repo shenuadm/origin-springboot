@@ -4,7 +4,15 @@ import com.cosmos.origin.admin.model.vo.user.*;
 import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
 
-public interface AdminUserService extends AdminUserServiceApi {
+/**
+ * 用户管理服务接口
+ * <p>
+ * 定义用户相关的业务操作接口，供Controller层调用
+ *
+ * @author 一陌千尘
+ * @date 2025/02/06
+ */
+public interface AdminUserServiceApi {
 
     /**
      * 修改密码
@@ -24,7 +32,8 @@ public interface AdminUserService extends AdminUserServiceApi {
     /**
      * 用户分页数据获取
      *
-     * @return {@link Response }<{@link ? }>
+     * @param findUserPageListReqVO 分页请求参数
+     * @return {@link PageResponse} 用户分页数据
      */
     PageResponse<?> findUserPageList(FindUserPageListReqVO findUserPageListReqVO);
 
@@ -32,7 +41,7 @@ public interface AdminUserService extends AdminUserServiceApi {
      * 添加用户
      *
      * @param addUserReqVO 添加用户请求参数
-     * @return {@link Response }<{@link ? }> 添加用户结果
+     * @return {@link Response} 添加用户结果
      */
     Response<?> addUser(AddUserReqVO addUserReqVO);
 
@@ -40,7 +49,7 @@ public interface AdminUserService extends AdminUserServiceApi {
      * 更新用户
      *
      * @param updateUserReqVO 更新用户请求参数
-     * @return {@link Response }<{@link ? }> 更新用户结果
+     * @return {@link Response} 更新用户结果
      */
     Response<?> updateUser(UpdateUserReqVO updateUserReqVO);
 
@@ -48,7 +57,7 @@ public interface AdminUserService extends AdminUserServiceApi {
      * 删除用户
      *
      * @param deleteUserReqVO 删除用户请求参数
-     * @return {@link Response }<{@link ? }> 删除用户结果
+     * @return {@link Response} 删除用户结果
      */
     Response<?> deleteUser(DeleteUserReqVO deleteUserReqVO);
 
@@ -56,7 +65,7 @@ public interface AdminUserService extends AdminUserServiceApi {
      * 手动解锁用户账号（管理员使用）
      *
      * @param unlockUserReqVO 解锁用户请求参数
-     * @return {@link Response }<{@link ? }> 解锁结果
+     * @return {@link Response} 解锁结果
      */
     Response<?> unlockUser(UnlockUserReqVO unlockUserReqVO);
 }
