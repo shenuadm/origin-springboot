@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/role")
-@Tag(name = "Admin 角色模块")
+@Tag(name = "Admin 角色管理模块")
 @RequiredArgsConstructor
 public class AdminRoleController {
 

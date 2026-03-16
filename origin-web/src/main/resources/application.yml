@@ -161,16 +161,15 @@ springdoc:
       display-name: 'Admin 后台管理接口'
       paths-to-match: '/admin/**'
       packages-to-scan:
-        - com.cosmos.origin.admin.controller
+        - com.cosmos.origin.admin.controller # 用户管理模块、角色管理模块
+        - com.cosmos.origin.comment.controller # 评论管理模块
     # 前台接口组
     - group: 'web'
       display-name: 'Web 前台接口'
       paths-to-match: '/**'
       packages-to-scan:
-        - com.cosmos.origin.comment.controller
-        - com.cosmos.origin.websocket.controller
-        - com.cosmos.origin.oss.controller
-        - com.cosmos.origin.auth.controller
+        - com.cosmos.origin.auth.controller # 验证码模块
+        - com.cosmos.origin.web.controller # 文件模块、聊天室
 
 # ===========================================
 # 评论功能配置

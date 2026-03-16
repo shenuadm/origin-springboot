@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@Tag(name = "验证码管理")
+@Tag(name = "验证码模块")
 public class VerificationCodeController {
 
     @Resource

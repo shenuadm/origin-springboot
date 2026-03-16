@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/user")
-@Tag(name = "Admin 用户模块")
+@Tag(name = "Admin 用户管理模块")
 @RequiredArgsConstructor
 public class AdminUserController {
 
