@@ -1,10 +1,10 @@
 package com.cosmos.origin.admin.service;
 
+import com.cosmos.origin.admin.model.vo.user.*;
 import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
-import com.cosmos.origin.admin.model.vo.user.*;
 
-public interface AdminUserService {
+public interface AdminUserService extends AdminUserServiceApi {
 
     /**
      * 修改密码

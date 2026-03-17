@@ -80,9 +80,22 @@ login:
     strategy: multiple
 
 # ===========================================
-# 自定义组件配置（origin-framework）
+# 业务模块开关配置（单体模式下按需启用）
+# 使用 Maven Profile 打包时可自动切换模块：
+# - full: 完整版（所有模块）
+# - minimal: 最小版（仅 admin + auth）
+# - no-comment: 无评论模块
+# - no-websocket: 无 WebSocket 模块
+# - no-oss: 无 OSS 模块
 # ===========================================
 origin:
+  module:
+    admin: @module.admin@    # 管理模块（用户、角色、权限等）
+    comment: @module.comment@  # 评论模块
+    auth: @module.auth@      # 认证模块
+    oss: @module.oss@       # 对象存储模块
+    websocket: @module.websocket@  # WebSocket 模块
+
   # 事件驱动自定义线程池配置
   event:
     thread-pool:
@@ -148,16 +161,15 @@ springdoc:
       display-name: 'Admin 后台管理接口'
       paths-to-match: '/admin/**'
       packages-to-scan:
-        - com.cosmos.origin.admin.controller
+        - com.cosmos.origin.admin.controller # 用户管理模块、角色管理模块
+        - com.cosmos.origin.comment.controller # 评论管理模块
     # 前台接口组
     - group: 'web'
       display-name: 'Web 前台接口'
       paths-to-match: '/**'
       packages-to-scan:
-        - com.cosmos.origin.comment.controller
-        - com.cosmos.origin.websocket.controller
-        - com.cosmos.origin.oss.controller
-        - com.cosmos.origin.auth.controller
+        - com.cosmos.origin.auth.controller # 验证码模块
+        - com.cosmos.origin.web.controller # 文件模块、聊天室
 
 # ===========================================
 # 评论功能配置

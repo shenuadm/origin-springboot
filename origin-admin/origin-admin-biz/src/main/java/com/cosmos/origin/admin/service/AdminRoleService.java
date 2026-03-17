@@ -7,7 +7,7 @@ import com.cosmos.origin.admin.model.vo.role.UpdateRoleReqVO;
 import com.cosmos.origin.common.utils.PageResponse;
 import com.cosmos.origin.common.utils.Response;
 
-public interface AdminRoleService {
+public interface AdminRoleService extends AdminRoleServiceApi {
 
     /**
      * 角色分页数据获取

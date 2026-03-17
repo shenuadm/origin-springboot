@@ -9,13 +9,13 @@ import com.cosmos.origin.admin.service.LoginAttemptService;
 import com.cosmos.origin.admin.service.LoginLogService;
 import com.cosmos.origin.admin.service.UserSessionService;
 import com.cosmos.origin.admin.utils.IpLocationUtil;
+import com.cosmos.origin.common.utils.RequestUtil;
 import com.cosmos.origin.jwt.config.JwtAuthenticationSecurityConfig;
 import com.cosmos.origin.jwt.constant.JwtSecurityConstants;
 import com.cosmos.origin.jwt.filter.TokenAuthenticationFilter;
 import com.cosmos.origin.jwt.handler.RestAccessDeniedHandler;
 import com.cosmos.origin.jwt.handler.RestAuthenticationEntryPoint;
 import com.cosmos.origin.jwt.handler.RestAuthenticationSuccessHandler;
-import com.cosmos.origin.common.utils.RequestUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -207,7 +207,7 @@ public class WebSecurityConfig {
                     // websocket 接口
                     authorize.requestMatchers("/ws/**").permitAll();
                     // 管理后台接口需要系统管理员权限
-                    authorize.requestMatchers("/manage/**").hasAuthority(RoleTypeEnum.SYSTEM_ADMIN.getRoleKey());
+                    authorize.requestMatchers("/admin/**").hasAuthority(RoleTypeEnum.SYSTEM_ADMIN.getRoleKey());
 
                     authorize.anyRequest().authenticated();
                 })
