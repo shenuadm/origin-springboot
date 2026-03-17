@@ -29,6 +29,8 @@
         <module>origin-admin</module>
         <!-- 入口模块 -->
         <module>origin-web</module>
+        <!-- API Gateway 网关服务 -->
+        <module>origin-gateway</module>
         <!-- 示例模块 -->
         <module>origin-example</module>
         <!-- 评论模块 -->
@@ -181,6 +183,18 @@
             <dependency>
                 <groupId>com.cosmos</groupId>
                 <artifactId>origin-gateway-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-config-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-gateway</artifactId>
                 <version>${revision}</version>
             </dependency>
 

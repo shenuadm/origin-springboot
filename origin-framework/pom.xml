@@ -40,6 +40,8 @@
         <module>origin-redis-spring-boot-starter</module>
         <!-- API 网关组件 -->
         <module>origin-gateway-spring-boot-starter</module>
+        <!-- Nacos 配置中心组件 -->
+        <module>origin-config-spring-boot-starter</module>
     </modules>
 
 </project>

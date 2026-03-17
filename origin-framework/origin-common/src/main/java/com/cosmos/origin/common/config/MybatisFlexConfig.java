@@ -3,6 +3,7 @@ package com.cosmos.origin.common.config;
 import com.mybatisflex.core.audit.AuditManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2025/11/03
  */
 @Configuration
+@ConditionalOnClass(AuditManager.class)
 public class MybatisFlexConfig {
 
     private static final Logger logger = LoggerFactory

@@ -1,0 +1,65 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: origin-gateway
+
+  config:
+    # 导入 Nacos 配置（Spring Cloud 2023+ 必需）
+    import: optional:nacos:${spring.application.name}.yaml
+
+  cloud:
+    nacos:
+      # 服务注册与发现
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+      # 配置中心
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+        # 共享配置
+        shared-configs:
+          - data-id: origin-common.yaml
+            group: ${NACOS_GROUP:DEFAULT_GROUP}
+            refresh: true
+
+    gateway:
+      # 开启日志
+      logging:
+        level:
+          reactor.netty: INFO
+          org.springframework.cloud.gateway: INFO
+      # 全局跨域配置
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: false
+            maxAge: 3600
+      # 默认过滤器
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_FIRST
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET:}
+  issuer: origin-gateway
+  tokenExpireTime: ${JWT_TOKEN_EXPIRE_TIME:120}
+  rememberMeExpireTime: ${JWT_REMEMBER_ME_EXPIRE_TIME:10080}
+
+# 日志配置
+logging:
+  level:
+    com.cosmos.origin.gateway: DEBUG

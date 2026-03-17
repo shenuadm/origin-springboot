@@ -1,1 +1,2 @@
 com.cosmos.origin.jwt.config.JwtAutoConfiguration
+com.cosmos.origin.jwt.config.JwtServletSecurityAutoConfiguration

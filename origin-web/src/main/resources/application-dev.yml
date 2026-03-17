@@ -21,7 +21,7 @@ spring:
       database: 0 # Redis 数据库索引（默认为 0）
       host: ${REDIS_HOST:127.0.0.1} # Redis 服务器地址
       port: ${REDIS_PORT:6379} # Redis 服务器连接端口
-      # password: ${REDIS_PASSWORD:wzw123!@#} # Redis 服务器连接密码（默认为空）
+      password: ${REDIS_PASSWORD:wzw123!@#} # Redis 服务器连接密码（默认为空）
       timeout: 5s # 读超时时间
       connect-timeout: 5s # 链接超时时间
       lettuce:
@@ -41,9 +41,9 @@ origin:
       enabled: false
       default-limit: 200              # 开发环境放宽到 200/s
       time-window: 1
-      # path-limits:
+        # path-limits:
         # /login: 20                # 登录接口限流 20/s
-        # /register: 20             # 注册接口限流 20/s
+      # /register: 20             # 注册接口限流 20/s
 
 #=================================================================
 # minio

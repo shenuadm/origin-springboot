@@ -68,7 +68,7 @@ public class UserDO extends BaseEntity {
     /**
      * 状态（0-启用 1-禁用）
      */
-    private Integer status;
+    private Byte status;
 
     /**
      * 个人简介
