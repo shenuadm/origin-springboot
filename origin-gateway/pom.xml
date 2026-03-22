@@ -93,14 +93,14 @@
                     <groupId>org.springframework.security</groupId>
                     <artifactId>spring-security-web</artifactId>
                 </exclusion>
+                <!-- 排除 origin-common（包含 Servlet 依赖的 GlobalExceptionHandler） -->
+                <exclusion>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-common</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
-        <!-- 公共工具类 -->
-        <dependency>
-            <groupId>com.cosmos</groupId>
-            <artifactId>origin-common</artifactId>
-        </dependency>
 
         <!-- Redis (限流、Token 黑名单等) -->
         <dependency>
@@ -111,6 +111,11 @@
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+                <!-- 排除 origin-common（包含 Servlet 依赖的 GlobalExceptionHandler） -->
+                <exclusion>
+                    <groupId>com.cosmos</groupId>
+                    <artifactId>origin-common</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

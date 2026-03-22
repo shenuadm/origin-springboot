@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
@@ -23,12 +24,16 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
+@ComponentScan(basePackages = {
+        "com.cosmos.origin.gateway",
+        "com.cosmos.origin.redis"
+})
 public class OriginGatewayApplication {
 
     public static void main(String[] args) {
         ConfigurableEnvironment env = SpringApplication.run(OriginGatewayApplication.class, args).getEnvironment();
         log.info("""
-                        
+
                         ----------------------------------------------------------
                         \t\
                         API Gateway: {} 启动成功！\s

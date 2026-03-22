@@ -5,6 +5,22 @@ spring:
   application:
     name: origin-gateway
 
+  # Redis 配置（用于限流、Token 黑名单等）
+  data:
+    redis:
+      database: 0
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:wzw123!@#}
+      timeout: 5s
+      connect-timeout: 5s
+      lettuce:
+        pool:
+          max-active: 200
+          max-wait: -1ms
+          min-idle: 0
+          max-idle: 10
+
   config:
     # 导入 Nacos 配置（Spring Cloud 2023+ 必需）
     import: optional:nacos:${spring.application.name}.yaml
@@ -34,27 +50,29 @@ spring:
         level:
           reactor.netty: INFO
           org.springframework.cloud.gateway: INFO
-      # 全局跨域配置
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders: "*"
-            allowCredentials: false
-            maxAge: 3600
+      # 全局跨域配置 (Spring Cloud Gateway 4.x)
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOriginPatterns: "*"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders: "*"
+                allowCredentials: false
+                maxAge: 3600
       # 默认过滤器
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_FIRST
 
 # JWT 配置
 jwt:
-  secret: ${JWT_SECRET:}
+  secret: ${JWT_SECRET:HpOdsqmwOqtJcq3AzargcLbYKTp7qijmrPv4Mx9rLbGcS2mB0USGdmsPYJXso9zTVzWA/Tmrh/iW1irD8nYYTQ==}
   issuer: origin-gateway
   tokenExpireTime: ${JWT_TOKEN_EXPIRE_TIME:120}
   rememberMeExpireTime: ${JWT_REMEMBER_ME_EXPIRE_TIME:10080}

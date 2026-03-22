@@ -263,12 +263,4 @@ public class WebSecurityConfig {
         return exception.getMessage();
     }
 
-    /**
-     * Token 校验过滤器
-     */
-    @Bean
-    public TokenAuthenticationFilter tokenAuthenticationFilter() {
-        return new TokenAuthenticationFilter();
-    }
-
 }
