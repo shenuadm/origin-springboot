@@ -43,19 +43,26 @@ origin-springboot (parent)
 │   ├── origin-websocket-spring-boot-starter     # WebSocket support
 │   ├── origin-redis-spring-boot-starter # Redis caching/distributed lock
 │   ├── origin-oss-spring-boot-starter   # MinIO object storage
-│   ├── origin-gateway-spring-boot-starter      # API gateway
+│   ├── origin-gateway-spring-boot-starter      # API gateway starter
+│   ├── origin-config-spring-boot-starter        # Nacos configuration
 │   └── origin-spring-cloud-starter     # Microservice governance
 ├── origin-auth              # Authentication service
 ├── origin-admin             # Admin module (api + biz split)
 │   ├── origin-admin-api     # VO, Enums, API interfaces
 │   └── origin-admin-biz    # Service implementation, Controller
 ├── origin-comment          # Comment module (api + biz split)
+│   ├── origin-comment-api  # VO, Enums, API interfaces
+│   └── origin-comment-biz # Service implementation, Controller
 ├── origin-web              # Entry module (runs in monolith mode)
+├── origin-gateway          # API Gateway service (standalone microservice)
 └── origin-example          # Example code
 ```
 
 ### Code Organization Pattern
 
+- **API+Biz Split**: Business modules follow the `api` + `biz` pattern
+  - `api` module: VO definitions, Enums, Service interfaces (for future microservices)
+  - `biz` module: Service implementations, Controllers, DO/Mapper
 - **DO (Data Object)**: Database entity, extends `BaseEntity`, located in `domain.dos`
 - **Mapper**: MyBatis Flex interface, located in `domain.mapper`
 - **Service**: Interface in `service`, implementation in `service.impl`
@@ -63,6 +70,15 @@ origin-springboot (parent)
 - **VO**: Request/Response objects
   - ReqVO: Request parameters in `model.vo.*`, use `@Validated` for validation
   - RspVO: Response data in `model.vo.*`
+
+### Architecture Modes
+
+| Mode | Profile | Description |
+|------|---------|-------------|
+| Monolith | `monolith` | All modules loaded locally, uses Servlet + Spring MVC |
+| Microservice | `microservice` | Services registered with Nacos, uses Spring Cloud Gateway + WebFlux |
+
+Gateway runs as a standalone service in microservice mode, authenticating tokens before routing requests.
 
 ### Key Design Patterns
 
@@ -88,6 +104,9 @@ java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.acti
 
 # Microservice mode (requires Nacos running)
 java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=microservice,dev
+
+# Run API Gateway (microservice mode, separate process)
+java -jar origin-gateway/target/origin-gateway-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
 ```
 
 Access API docs at: http://localhost:8081/doc.html
@@ -97,7 +116,9 @@ Access API docs at: http://localhost:8081/doc.html
 | Item | Location | Notes |
 |------|----------|-------|
 | Application entry | `origin-web/src/main/java/.../OriginWebApplication.java` | Scan `com.cosmos.origin.*` |
+| Gateway entry | `origin-gateway/src/main/java/.../OriginGatewayApplication.java` | Separate gateway service |
 | Main config | `origin-web/src/main/resources/application.yml` | Server port 8081 |
+| Gateway config | `origin-gateway/src/main/resources/application.yml` | Gateway port 8080 |
 | Dev config | `origin-web/src/main/resources/application-dev.yml` | Database, Redis settings |
 | JWT config | `application.yml` `jwt.*` section | Token expiry, secret key |
 | Database init | `docs/sql/origin.sql` | PostgreSQL schema |
