@@ -40,10 +40,18 @@ origin:
     rate-limit:
       enabled: false
       default-limit: 200              # 开发环境放宽到 200/s
-      time-window: 1
-        # path-limits:
-        # /login: 20                # 登录接口限流 20/s
-      # /register: 20             # 注册接口限流 20/s
+      time-window: 1                   # 每隔 1s 检查一次
+      limit-message: "请求过于频繁，请稍后再试"   # 限流提示信息
+      # path-limits: # 特定接口限流配置
+      #   /login: 20                      # 登录接口限流 10/s
+      #   /register: 20                   # 注册接口限流 10/s
+    white-list: # 白名单路径
+      - /swagger-ui
+      - /v3/api-docs/**
+      - /favicon.ico
+      - /webjars/**
+      - /.well-known/**
+    black-list: [ ]                          # 黑名单（IP或用户ID）
 
 #=================================================================
 # minio

@@ -44,6 +44,13 @@ origin:
       # path-limits:
       #   /login: 20                # 登录接口限流 20/s
       #   /register: 20             # 注册接口限流 20/s
+    white-list: # 白名单路径
+      - /swagger-ui
+      - /v3/api-docs/**
+      - /favicon.ico
+      - /webjars/**
+      - /.well-known/**
+    black-list: [ ]                          # 黑名单（IP或用户ID）
 
 #=================================================================
 # minio

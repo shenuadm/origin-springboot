@@ -82,7 +82,7 @@ login:
 # ===========================================
 # 业务模块开关配置（单体模式下按需启用）
 # 使用 Maven Profile 打包时可自动切换模块：
-# - full: 完整版（所有模块）
+# - monolith: 完整版（所有模块）
 # - minimal: 最小版（仅 admin + auth）
 # - no-comment: 无评论模块
 # - no-websocket: 无 WebSocket 模块
