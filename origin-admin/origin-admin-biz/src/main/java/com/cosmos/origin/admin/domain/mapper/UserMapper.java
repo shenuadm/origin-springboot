@@ -48,4 +48,16 @@ public interface UserMapper extends BaseMapper<UserDO> {
         return updateByQuery(userDO, true, QueryWrapper.create()
                 .eq(UserDO::getUsername, username));
     }
+
+    /**
+     * 根据手机号查询记录
+     *
+     * @param phone 手机号
+     * @return {@link UserDO}  用户
+     */
+    default UserDO selectByPhone(String phone) {
+        return selectOneByQuery(QueryWrapper.create()
+                .eq(UserDO::getPhone, phone)
+                .eq(UserDO::getIsDeleted, DeletedEnum.NO.getValue()));
+    }
 }

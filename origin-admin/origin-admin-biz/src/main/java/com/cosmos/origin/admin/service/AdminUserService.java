@@ -59,4 +59,12 @@ public interface AdminUserService extends AdminUserServiceApi {
      * @return {@link Response }<{@link ? }> 解锁结果
      */
     Response<?> unlockUser(UnlockUserReqVO unlockUserReqVO);
+
+    /**
+     * 注册
+     *
+     * @param userRegisterReqVO 注册请求参数
+     * @return 注册结果
+     */
+    Response<String> register(UserRegisterReqVO userRegisterReqVO);
 }
