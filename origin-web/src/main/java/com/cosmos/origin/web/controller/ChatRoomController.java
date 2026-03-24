@@ -1,6 +1,6 @@
 package com.cosmos.origin.web.controller;
 
-import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.origin.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.common.response.Response;
 import com.cosmos.origin.web.service.ChatRoomService;
 import com.cosmos.origin.websocket.model.vo.chatroom.FindChatMessagePageListReqVO;

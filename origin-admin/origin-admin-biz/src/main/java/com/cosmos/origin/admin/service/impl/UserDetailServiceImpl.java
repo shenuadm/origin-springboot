@@ -8,6 +8,7 @@ import com.cosmos.origin.admin.domain.mapper.UserMapper;
 import com.cosmos.origin.common.enums.DeletedEnum;
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
+import com.cosmos.origin.admin.utils.UserDetailsCache;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,10 +37,18 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
+    private final UserDetailsCache userDetailsCache;
 
     @Override
     @SuppressWarnings("unchecked")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 先从缓存中获取
+        UserDetails cachedUserDetails = userDetailsCache.get(username);
+        if (cachedUserDetails != null) {
+            log.debug("从缓存中获取用户权限信息: {}", username);
+            return cachedUserDetails;
+        }
+
         // 从数据库中查询
         UserDO userDO = userMapper.findByUsername(username);
 
@@ -70,9 +79,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
         String[] roleArr = roles.toArray(new String[0]);
 
         // authorities 用于指定角色
-        return User.withUsername(userDO.getUsername())
+        UserDetails userDetails = User.withUsername(userDO.getUsername())
                 .password(userDO.getPassword())
                 .authorities(roleArr)
                 .build();
+
+        // 缓存用户权限信息
+        userDetailsCache.put(username, userDetails);
+
+        return userDetails;
     }
 }

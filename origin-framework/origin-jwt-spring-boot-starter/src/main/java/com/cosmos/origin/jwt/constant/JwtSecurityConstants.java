@@ -58,4 +58,14 @@ public final class JwtSecurityConstants {
      * 请求属性中存储登录尝试信息的 key
      */
     public static final String LOGIN_ATTEMPT_INFO_MAP_ATTRIBUTE = "LOGIN_ATTEMPT_INFO_MAP";
+
+    /**
+     * Refresh Token 请求参数名
+     */
+    public static final String REFRESH_TOKEN_PARAMETER = "refreshToken";
+
+    /**
+     * Refresh Token 刷新 URL
+     */
+    public static final String REFRESH_TOKEN_URL = "/auth/refreshToken";
 }

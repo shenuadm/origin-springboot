@@ -2,7 +2,7 @@ package com.cosmos.origin.admin.controller;
 
 import com.cosmos.origin.admin.model.vo.user.*;
 import com.cosmos.origin.admin.service.AdminUserService;
-import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.origin.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.common.response.PageResponse;
 import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;

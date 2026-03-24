@@ -1,4 +1,4 @@
-package com.cosmos.framework.biz.operationlog.aspect;
+package com.cosmos.origin.operationlog.aspect;
 
 import com.cosmos.origin.common.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class ApiOperationLogAspect {
     /**
      * 以自定义 @ApiOperationLog 注解为切点，凡是添加 @ApiOperationLog 的方法，都会执行环绕中的代码
      */
-    @Pointcut("@annotation(com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog)")
+    @Pointcut("@annotation(com.cosmos.origin.operationlog.aspect.ApiOperationLog)")
     public void apiOperationLog() {
     }
 

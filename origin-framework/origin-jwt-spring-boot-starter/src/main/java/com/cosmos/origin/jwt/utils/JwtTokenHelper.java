@@ -53,6 +53,12 @@ public class JwtTokenHelper implements InitializingBean {
     private Long rememberMeExpireTime;
 
     /**
+     * Refresh Token 失效时间（分钟），默认 30 天
+     */
+    @Value("${jwt.refreshTokenExpireTime:43200}")
+    private Long refreshTokenExpireTime;
+
+    /**
      * 生成一个 Base64 的安全秘钥
      *
      * @return Base64 的安全秘钥
@@ -140,6 +146,16 @@ public class JwtTokenHelper implements InitializingBean {
      */
     public String generateRememberMeToken(String username) {
         return generateToken(username, rememberMeExpireTime);
+    }
+
+    /**
+     * 生成 Refresh Token（有效期为配置的 Refresh Token 过期时间，默认 30 天）
+     *
+     * @param username 用户名
+     * @return Refresh Token
+     */
+    public String generateRefreshToken(String username) {
+        return generateToken(username, refreshTokenExpireTime);
     }
 
     /**

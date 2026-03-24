@@ -64,14 +64,17 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
         // 检查是否勾选了"记住我"
         Boolean rememberMe = (Boolean) request.getAttribute(JwtSecurityConstants.REMEMBER_ME_ATTRIBUTE);
         String token;
+        String refreshToken;
         Long expireMinutes;
         if (Boolean.TRUE.equals(rememberMe)) {
             // 记住我：使用记住我 token 过期时间（默认 7 天）
             token = jwtTokenHelper.generateRememberMeToken(username);
+            refreshToken = jwtTokenHelper.generateRefreshToken(username);
             expireMinutes = rememberMeExpireTime;
         } else {
             // 正常登录：使用默认过期时间
             token = jwtTokenHelper.generateToken(username);
+            refreshToken = jwtTokenHelper.generateRefreshToken(username);
             expireMinutes = tokenExpireTime;
         }
 
@@ -91,6 +94,7 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
         // 返回 Token
         LoginRspVO loginRspVO = LoginRspVO.builder()
                 .token(token)
+                .refreshToken(refreshToken)
                 .roles(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .build();
 

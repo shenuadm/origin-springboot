@@ -5,7 +5,7 @@ import com.cosmos.origin.admin.model.vo.role.DeleteRoleReqVO;
 import com.cosmos.origin.admin.model.vo.role.FindRolePageListReqVO;
 import com.cosmos.origin.admin.model.vo.role.UpdateRoleReqVO;
 import com.cosmos.origin.admin.service.AdminRoleService;
-import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.origin.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.common.response.PageResponse;
 import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;

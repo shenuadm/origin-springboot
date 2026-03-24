@@ -1,6 +1,6 @@
-package com.cosmos.framework.biz.operationlog.config;
+package com.cosmos.origin.operationlog.config;
 
-import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLogAspect;
+import com.cosmos.origin.operationlog.aspect.ApiOperationLogAspect;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 

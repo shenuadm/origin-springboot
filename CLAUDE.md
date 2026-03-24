@@ -4,177 +4,168 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-origin-springboot is a Spring Boot 3.5.10 technical foundation project with modular monolith architecture. It supports both **monolith** and **microservice** modes via Maven Profile switching.
+origin-springboot 是一个现代化的 Spring Boot 技术底座项目，采用 Spring Boot 3.5.10 + Spring Cloud 2025 技术栈构建。项目采用模块化单体 (Modular Monolith) 架构设计，支持单体模式和微服务模式通过 Maven Profile 一键切换。
 
-## Build Commands
+## Common Commands
 
 ```bash
-# Monolith mode (default)
+# 单体模式编译打包（默认）
 mvn clean package -P monolith -DskipTests
 
-# Microservice mode (requires Nacos)
+# 微服务模式编译打包
 mvn clean package -P microservice -DskipTests
 
-# Run tests
+# 运行单体模式应用
+java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+
+# 运行微服务模式应用（需先启动 Nacos）
+java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=microservice,dev
+
+# 运行所有测试
 mvn test
 
-# Run specific module tests
+# 运行特定模块的测试
 mvn test -pl origin-admin
 
-# Run specific test class
+# 运行特定测试类
 mvn test -Dtest=OriginWebApplicationTests
 
-# Run single test method
-mvn test -Dtest=OriginWebApplicationTests#testMethodName
+# 查看依赖树
+mvn dependency:tree
+
+# 清理编译产物
+mvn clean
 ```
 
 ## Architecture
 
 ### Module Structure
+
 ```
-origin-springboot (parent)
-├── origin-framework (infrastructure layer with Spring Boot Starters)
-│   ├── origin-common              # Utilities (RequestUtil, JsonUtil, Response, etc.)
-│   ├── origin-jwt-spring-boot-starter    # JWT authentication
-│   ├── origin-jackson-spring-boot-starter # JSON serialization
-│   ├── origin-operationlog-spring-boot-starter  # API logging with @ApiOperationLog
-│   ├── origin-event-spring-boot-starter # Event-driven (async)
-│   ├── origin-scheduler-spring-boot-starter    # Dynamic scheduled tasks
-│   ├── origin-websocket-spring-boot-starter     # WebSocket support
-│   ├── origin-redis-spring-boot-starter # Redis caching/distributed lock
-│   ├── origin-oss-spring-boot-starter   # MinIO object storage
-│   ├── origin-gateway-spring-boot-starter      # API gateway starter
-│   ├── origin-config-spring-boot-starter        # Nacos configuration
-│   └── origin-spring-cloud-starter     # Microservice governance
-├── origin-auth              # Authentication service
-├── origin-admin             # Admin module (api + biz split)
-│   ├── origin-admin-api     # VO, Enums, API interfaces
-│   └── origin-admin-biz    # Service implementation, Controller
-├── origin-comment          # Comment module (api + biz split)
-│   ├── origin-comment-api  # VO, Enums, API interfaces
-│   └── origin-comment-biz # Service implementation, Controller
-├── origin-web              # Entry module (runs in monolith mode)
-├── origin-gateway          # API Gateway service (standalone microservice)
-└── origin-example          # Example code
-```
-
-### Code Organization Pattern
-
-- **API+Biz Split**: Business modules follow the `api` + `biz` pattern
-  - `api` module: VO definitions, Enums, Service interfaces (for future microservices)
-  - `biz` module: Service implementations, Controllers, DO/Mapper
-- **DO (Data Object)**: Database entity, extends `BaseEntity`, located in `domain.dos`
-- **Mapper**: MyBatis Flex interface, located in `domain.mapper`
-- **Service**: Interface in `service`, implementation in `service.impl`
-- **Controller**: REST endpoints, uses `@ApiOperationLog` for request logging
-- **VO**: Request/Response objects
-  - ReqVO: Request parameters in `model.vo.*`, use `@Validated` for validation
-  - RspVO: Response data in `model.vo.*`
-
-### Architecture Modes
-
-| Mode | Profile | Description |
-|------|---------|-------------|
-| Monolith | `monolith` | All modules loaded locally, uses Servlet + Spring MVC |
-| Microservice | `microservice` | Services registered with Nacos, uses Spring Cloud Gateway + WebFlux |
-
-Gateway runs as a standalone service in microservice mode, authenticating tokens before routing requests.
-
-### Key Design Patterns
-
-1. **Unified Response**: Use `Response<T>` for API responses, `PageResponse` for paginated results
-2. **Global Exception Handling**: `GlobalExceptionHandler` handles `BizException` and system exceptions
-3. **API Logging**: Add `@ApiOperationLog(description = "...")` to controller methods
-4. **JWT Authentication**: `JwtAuthenticationFilter` for login, `TokenAuthenticationFilter` for token validation
-5. **Event-Driven**: Use `EventPublisher` to publish events, `ApplicationListener` to handle async
-6. **VO Pattern**: Strict separation between request (ReqVO) and response (RspVO) data structures
-
-## Running the Application
-
-```bash
-# Build first
-mvn clean package -P monolith -DskipTests
-
-# Run from origin-web module
-cd origin-web
-mvn spring-boot:run -P monolith
-
-# Or run the JAR directly
-java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
-
-# Microservice mode (requires Nacos running)
-java -jar origin-web/target/origin-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=microservice,dev
-
-# Run API Gateway (microservice mode, separate process)
-java -jar origin-gateway/target/origin-gateway-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+origin-springboot (父工程)
+├── origin-framework (基础框架层，11个 Starter)
+│   ├── origin-common                    # 通用工具组件
+│   ├── origin-jwt-spring-boot-starter  # JWT认证组件
+│   ├── origin-jackson-spring-boot-starter
+│   ├── origin-operationlog-spring-boot-starter
+│   ├── origin-event-spring-boot-starter
+│   ├── origin-scheduler-spring-boot-starter
+│   ├── origin-websocket-spring-boot-starter
+│   ├── origin-redis-spring-boot-starter
+│   ├── origin-oss-spring-boot-starter
+│   ├── origin-gateway-spring-boot-starter
+│   └── origin-spring-cloud-starter
+├── origin-auth           # 认证服务模块
+├── origin-admin          # 管理后台聚合模块
+│   ├── origin-admin-api  # 接口层（VO、Enums、API）
+│   └── origin-admin-biz # 业务实现层
+├── origin-comment        # 评论模块聚合
+│   ├── origin-comment-api
+│   └── origin-comment-biz
+├── origin-web           # 单体运行入口（唯一启动模块）
+├── origin-gateway        # API 网关服务
+└── origin-example        # 示例代码模块
 ```
 
-Access API docs at: http://localhost:8081/doc.html
+### Design Patterns
 
-## Key Configuration
+1. **Starter 化装配**: 基础组件采用 Spring Boot Starter 模式封装，通过 AutoConfiguration 自动装配
+2. **接口与实现分离**: 业务模块拆分为 `api` 层和 `biz` 层，单体模式直接依赖，微服务模式可切换为 Feign 远程调用
+3. **统一响应结构**: 所有 API 通过 `Response` 类统一封装，分页查询使用 `PageResponse`
+4. **全局异常处理**: 通过 `GlobalExceptionHandler` 统一处理 `BizException` 和系统异常
+5. **API 日志记录**: 使用 `@ApiOperationLog` 注解 + AOP 记录请求入参、出参和耗时
+6. **VO 模式**: 请求使用 ReqVO，响应使用 RspVO，严格区分业务层和展示层
 
-| Item | Location | Notes |
-|------|----------|-------|
-| Application entry | `origin-web/src/main/java/.../OriginWebApplication.java` | Scan `com.cosmos.origin.*` |
-| Gateway entry | `origin-gateway/src/main/java/.../OriginGatewayApplication.java` | Separate gateway service |
-| Main config | `origin-web/src/main/resources/application.yml` | Server port 8081 |
-| Gateway config | `origin-gateway/src/main/resources/application.yml` | Gateway port 8080 |
-| Dev config | `origin-web/src/main/resources/application-dev.yml` | Database, Redis settings |
-| JWT config | `application.yml` `jwt.*` section | Token expiry, secret key |
-| Database init | `docs/sql/origin.sql` | PostgreSQL schema |
+## Code Organization
 
-### Environment Variables (Production)
+| 类型 | 位置 | 说明 |
+|------|------|------|
+| DO (Data Object) | `domain.dos` | 数据库实体对象，继承 `BaseEntity` |
+| Mapper | `domain.mapper` | MyBatis Flex 接口 |
+| Service | `service` | 业务逻辑层，接口和实现分离 |
+| Controller | `controller` | 控制器层 |
+| ReqVO | `model.vo.*` | 请求参数对象，需参数校验 |
+| RspVO | `model.vo.*` | 响应结果对象 |
 
-```bash
-DB_PASSWORD=mypassword
-JWT_SECRET=your-secret-key
-REDIS_PASSWORD=my-redis-password
-MINIO_SECRET_KEY=my-minio-key
-NACOS_SERVER_ADDR=127.0.0.1:8848
-```
+### VO 命名规范
 
-## Common Development Tasks
+- 分页请求: `{业务}PageListReqVO` → `FindUserPageListReqVO`
+- 分页响应: `{业务}PageListRspVO`
+- 详情请求: `Find{业务}InfoReqVO`
+- 添加请求: `Add{业务}ReqVO` → `AddUserReqVO`
+- 更新请求: `Update{业务}ReqVO` → `UpdateUserReqVO`
+- 删除请求: `Delete{业务}ReqVO`
 
-### Adding a New API
-1. Create ReqVO/RspVO in `model.vo` package of api module
-2. Define method in Service interface
-3. Implement in Service impl class
-4. Add endpoint in Controller with `@ApiOperationLog`
-5. Use `Response.success(data)` or `Response.fail(message)` to return
+### Controller 规范
 
-### Using Utilities
 ```java
-// Get client IP
-String clientIp = RequestUtil.getClientIp(request);
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
+public class UserController {
 
-// JSON serialization
-String json = JsonUtil.toJsonString(obj);
+    private final AdminUserServiceApi userService;
 
-// Unified response
-return Response.success(data);
-return Response.fail("Error message");
-
-// Paginated response
-return PageResponse.success(list, total, pageNum, pageSize);
+    @GetMapping("/page")
+    @ApiOperation("获取用户分页列表")
+    @ApiOperationLog(description = "获取用户分页列表")
+    public PageResponse<?> findUserPageList(FindUserPageListReqVO reqVO) {
+        return userService.findUserPageList(reqVO);
+    }
+}
 ```
 
-### Using Events
+## Key Technologies
+
+- Java 17 + Spring Boot 3.5.10 + Spring Cloud 2025.0.0
+- PostgreSQL 42.7.8 + MyBatis Flex 1.11.5
+- Redis + Redisson 3.27.0 (分布式锁)
+- JWT (jjwt 0.11.2) + Spring Security
+- Sentinel 限流熔断（微服务模式）
+- Knife4j 4.6.0 API 文档
+
+## Important Paths
+
+- 应用入口: `origin-web/src/main/java/com/cosmos/origin/web/OriginWebApplication.java`
+- 组件扫描: `com.cosmos.origin.*`
+- 主配置文件: `origin-web/src/main/resources/application.yml`
+- 微服务配置: `origin-web/src/main/resources/application-microservice.yml`
+- 数据库初始化: `docs/sql/origin.sql`
+- API 文档: `http://localhost:8081/doc.html`
+
+## Built-in Features
+
+### Distributed Lock
+
 ```java
-// Publish event (async)
-eventPublisher.publishEvent(new YourEvent(source));
-
-// Handle event
-@EventListener
-public void handleEvent(YourEvent event) { }
+@RedissonLock(keys = "#userId")
+public void processUser(Long userId) {
+    // 业务逻辑
+}
 ```
 
-## Tech Stack
+### Sensitive Word Filter
 
-- Spring Boot 3.5.10
-- Java 17
-- PostgreSQL + MyBatis Flex
-- Redis + Redisson
-- JWT (jjwt 0.11.2)
-- Spring Cloud 2025.0.0 (microservice mode)
-- Nacos 2.3+ (microservice mode)
-- Knife4j 4.6.0 (API docs)
+```java
+@Autowired
+private SensitiveWordUtil sensitiveWordUtil;
+
+boolean hasSensitive = sensitiveWordUtil.containsSensitive(text);
+List<String> sensitiveWords = sensitiveWordUtil.findSensitiveWords(text);
+String cleanText = sensitiveWordUtil.replaceSensitive(text, '*');
+```
+
+### API Logging
+
+Use `@ApiOperationLog` annotation on Controller methods to automatically log requests:
+```java
+@ApiOperationLog(description = "创建订单")
+public Response<?> createOrder(@Valid @RequestBody CreateOrderReqVO reqVO) { }
+```
+
+## Documentation
+
+- `docs/接口与模块开发规范.md` - API 设计规范和模块开发指南
+- `docs/单体模式与微服务模式开发指南.md` - 双模式开发指南
+- `docs/系统设计指南.md` - 系统设计指南
+- `docs/测试指南.md` - 测试指南

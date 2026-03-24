@@ -1,6 +1,6 @@
 package com.cosmos.origin.web.controller;
 
-import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.origin.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;
 import com.cosmos.origin.comment.service.CommentService;
 import com.cosmos.origin.common.response.Response;

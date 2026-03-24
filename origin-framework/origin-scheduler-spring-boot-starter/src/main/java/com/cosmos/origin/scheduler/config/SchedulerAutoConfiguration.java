@@ -2,7 +2,7 @@ package com.cosmos.origin.scheduler.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * 负责扫描定时任务相关组件并导入线程池配置
  */
 @Slf4j
-@Configuration
+@AutoConfiguration
 @EnableScheduling
 @ComponentScan(basePackages = "com.cosmos.origin.scheduler")
 @Import(SchedulerExecutorConfig.class)

@@ -1,6 +1,6 @@
 package com.cosmos.origin.comment.controller;
 
-import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.origin.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.comment.model.vo.DeleteCommentReqVO;
 import com.cosmos.origin.comment.model.vo.ExamineCommentReqVO;
 import com.cosmos.origin.comment.model.vo.FindCommentPageListReqVO;

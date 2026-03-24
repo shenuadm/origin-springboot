@@ -1,18 +1,16 @@
 package com.cosmos.origin.admin.model.vo.user;
 
-import com.cosmos.origin.common.model.BasePageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Schema(name = "查询用户分页数据响应参数")
-public class FindUserPageListRspVO extends BasePageQuery {
+public class FindUserPageListRspVO {
 
     @Schema(description = "用户 ID")
     private Long id;

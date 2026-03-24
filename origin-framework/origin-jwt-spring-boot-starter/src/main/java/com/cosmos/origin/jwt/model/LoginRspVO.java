@@ -18,6 +18,9 @@ public class LoginRspVO {
     @Schema(description = "Token 值")
     private String token;
 
+    @Schema(description = "Refresh Token 值")
+    private String refreshToken;
+
     @Schema(description = "用户角色列表")
     private List<String> roles;
 }
