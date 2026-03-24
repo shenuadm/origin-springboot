@@ -1,4 +1,4 @@
-package com.cosmos.origin.common.utils;
+package com.cosmos.origin.common.response;
 
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.media.Schema;

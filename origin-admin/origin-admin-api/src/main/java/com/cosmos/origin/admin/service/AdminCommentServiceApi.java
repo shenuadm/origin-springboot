@@ -3,8 +3,8 @@ package com.cosmos.origin.admin.service;
 import com.cosmos.origin.admin.model.vo.comment.DeleteCommentReqVO;
 import com.cosmos.origin.admin.model.vo.comment.ExamineCommentReqVO;
 import com.cosmos.origin.admin.model.vo.comment.FindCommentPageListReqVO;
-import com.cosmos.origin.common.utils.PageResponse;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.PageResponse;
+import com.cosmos.origin.common.response.Response;
 
 /**
  * 评论管理服务接口

@@ -1,2 +1,2 @@
-com.cosmos.origin.redis.config.OriginRedisAutoConfiguration
+com.cosmos.origin.redis.config.RedisAutoConfiguration
 com.cosmos.origin.redis.config.RedissonAutoConfiguration

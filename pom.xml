@@ -2,16 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.10</version>
-        <relativePath/>
-    </parent>
 
     <groupId>com.cosmos</groupId>
     <artifactId>origin-springboot</artifactId>
     <version>${revision}</version>
+
+    <!-- 项目名称 -->
     <name>origin-springboot</name>
     <!-- 项目描述 -->
     <description>技术底座单体版 Cosmos-Origin By 一陌千尘</description>
@@ -41,19 +37,20 @@
     <properties>
         <!-- 项目版本号 -->
         <revision>0.0.1-SNAPSHOT</revision>
+        <!-- JDK 版本 -->
         <java.version>17</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Spring AI 版本 -->
-        <spring-ai.version>1.1.1</spring-ai.version>
-        <!-- Spring Cloud 版本 -->
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
-        <!-- Spring Cloud Alibaba 版本 -->
-        <spring-cloud-alibaba.version>2023.0.1.0</spring-cloud-alibaba.version>
-        <!-- Maven 相关 -->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!-- 项目编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Maven 相关版本号 -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <!-- 依赖包版本 -->
         <lombok.version>1.18.42</lombok.version>
+        <spring-boot.version>3.5.10</spring-boot.version>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <guava.version>33.5.0-jre</guava.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <hutool.version>5.8.43</hutool.version>
@@ -66,18 +63,49 @@
         <ip2region.version>3.3.1</ip2region.version>
         <minio.version>8.2.1</minio.version>
         <toolgood-words.version>3.1.0.1</toolgood-words.version>
-        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
-        <!-- SpringDoc OpenAPI 版本 -->
         <springdoc.version>2.7.0</springdoc.version>
-        <!-- Redisson 版本 - 3.27.0+ 支持 Spring Data Redis 3.5.x -->
         <redisson.version>3.27.0</redisson.version>
-        <!-- Sentinel 版本 -->
         <sentinel.version>2022.0.0.0</sentinel.version>
+        <spring-ai.version>1.1.1</spring-ai.version>
     </properties>
 
     <!-- 统一依赖管理 -->
     <dependencyManagement>
         <dependencies>
+            <!-- 避免编写那些冗余的 Java 样板式代码，如 get、set 等 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <!-- Spring Boot 官方依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud 官方依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Alibaba 官方依赖管理 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- Spring AI 模块管理 -->
             <dependency>
                 <groupId>org.springframework.ai</groupId>
@@ -96,135 +124,10 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Spring Cloud 模块管理 -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Spring Cloud Alibaba 模块管理 -->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-admin-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-admin-biz</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
+            <!-- 通用工具类模块管理 -->
             <dependency>
                 <groupId>com.cosmos</groupId>
                 <artifactId>origin-common</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-operationlog-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-jwt-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-auth</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-oss-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-event-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-scheduler-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-websocket-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-redis-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-gateway-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-config-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-gateway</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-spring-cloud-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-web</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-example</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-comment-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.cosmos</groupId>
-                <artifactId>origin-comment-biz</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -345,6 +248,132 @@
                 <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
                 <version>${sentinel.version}</version>
             </dependency>
+
+            <!-- Admin 管理后台 API 模块 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-admin-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- Admin 管理后台业务实现模块 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-admin-biz</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 操作日志模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-operationlog-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- JWT 模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-jwt-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 认证服务模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-auth</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- OSS 模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-oss-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 事件模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-event-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 定时任务模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-scheduler-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- WebSocket 模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-websocket-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- Redis 模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-redis-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- API 网关 Spring Boot Starter，提供限流、熔断、路由等功能 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-gateway-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 配置模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-config-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- API Gateway 网关服务 - 基于 Spring Cloud Gateway -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-gateway</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- Spring Cloud 模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-spring-cloud-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- Web 业务模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 示例模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-example</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 评论 API 模块 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-comment-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 评论业务实现模块 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-comment-biz</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -355,6 +384,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
                     <executions>
                         <execution>
                             <id>repackage</id>

@@ -46,6 +46,7 @@ public class JacksonAutoConfiguration {
 
         // 忽略未知属性
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 忽略空对象
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
         // 设置凡是为 null 的字段，返参中均不返回，请根据项目组约定是否开启

@@ -1,9 +1,9 @@
 package com.cosmos.origin.web.controller;
 
-import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;
 import com.cosmos.origin.comment.service.CommentService;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

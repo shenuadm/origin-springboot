@@ -1,6 +1,6 @@
 package com.cosmos.origin.web.service.impl;
 
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import com.cosmos.origin.web.service.ChatRoomService;
 import com.cosmos.origin.websocket.config.ChatWebSocketServer;
 import com.cosmos.origin.websocket.domain.dos.ChatMessageDO;

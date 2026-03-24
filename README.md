@@ -404,8 +404,8 @@ java -jar sentinel-dashboard-1.8.7.jar \
 |--------|------|----------|
 | `RequestUtil` | `com.cosmos.origin.common.utils.RequestUtil` | 获取客户端真实 IP（支持 X-Forwarded-For 等代理头） |
 | `JsonUtil` | `com.cosmos.origin.common.utils.JsonUtil` | JSON 序列化/反序列化（基于 Jackson） |
-| `Response` | `com.cosmos.origin.common.utils.Response` | 统一响应结果封装 |
-| `PageResponse` | `com.cosmos.origin.common.utils.PageResponse` | 分页响应结果封装 |
+| `Response` | `com.cosmos.origin.common.response.Response` | 统一响应结果封装 |
+| `PageResponse` | `com.cosmos.origin.common.response.PageResponse` | 分页响应结果封装 |
 
 **使用示例：**
 ```java

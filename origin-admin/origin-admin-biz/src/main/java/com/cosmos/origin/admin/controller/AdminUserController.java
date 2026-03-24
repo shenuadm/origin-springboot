@@ -2,9 +2,9 @@ package com.cosmos.origin.admin.controller;
 
 import com.cosmos.origin.admin.model.vo.user.*;
 import com.cosmos.origin.admin.service.AdminUserService;
-import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
-import com.cosmos.origin.common.utils.PageResponse;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.origin.common.response.PageResponse;
+import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

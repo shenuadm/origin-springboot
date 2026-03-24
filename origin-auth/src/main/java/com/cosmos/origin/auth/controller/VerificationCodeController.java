@@ -2,8 +2,8 @@ package com.cosmos.origin.auth.controller;
 
 import com.cosmos.origin.auth.model.vo.verificationcode.SendVerificationCodeReqVO;
 import com.cosmos.origin.auth.service.VerificationCodeService;
-import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;

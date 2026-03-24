@@ -1,6 +1,6 @@
 package com.cosmos.origin.web.service;
 
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import com.cosmos.origin.websocket.model.vo.chatroom.FindChatMessagePageListReqVO;
 import com.cosmos.origin.websocket.model.vo.chatroom.FindChatMessagePageListRspVO;
 import com.cosmos.origin.websocket.model.vo.chatroom.OnlineUserVO;

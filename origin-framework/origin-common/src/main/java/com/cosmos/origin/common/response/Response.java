@@ -1,4 +1,4 @@
-package com.cosmos.origin.common.utils;
+package com.cosmos.origin.common.response;
 
 import com.cosmos.origin.common.exception.BaseExceptionInterface;
 import com.cosmos.origin.common.exception.BizException;

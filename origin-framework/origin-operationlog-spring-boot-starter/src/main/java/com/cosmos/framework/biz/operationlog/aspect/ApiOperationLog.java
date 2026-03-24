@@ -1,4 +1,4 @@
-package com.cosmos.origin.biz.operationlog.aspect;
+package com.cosmos.framework.biz.operationlog.aspect;
 
 import java.lang.annotation.*;
 
@@ -13,5 +13,4 @@ public @interface ApiOperationLog {
      * @return API 功能描述
      */
     String description() default "";
-
 }

@@ -1,8 +1,8 @@
 package com.cosmos.origin.admin.api;
 
 import com.cosmos.origin.admin.model.vo.user.*;
-import com.cosmos.origin.common.utils.PageResponse;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.PageResponse;
+import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cloud.openfeign.FeignClient;

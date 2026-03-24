@@ -16,6 +16,7 @@
     <description>接口日志组件</description>
 
     <dependencies>
+        <!-- 通用组件 -->
         <dependency>
             <groupId>com.cosmos</groupId>
             <artifactId>origin-common</artifactId>
@@ -25,13 +26,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-
-        <!-- 单元测试 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

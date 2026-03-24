@@ -21,7 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @AutoConfiguration
 @EnableConfigurationProperties(RedisProperties.class)
-public class OriginRedisAutoConfiguration {
+public class RedisAutoConfiguration {
 
     /**
      * 配置 RedisConnectionFactory
@@ -48,7 +48,7 @@ public class OriginRedisAutoConfiguration {
     /**
      * 配置 RedisTemplate
      */
-    @Bean(name = "redisTemplate")
+    @Bean
     @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();

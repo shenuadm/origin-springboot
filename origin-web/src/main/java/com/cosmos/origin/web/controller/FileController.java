@@ -1,6 +1,6 @@
 package com.cosmos.origin.web.controller;
 
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import com.cosmos.origin.web.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

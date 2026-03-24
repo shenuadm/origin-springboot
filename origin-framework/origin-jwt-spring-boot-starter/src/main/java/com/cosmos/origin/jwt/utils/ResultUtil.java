@@ -1,6 +1,6 @@
 package com.cosmos.origin.jwt.utils;
 
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;

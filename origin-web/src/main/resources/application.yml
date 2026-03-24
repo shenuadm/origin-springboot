@@ -93,7 +93,6 @@ origin:
     admin: @module.admin@    # 管理模块（用户、角色、权限等）
     comment: @module.comment@  # 评论模块
     auth: @module.auth@      # 认证模块
-    oss: @module.oss@       # 对象存储模块
     websocket: @module.websocket@  # WebSocket 模块
 
   # 事件驱动自定义线程池配置

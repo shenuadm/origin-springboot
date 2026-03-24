@@ -2,7 +2,7 @@ package com.cosmos.origin.jwt.handler;
 
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import com.cosmos.origin.jwt.constant.JwtSecurityConstants;
 import com.cosmos.origin.jwt.exception.UsernameOrPasswordNullException;
 import com.cosmos.origin.jwt.utils.LoginResponseUtil;

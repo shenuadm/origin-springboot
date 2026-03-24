@@ -8,7 +8,7 @@ import com.cosmos.origin.comment.model.vo.FindCommentListReqVO;
 import com.cosmos.origin.comment.model.vo.FindCommentListRspVO;
 import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;
 import com.cosmos.origin.comment.service.CommentService;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

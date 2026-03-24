@@ -1,12 +1,12 @@
 package com.cosmos.origin.comment.controller;
 
-import com.cosmos.origin.biz.operationlog.aspect.ApiOperationLog;
+import com.cosmos.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.cosmos.origin.comment.model.vo.DeleteCommentReqVO;
 import com.cosmos.origin.comment.model.vo.ExamineCommentReqVO;
 import com.cosmos.origin.comment.model.vo.FindCommentPageListReqVO;
 import com.cosmos.origin.comment.service.AdminCommentService;
-import com.cosmos.origin.common.utils.PageResponse;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.PageResponse;
+import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

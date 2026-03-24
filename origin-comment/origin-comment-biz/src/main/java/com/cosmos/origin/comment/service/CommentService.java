@@ -2,7 +2,7 @@ package com.cosmos.origin.comment.service;
 
 import com.cosmos.origin.comment.model.vo.FindCommentListReqVO;
 import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 
 public interface CommentService {
 

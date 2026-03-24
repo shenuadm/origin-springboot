@@ -1,21 +1,25 @@
 package com.cosmos.origin.example;
 
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Disabled("需要 Redis 服务才能运行")
+@SpringBootTest
 @Slf4j
-public class RedisTests {
+class RedisTests {
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
-     * set key value
+     * 添加 key-value
      */
     @Test
     void testSetKeyValue() {
-        // 需要 Redis 服务才能运行
+        // 添加一个 key 为 name, value 值为 一陌千尘
+        redisTemplate.opsForValue().set("name", "一陌千尘");
     }
 
     /**
@@ -23,7 +27,7 @@ public class RedisTests {
      */
     @Test
     void testHasKey() {
-        // 需要 Redis 服务才能运行
+        log.info("key 是否存在：{}", redisTemplate.hasKey("name"));
     }
 
     /**
@@ -31,7 +35,7 @@ public class RedisTests {
      */
     @Test
     void testGetValue() {
-        // 需要 Redis 服务才能运行
+        log.info("value 值：{}", redisTemplate.opsForValue().get("name"));
     }
 
     /**
@@ -39,6 +43,7 @@ public class RedisTests {
      */
     @Test
     void testDelete() {
-        // 需要 Redis 服务才能运行
+        redisTemplate.delete("name");
     }
+
 }

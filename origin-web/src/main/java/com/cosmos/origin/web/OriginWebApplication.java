@@ -1,6 +1,6 @@
 package com.cosmos.origin.web;
 
-import com.cosmos.origin.redis.config.OriginRedisAutoConfiguration;
+import com.cosmos.origin.redis.config.RedisAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +9,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 @Slf4j
 @SpringBootApplication(scanBasePackages = "com.cosmos.origin")
-@Import(OriginRedisAutoConfiguration.class)
+@Import(RedisAutoConfiguration.class)
 public class OriginWebApplication {
 
     public static void main(String[] args) {

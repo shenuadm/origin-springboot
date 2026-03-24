@@ -1,7 +1,7 @@
 package com.cosmos.origin.common.exception;
 
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;

@@ -43,20 +43,17 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!-- Jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Spring Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- knife4j（API 文档工具）社区版 -->
@@ -80,13 +77,6 @@
             <optional>true</optional> <!-- 不传递依赖 -->
         </dependency>
 
-        <!-- Spring Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <!-- 敏感词过滤 -->
         <dependency>
             <groupId>io.github.toolgood</groupId>
@@ -98,6 +88,7 @@
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- 单元测试 -->

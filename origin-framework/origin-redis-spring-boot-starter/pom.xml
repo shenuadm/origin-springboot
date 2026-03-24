@@ -32,23 +32,10 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <!-- Redisson 分布式锁 - 3.27.0+ 支持 Spring Data Redis 3.5.x -->
+        <!-- Redisson 分布式锁-->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
-            <exclusions>
-                <!-- 排除Redisson的自动配置，使用我们自己的配置 -->
-                <exclusion>
-                    <groupId>org.redisson</groupId>
-                    <artifactId>redisson-spring-data-30</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Redisson核心库 -->
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
         </dependency>
 
         <!-- Spring Boot AutoConfigure -->

@@ -6,7 +6,7 @@ import com.cosmos.origin.auth.model.vo.verificationcode.SendVerificationCodeReqV
 import com.cosmos.origin.auth.service.VerificationCodeService;
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

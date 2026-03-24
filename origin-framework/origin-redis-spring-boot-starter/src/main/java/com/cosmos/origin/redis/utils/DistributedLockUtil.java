@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DistributedLockUtils {
+public class DistributedLockUtil {
 
     private final RedissonClient redissonClient;
     private final RedissonLockProperties lockProperties;

@@ -2,8 +2,8 @@ package com.cosmos.origin.common;
 
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
-import com.cosmos.origin.common.utils.PageResponse;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.PageResponse;
+import com.cosmos.origin.common.response.Response;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

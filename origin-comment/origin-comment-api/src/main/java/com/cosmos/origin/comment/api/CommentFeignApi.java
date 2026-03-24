@@ -2,7 +2,7 @@ package com.cosmos.origin.comment.api;
 
 import com.cosmos.origin.comment.model.vo.FindCommentListReqVO;
 import com.cosmos.origin.comment.model.vo.PublishCommentReqVO;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cloud.openfeign.FeignClient;

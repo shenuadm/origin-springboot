@@ -4,8 +4,8 @@ import com.cosmos.origin.admin.model.vo.role.AddRoleReqVO;
 import com.cosmos.origin.admin.model.vo.role.DeleteRoleReqVO;
 import com.cosmos.origin.admin.model.vo.role.FindRolePageListReqVO;
 import com.cosmos.origin.admin.model.vo.role.UpdateRoleReqVO;
-import com.cosmos.origin.common.utils.PageResponse;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.PageResponse;
+import com.cosmos.origin.common.response.Response;
 
 public interface AdminRoleService extends AdminRoleServiceApi {
 

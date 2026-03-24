@@ -1,6 +1,6 @@
 package com.cosmos.origin.web.service;
 
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

@@ -2,7 +2,7 @@ package com.cosmos.origin.web.service.impl;
 
 import com.cosmos.origin.common.enums.ResponseCodeEnum;
 import com.cosmos.origin.common.exception.BizException;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 import com.cosmos.origin.oss.model.vo.UploadFileRspVO;
 import com.cosmos.origin.oss.utils.MinioUtil;
 import com.cosmos.origin.web.service.FileService;

@@ -1,7 +1,7 @@
 package com.cosmos.origin.auth.service;
 
 import com.cosmos.origin.auth.model.vo.verificationcode.SendVerificationCodeReqVO;
-import com.cosmos.origin.common.utils.Response;
+import com.cosmos.origin.common.response.Response;
 
 public interface VerificationCodeService {
 
