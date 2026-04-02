@@ -17,7 +17,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table("t_perseion")
+@Table("t_permission")
 public class PermissionDO extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)

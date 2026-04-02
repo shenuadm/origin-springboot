@@ -62,10 +62,24 @@ origin-springboot (父工程)
 ├── origin-comment        # 评论模块聚合
 │   ├── origin-comment-api
 │   └── origin-comment-biz
-├── origin-web           # 单体运行入口（唯一启动模块）
+├── origin-web           # 单体/微服务运行入口（唯一启动模块），包含部分业务 Controller
 ├── origin-gateway        # API 网关服务
 └── origin-example        # 示例代码模块
 ```
+
+### Module Roles
+
+| 模块 | 单体模式 | 微服务模式 |
+|------|---------|-----------|
+| origin-web | 单体运行入口（唯一启动模块），包含业务 Controller | 业务模块入口（唯一启动模块），可按业务划分添加新模块 |
+| origin-admin | 业务模块（管理后台 API） | 独立微服务 |
+| origin-comment | 业务模块（评论 API） | 独立微服务 |
+| origin-gateway | 可选（可集成到 web） | 独立网关服务 |
+
+**origin-web 模块说明**：
+- 单体模式：作为唯一启动模块，包含启动类和部分业务 Controller（ChatRoom、Comment、File 等）
+- 微服务模式：作为业务模块入口，可根据业务需求拆分为独立的微服务模块（如 origin-portal）
+- 可按业务功能划分，在 web 模块中添加更多业务代码，或拆分出独立模块
 
 ### Design Patterns
 
