@@ -1,6 +1,7 @@
 package com.cosmos.origin.common.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JsonUtil {
 
-    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static ObjectMapper OBJECT_MAPPER = new JsonMapper();
 
     /**
      * 初始化：统一使用 Spring Boot 个性化配置的 ObjectMapper

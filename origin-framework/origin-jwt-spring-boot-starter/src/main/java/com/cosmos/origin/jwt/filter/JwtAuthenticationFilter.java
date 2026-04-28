@@ -2,8 +2,8 @@ package com.cosmos.origin.jwt.filter;
 
 import com.cosmos.origin.jwt.constant.JwtSecurityConstants;
 import com.cosmos.origin.jwt.exception.UsernameOrPasswordNullException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
@@ -81,7 +81,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
      */
     @Override
     public Authentication attemptAuthentication(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) throws AuthenticationException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
+        JsonMapper mapper = new JsonMapper();
         // 解析提交的 JSON 数据
         JsonNode jsonNode = mapper.readTree(request.getInputStream());
 

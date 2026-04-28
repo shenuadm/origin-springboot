@@ -1,7 +1,7 @@
 package com.cosmos.origin.jwt.utils;
 
 import com.cosmos.origin.common.response.Response;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 
@@ -29,7 +29,7 @@ public class ResultUtil {
         response.setContentType("application/json");
         PrintWriter writer = response.getWriter();
 
-        ObjectMapper mapper = new ObjectMapper();
+        JsonMapper mapper = new JsonMapper();
         writer.write(mapper.writeValueAsString(result));
         writer.flush();
         writer.close();
@@ -60,7 +60,7 @@ public class ResultUtil {
         response.setContentType("application/json");
         PrintWriter writer = response.getWriter();
 
-        ObjectMapper mapper = new ObjectMapper();
+        JsonMapper mapper = new JsonMapper();
         writer.write(mapper.writeValueAsString(result));
         writer.flush();
         writer.close();

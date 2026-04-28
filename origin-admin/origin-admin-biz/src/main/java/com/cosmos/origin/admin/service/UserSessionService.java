@@ -1,8 +1,7 @@
 package com.cosmos.origin.admin.service;
 
 import com.cosmos.origin.admin.model.vo.session.UserSessionVO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,7 +72,7 @@ public class UserSessionService implements UserSessionServiceApi {
     /**
      * 单设备登录策略：保存会话
      */
-    private void saveSingleDeviceSession(String username, String token, UserSessionVO userSessionVO, Long expireMinutes) throws JsonProcessingException {
+    private void saveSingleDeviceSession(String username, String token, UserSessionVO userSessionVO, Long expireMinutes)  {
         // 1. 先获取旧的会话信息，删除旧的 token 映射
         UserSessionVO oldSession = getSessionByUsername(username);
         if (oldSession != null && oldSession.getToken() != null) {
@@ -96,7 +95,7 @@ public class UserSessionService implements UserSessionServiceApi {
     /**
      * 多设备登录策略：保存会话
      */
-    private void saveMultipleDeviceSession(String username, String token, UserSessionVO userSessionVO, Long expireMinutes) throws JsonProcessingException {
+    private void saveMultipleDeviceSession(String username, String token, UserSessionVO userSessionVO, Long expireMinutes)  {
         String sessionJson = objectMapper.writeValueAsString(userSessionVO);
 
         // 1. 保存 token -> session 映射（多设备时，每个 token 对应一个独立的 session）
@@ -154,7 +153,7 @@ public class UserSessionService implements UserSessionServiceApi {
 
                 return null;
             }
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.error("获取用户会话失败，反序列化异常", e);
             return null;
         }
@@ -195,7 +194,7 @@ public class UserSessionService implements UserSessionServiceApi {
                     }
                 }
             }
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.error("获取用户所有会话失败，反序列化异常", e);
         }
 
@@ -231,7 +230,7 @@ public class UserSessionService implements UserSessionServiceApi {
 
                 return objectMapper.readValue(sessionJson, UserSessionVO.class);
             }
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.error("根据 token 获取会话失败，反序列化异常", e);
             return null;
         }
@@ -331,7 +330,7 @@ public class UserSessionService implements UserSessionServiceApi {
                     try {
                         UserSessionVO session = objectMapper.readValue(sessionJson, UserSessionVO.class);
                         sessions.add(session);
-                    } catch (JsonProcessingException e) {
+                    } catch (Exception e) {
                         log.error("反序列化会话信息失败：{}", key, e);
                     }
                 }
