@@ -38,24 +38,24 @@
         <!-- 项目版本号 -->
         <revision>0.0.1-SNAPSHOT</revision>
         <!-- JDK 版本 -->
-        <java.version>17</java.version>
+        <java.version>25</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!-- 项目编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Maven 相关版本号 -->
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <!-- 依赖包版本 -->
         <lombok.version>1.18.42</lombok.version>
-        <spring-boot.version>3.5.10</spring-boot.version>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
-        <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
+        <spring-boot.version>4.0.6</spring-boot.version>
+        <spring-cloud.version>2025.1.1</spring-cloud.version>
+        <spring-cloud-alibaba.version>2025.1.0.0</spring-cloud-alibaba.version>
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <guava.version>33.5.0-jre</guava.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <hutool.version>5.8.43</hutool.version>
         <knife4j.version>4.6.0</knife4j.version>
-        <mybatis-flex.version>1.11.5</mybatis-flex.version>
+        <mybatis-flex.version>1.11.6</mybatis-flex.version>
         <hikari.version>7.0.2</hikari.version>
         <postgresql.version>42.7.8</postgresql.version>
         <jjwt.version>0.11.2</jjwt.version>
@@ -66,7 +66,7 @@
         <springdoc.version>2.7.0</springdoc.version>
         <redisson.version>3.27.0</redisson.version>
         <sentinel.version>2022.0.0.0</sentinel.version>
-        <spring-ai.version>1.1.1</spring-ai.version>
+        <spring-ai.version>2.0.0-M4</spring-ai.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -131,6 +131,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- Jackson 模块管理 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-jackson-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- 常用工具库 -->
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -165,7 +172,7 @@
             <!-- Mybatis Flex -->
             <dependency>
                 <groupId>com.mybatis-flex</groupId>
-                <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
+                <artifactId>mybatis-flex-spring-boot4-starter</artifactId>
                 <version>${mybatis-flex.version}</version>
             </dependency>
 

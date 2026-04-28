@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-origin-springboot 是一个现代化的 Spring Boot 技术底座项目，采用 Spring Boot 3.5.10 + Spring Cloud 2025 技术栈构建。项目采用模块化单体 (Modular Monolith) 架构设计，支持单体模式和微服务模式通过 Maven Profile 一键切换。
+origin-springboot 是一个现代化的 Spring Boot 技术底座项目，采用 Spring Boot 4.0.6 + Spring Cloud 2025.1.1 技术栈构建。项目采用模块化单体 (Modular Monolith) 架构设计，支持单体模式和微服务模式通过 Maven Profile 一键切换。
 
 ## Common Commands
 
@@ -131,7 +131,7 @@ public class UserController {
 
 ## Key Technologies
 
-- Java 17 + Spring Boot 3.5.10 + Spring Cloud 2025.0.0
+- Java 25 + Spring Boot 4.0.6 + Spring Cloud 2025.1.1
 - PostgreSQL 42.7.8 + MyBatis Flex 1.11.5
 - Redis + Redisson 3.27.0 (分布式锁)
 - JWT (jjwt 0.11.2) + Spring Security

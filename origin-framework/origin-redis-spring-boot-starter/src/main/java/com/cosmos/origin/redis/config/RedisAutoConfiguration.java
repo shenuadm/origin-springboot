@@ -2,8 +2,8 @@ package com.cosmos.origin.redis.config;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -20,7 +20,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @author cosmos
  */
 @AutoConfiguration
-@EnableConfigurationProperties(RedisProperties.class)
+@EnableConfigurationProperties(DataRedisProperties.class)
 public class RedisAutoConfiguration {
 
     /**
@@ -29,7 +29,7 @@ public class RedisAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(RedisConnectionFactory.class)
-    public RedisConnectionFactory redisConnectionFactory(RedisProperties redisProperties) {
+    public RedisConnectionFactory redisConnectionFactory(DataRedisProperties redisProperties) {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName(redisProperties.getHost());
         configuration.setPort(redisProperties.getPort());

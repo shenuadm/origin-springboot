@@ -6,7 +6,7 @@ import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -28,7 +28,7 @@ public class RedissonAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(RedissonClient.class)
     @ConditionalOnBean(RedisConnectionFactory.class)
-    public RedissonClient redissonClient(RedisProperties redisProperties) {
+    public RedissonClient redissonClient(DataRedisProperties redisProperties) {
         // 从 RedisProperties 获取连接信息
         String host = redisProperties.getHost();
         int port = redisProperties.getPort();

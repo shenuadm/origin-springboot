@@ -75,7 +75,7 @@ cat > $SERVICE_DIR/pom.xml << EOF
         <!-- 数据库 -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
+            <artifactId>mybatis-flex-spring-boot4-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

@@ -32,10 +32,10 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <!-- Redisson 分布式锁-->
+        <!-- Redisson 分布式锁核心库（不使用 redisson-spring-boot-starter，因为 3.27.0 与 Spring Boot 4.0 不兼容） -->
         <dependency>
             <groupId>org.redisson</groupId>
-            <artifactId>redisson-spring-boot-starter</artifactId>
+            <artifactId>redisson</artifactId>
         </dependency>
 
         <!-- Spring Boot AutoConfigure -->

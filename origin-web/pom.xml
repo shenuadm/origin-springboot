@@ -73,10 +73,29 @@
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
 
+        <!-- Jackson 自定义配置（提供 Jackson 2.x 的 ObjectMapper，兼容项目代码） -->
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-jackson-spring-boot-starter</artifactId>
+        </dependency>
+
         <!-- Mybatis Flex -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
+            <artifactId>mybatis-flex-spring-boot4-starter</artifactId>
+        </dependency>
+
+        <!-- Spring Boot JDBC（SB 4.x 下 MyBatis Flex 需要显式引入） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <exclusions>
+                <!-- 排除默认的 Logback 依赖，避免与 Log4j2 冲突 -->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- HikariCP 连接池 -->
