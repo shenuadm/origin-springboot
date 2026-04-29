@@ -172,7 +172,8 @@ springdoc:
       paths-to-match: '/**'
       packages-to-scan:
         - com.cosmos.origin.auth.controller # 验证码模块
-        - com.cosmos.origin.web.controller # 文件模块、聊天室
+        - com.cosmos.origin.oss.controller # 文件模块
+        - com.cosmos.origin.websocket.controller # 聊天室
 
 # ===========================================
 # 评论功能配置
@@ -193,3 +194,27 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+
+# ===========================================
+# 可观测性配置（Actuator + Prometheus + Tracing）
+# ===========================================
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info,metrics,prometheus,loggers
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

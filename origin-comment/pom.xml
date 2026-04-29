@@ -20,7 +20,9 @@
     <modules>
         <!-- 评论 API 接口定义 -->
         <module>origin-comment-api</module>
-        <!-- 评论业务实现 -->
+        <!-- 评论业务逻辑（无 Controller，可被单体/微服务复用） -->
+        <module>origin-comment-logic</module>
+        <!-- 评论 Controller 层 -->
         <module>origin-comment-biz</module>
     </modules>
 

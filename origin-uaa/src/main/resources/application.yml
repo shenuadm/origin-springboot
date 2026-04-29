@@ -1,0 +1,84 @@
+# ===========================================
+# UAA 统一认证授权服务配置
+# ===========================================
+server:
+  port: 8846
+
+spring:
+  application:
+    name: origin-uaa
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+        import-check:
+          enabled: false
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://127.0.0.1:5432/origin}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:wzw123!@#}
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: UaaHikariPool
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+# UAA 自定义配置
+uaa:
+  issuer: http://localhost:8846
+  token:
+    access-token-ttl: 7200
+    refresh-token-ttl: 2592000
+  client:
+    id: origin-client
+    secret: origin-secret
+    redirect-uris:
+      - http://127.0.0.1:8081/login/oauth2/code/origin-client
+    scopes:
+      - openid
+      - profile
+    grant-types:
+      - authorization_code
+      - refresh_token
+      - client_credentials
+
+# 日志配置
+logging:
+  level:
+    com.cosmos.origin.uaa: DEBUG
+    org.springframework.security: DEBUG
+
+# ===========================================
+# 可观测性配置（Actuator + Prometheus + Tracing）
+# ===========================================
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info,metrics,prometheus,loggers
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

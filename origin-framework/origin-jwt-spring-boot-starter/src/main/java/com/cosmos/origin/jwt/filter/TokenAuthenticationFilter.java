@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +48,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private String tokenHeaderKey;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull FilterChain filterChain) throws ServletException, IOException {
         if (JwtSecurityConstants.DEFAULT_LOGIN_URL.equals(request.getRequestURI()) && "POST".equalsIgnoreCase(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;

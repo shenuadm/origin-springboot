@@ -140,6 +140,28 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- ==================== 可观测性 ==================== -->
+        <!-- Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- Prometheus 指标导出 -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <!-- Micrometer Tracing Brave Bridge -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+        <!-- Zipkin Reporter for Brave -->
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -376,30 +398,15 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-webflux</artifactId>
                 </dependency>
-                <!-- Spring Cloud 微服务治理 -->
+                <!-- Spring Cloud 微服务治理（包含 Nacos Discovery/Config、Feign、LoadBalancer、Sentinel） -->
                 <dependency>
                     <groupId>com.cosmos</groupId>
                     <artifactId>origin-spring-cloud-starter</artifactId>
                 </dependency>
-                <!-- Nacos 服务注册与发现 -->
-                <dependency>
-                    <groupId>com.alibaba.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-                </dependency>
-                <!-- Nacos 配置中心 -->
-                <dependency>
-                    <groupId>com.alibaba.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-                </dependency>
-                <!-- Spring Cloud Gateway -->
+                <!-- Spring Cloud Gateway（仅入口模块需要） -->
                 <dependency>
                     <groupId>org.springframework.cloud</groupId>
                     <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
-                </dependency>
-                <!-- Sentinel 限流熔断（微服务模式） -->
-                <dependency>
-                    <groupId>com.alibaba.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
                 </dependency>
             </dependencies>
             <build>

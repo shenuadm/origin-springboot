@@ -33,6 +33,13 @@
             <artifactId>minio</artifactId>
         </dependency>
 
+        <!-- Spring Web（Controller 层使用，provided 由引用方提供） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- knife4j（API 文档工具）社区版 -->
         <dependency>
             <groupId>com.github.xingfudeshi</groupId>

@@ -1,3 +1,6 @@
+# ===========================================
+# Gateway 网关服务配置
+# ===========================================
 server:
   port: 8080
 
@@ -69,6 +72,55 @@ spring:
       # 默认过滤器
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_FIRST
+      # 路由配置
+      routes:
+        # 认证服务路由
+        - id: origin-auth
+          uri: lb://origin-web
+          predicates:
+            - Path=/auth/**
+        # 管理后台路由
+        - id: origin-admin
+          uri: lb://origin-web
+          predicates:
+            - Path=/admin/**
+        # 评论服务路由
+        - id: origin-comment
+          uri: lb://origin-web
+          predicates:
+            - Path=/comment/**
+        # 文件服务路由
+        - id: origin-file
+          uri: lb://origin-web
+          predicates:
+            - Path=/file/**
+        # 聊天室路由
+        - id: origin-chat
+          uri: lb://origin-web
+          predicates:
+            - Path=/chat/**
+
+# ===========================================
+# Gateway 安全配置
+# ===========================================
+origin:
+  gateway:
+    security:
+      # 是否启用认证过滤器
+      auth-enabled: true
+      # 是否启用 SQL 注入过滤器
+      sql-injection-enabled: true
+      # 白名单路径（免 Token 认证）
+      white-list:
+        - /auth/**
+        - /login
+        - /swagger-ui/**
+        - /v3/api-docs/**
+        - /webjars/**
+        - /doc.html
+        - /favicon.ico
+        - /error
+        - /actuator/**
 
 # JWT 配置
 jwt:
@@ -81,3 +133,27 @@ jwt:
 logging:
   level:
     com.cosmos.origin.gateway: DEBUG
+
+# ===========================================
+# 可观测性配置（Actuator + Prometheus + Tracing）
+# ===========================================
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info,metrics,prometheus,loggers
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

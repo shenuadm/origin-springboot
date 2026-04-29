@@ -4,12 +4,12 @@ import com.cosmos.origin.jwt.constant.JwtSecurityConstants;
 import com.cosmos.origin.jwt.exception.UsernameOrPasswordNullException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
-import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -80,7 +80,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
      * @throws IOException             输入输出异常
      */
     @Override
-    public Authentication attemptAuthentication(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) throws AuthenticationException, IOException {
+    public Authentication attemptAuthentication(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response) throws AuthenticationException, IOException {
         JsonMapper mapper = new JsonMapper();
         // 解析提交的 JSON 数据
         JsonNode jsonNode = mapper.readTree(request.getInputStream());
@@ -93,12 +93,12 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         // 判断用户名、密码是否为空
         if (Objects.isNull(usernameNode) || Objects.isNull(passwordNode)
-                || StringUtils.isBlank(usernameNode.textValue()) || StringUtils.isBlank(passwordNode.textValue())) {
+                || StringUtils.isBlank(usernameNode.stringValue()) || StringUtils.isBlank(passwordNode.stringValue())) {
             throw new UsernameOrPasswordNullException("用户名或密码不能为空");
         }
 
-        String username = usernameNode.textValue();
-        String password = passwordNode.textValue();
+        String username = usernameNode.stringValue();
+        String password = passwordNode.stringValue();
 
         // 将用户名保存到请求属性中，供失败处理器使用
         request.setAttribute(JwtSecurityConstants.LOGIN_USERNAME_ATTRIBUTE, username);

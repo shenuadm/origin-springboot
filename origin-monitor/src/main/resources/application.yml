@@ -1,0 +1,28 @@
+# ===========================================
+# 服务监控中心配置（Spring Boot Admin Server）
+# ===========================================
+server:
+  port: 8845
+
+spring:
+  application:
+    name: origin-monitor
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    de.codecentric.boot.admin: INFO

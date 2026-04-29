@@ -21,6 +21,12 @@
         <module>origin-framework</module>
         <!-- 认证服务 -->
         <module>origin-auth</module>
+        <!-- 统一认证授权服务（OAuth2 Authorization Server） -->
+        <module>origin-uaa</module>
+        <!-- 统一权限管理服务 -->
+        <module>origin-upms</module>
+        <!-- 服务监控中心 -->
+        <module>origin-monitor</module>
         <!-- 管理后台聚合模块 -->
         <module>origin-admin</module>
         <!-- 入口模块 -->
@@ -67,6 +73,9 @@
         <redisson.version>3.27.0</redisson.version>
         <sentinel.version>2022.0.0.0</sentinel.version>
         <spring-ai.version>2.0.0-M4</spring-ai.version>
+        <spring-boot-admin.version>3.3.4</spring-boot-admin.version>
+        <micrometer-tracing.version>1.3.5</micrometer-tracing.version>
+        <zipkin-reporter.version>3.4.0</zipkin-reporter.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -263,6 +272,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- Admin 管理后台业务逻辑模块 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-admin-logic</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- Admin 管理后台业务实现模块 -->
             <dependency>
                 <groupId>com.cosmos</groupId>
@@ -288,6 +304,27 @@
             <dependency>
                 <groupId>com.cosmos</groupId>
                 <artifactId>origin-auth</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 统一认证授权服务（OAuth2 Authorization Server） -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-uaa</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 统一权限管理服务 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-upms</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 服务监控中心 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-monitor</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -375,11 +412,50 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- 评论业务逻辑模块 -->
+            <dependency>
+                <groupId>com.cosmos</groupId>
+                <artifactId>origin-comment-logic</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- 评论业务实现模块 -->
             <dependency>
                 <groupId>com.cosmos</groupId>
                 <artifactId>origin-comment-biz</artifactId>
                 <version>${revision}</version>
+            </dependency>
+
+            <!-- Spring Boot Admin Server -->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <!-- Spring Boot Admin Server UI -->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <!-- Spring Boot Admin Client -->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+
+            <!-- Micrometer Tracing Brave Bridge -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-tracing-bridge-brave</artifactId>
+                <version>${micrometer-tracing.version}</version>
+            </dependency>
+            <!-- Zipkin Reporter for Brave -->
+            <dependency>
+                <groupId>io.zipkin.reporter2</groupId>
+                <artifactId>zipkin-reporter-brave</artifactId>
+                <version>${zipkin-reporter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

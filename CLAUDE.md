@@ -43,27 +43,32 @@ mvn clean
 
 ```
 origin-springboot (父工程)
-├── origin-framework (基础框架层，11个 Starter)
+├── origin-framework (基础框架层，12个 Starter)
 │   ├── origin-common                    # 通用工具组件
 │   ├── origin-jwt-spring-boot-starter  # JWT认证组件
 │   ├── origin-jackson-spring-boot-starter
 │   ├── origin-operationlog-spring-boot-starter
 │   ├── origin-event-spring-boot-starter
 │   ├── origin-scheduler-spring-boot-starter
-│   ├── origin-websocket-spring-boot-starter
+│   ├── origin-websocket-spring-boot-starter  # 包含 ChatRoomController
 │   ├── origin-redis-spring-boot-starter
-│   ├── origin-oss-spring-boot-starter
+│   ├── origin-oss-spring-boot-starter        # 包含 FileController
 │   ├── origin-gateway-spring-boot-starter
-│   └── origin-spring-cloud-starter
+│   ├── origin-config-spring-boot-starter
+│   └── origin-spring-cloud-starter     # Nacos + Sentinel + Feign + LoadBalancer
 ├── origin-auth           # 认证服务模块
+├── origin-uaa            # OAuth2 统一认证授权服务 (port 8846)
+├── origin-upms           # 统一权限管理服务 (port 7070)
 ├── origin-admin          # 管理后台聚合模块
-│   ├── origin-admin-api  # 接口层（VO、Enums、API）
-│   └── origin-admin-biz # 业务实现层
+│   ├── origin-admin-api  # 接口层（VO、Enums、API 接口）
+│   ├── origin-admin-logic # 业务逻辑层（DO、Mapper、ServiceImpl，可复用 jar）
+│   └── origin-admin-biz  # 业务表现层（Controller，thin layer）
 ├── origin-comment        # 评论模块聚合
 │   ├── origin-comment-api
+│   ├── origin-comment-logic
 │   └── origin-comment-biz
-├── origin-web           # 单体/微服务运行入口（唯一启动模块），包含部分业务 Controller
-├── origin-gateway        # API 网关服务
+├── origin-web           # 单体/微服务运行入口（唯一启动模块），不含业务 Controller
+├── origin-gateway        # API 网关服务（WebFlux + 安全过滤器链）
 └── origin-example        # 示例代码模块
 ```
 
@@ -71,24 +76,32 @@ origin-springboot (父工程)
 
 | 模块 | 单体模式 | 微服务模式 |
 |------|---------|-----------|
-| origin-web | 单体运行入口（唯一启动模块），包含业务 Controller | 业务模块入口（唯一启动模块），可按业务划分添加新模块 |
-| origin-admin | 业务模块（管理后台 API） | 独立微服务 |
-| origin-comment | 业务模块（评论 API） | 独立微服务 |
-| origin-gateway | 可选（可集成到 web） | 独立网关服务 |
+| origin-web | 单体运行入口（唯一启动模块），不含业务 Controller | 业务模块入口（唯一启动模块），可按业务划分添加新模块 |
+| origin-admin | 业务模块（管理后台 API），拆分为 api/logic/biz 三层 | 独立微服务 |
+| origin-comment | 业务模块（评论 API），拆分为 api/logic/biz 三层 | 独立微服务 |
+| origin-uaa | OAuth2 授权服务器 | 独立微服务 (port 8846) |
+| origin-upms | 统一权限管理（用户/角色/权限/部门/岗位） | 独立微服务 (port 7070) |
+| origin-gateway | 可选（可集成到 web） | 独立网关服务（路由 + 鉴权 + 防注入） |
+
+**三层分离模式 (api / logic / biz):**
+- `api`: VO、Enums、Service 接口定义 — 供其他模块依赖调用
+- `logic`: DO、Mapper、ServiceImpl — 纯业务逻辑 jar，无启动类，可被 monolith 聚合或 microservice 复用
+- `biz`: Controller、AutoConfiguration — 薄层，仅负责 HTTP 入口和参数转换
 
 **origin-web 模块说明**：
-- 单体模式：作为唯一启动模块，包含启动类和部分业务 Controller（ChatRoom、Comment、File 等）
-- 微服务模式：作为业务模块入口，可根据业务需求拆分为独立的微服务模块（如 origin-portal）
-- 可按业务功能划分，在 web 模块中添加更多业务代码，或拆分出独立模块
+- 单体模式：作为唯一启动模块，仅包含启动类、Knife4j 配置、Web 安全配置、登录限流过滤器
+- 微服务模式：作为业务模块入口，可根据业务需求拆分为独立的微服务模块
+- 所有业务 Controller 已迁移至各自模块（admin-biz、comment-biz、websocket-starter、oss-starter）
 
 ### Design Patterns
 
 1. **Starter 化装配**: 基础组件采用 Spring Boot Starter 模式封装，通过 AutoConfiguration 自动装配
-2. **接口与实现分离**: 业务模块拆分为 `api` 层和 `biz` 层，单体模式直接依赖，微服务模式可切换为 Feign 远程调用
+2. **三层分离**: 业务模块拆分为 `api`（契约）、`logic`（可复用逻辑）、`biz`（HTTP 入口）
 3. **统一响应结构**: 所有 API 通过 `Response` 类统一封装，分页查询使用 `PageResponse`
 4. **全局异常处理**: 通过 `GlobalExceptionHandler` 统一处理 `BizException` 和系统异常
 5. **API 日志记录**: 使用 `@ApiOperationLog` 注解 + AOP 记录请求入参、出参和耗时
 6. **VO 模式**: 请求使用 ReqVO，响应使用 RspVO，严格区分业务层和展示层
+7. **模块开关**: 单体模式下通过 `origin.module.*` 条件注解启用/禁用业务模块
 
 ## Code Organization
 
@@ -96,8 +109,9 @@ origin-springboot (父工程)
 |------|------|------|
 | DO (Data Object) | `domain.dos` | 数据库实体对象，继承 `BaseEntity` |
 | Mapper | `domain.mapper` | MyBatis Flex 接口 |
-| Service | `service` | 业务逻辑层，接口和实现分离 |
-| Controller | `controller` | 控制器层 |
+| Service Interface | `service` | 业务逻辑接口定义 |
+| Service Impl | `service.impl` | 业务逻辑实现（位于 `*-logic` 模块） |
+| Controller | `controller` | 控制器层（位于 `*-biz` 模块或 Starter） |
 | ReqVO | `model.vo.*` | 请求参数对象，需参数校验 |
 | RspVO | `model.vo.*` | 响应结果对象 |
 
@@ -121,7 +135,7 @@ public class UserController {
     private final AdminUserServiceApi userService;
 
     @GetMapping("/page")
-    @ApiOperation("获取用户分页列表")
+    @Operation(summary = "获取用户分页列表")
     @ApiOperationLog(description = "获取用户分页列表")
     public PageResponse<?> findUserPageList(FindUserPageListReqVO reqVO) {
         return userService.findUserPageList(reqVO);
@@ -129,20 +143,50 @@ public class UserController {
 }
 ```
 
+## Gateway Security Filter Chain
+
+`origin-gateway` 基于 Spring Cloud Gateway (WebFlux) 实现全局安全过滤器链：
+
+| Filter | Order | 职责 |
+|--------|-------|------|
+| `AuthGlobalFilter` | -100 | 白名单放行、拦截外部伪造内部请求头、Bearer Token 格式校验 |
+| `SqlInjectionGlobalFilter` | -50 | GET 查询参数 / POST/PUT JSON 和表单体的 SQL 关键字黑名单检测 |
+
+**Feign 请求头传播**: `origin-spring-cloud-starter` 中的 `FeignRequestInterceptor` 自动透传 `Authorization`、`X-Request-Id`、`X-Real-IP`、`X-Forwarded-For` 以及所有 `X-Origin-*` 自定义请求头。
+
+## Monolith Module Toggles
+
+在单体模式下，业务模块可通过 `application.yml` 开关：
+
+```yaml
+origin:
+  module:
+    admin: true
+    comment: true
+    auth: true
+    oss: true
+    websocket: true
+```
+
+对应的 `@ConditionalOnProperty(prefix = "origin.module", name = "xxx", havingValue = "true")` 注解控制 Controller 和 Service 的加载。
+
 ## Key Technologies
 
 - Java 25 + Spring Boot 4.0.6 + Spring Cloud 2025.1.1
-- PostgreSQL 42.7.8 + MyBatis Flex 1.11.5
+- PostgreSQL 42.7.8 + MyBatis Flex 1.11.6
 - Redis + Redisson 3.27.0 (分布式锁)
-- JWT (jjwt 0.11.2) + Spring Security
+- JWT (jjwt 0.11.2) + Spring Security + Spring Authorization Server
 - Sentinel 限流熔断（微服务模式）
 - Knife4j 4.6.0 API 文档
 
 ## Important Paths
 
-- 应用入口: `origin-web/src/main/java/com/cosmos/origin/web/OriginWebApplication.java`
+- 单体应用入口: `origin-web/src/main/java/com/cosmos/origin/web/OriginWebApplication.java`
+- UAA 应用入口: `origin-uaa/src/main/java/com/cosmos/origin/uaa/UaaApplication.java`
+- UPMS 应用入口: `origin-upms/src/main/java/com/cosmos/origin/upms/UpmsApplication.java`
+- Gateway 应用入口: `origin-gateway/src/main/java/com/cosmos/origin/gateway/GatewayApplication.java`
 - 组件扫描: `com.cosmos.origin.*`
-- 主配置文件: `origin-web/src/main/resources/application.yml`
+- 单体主配置: `origin-web/src/main/resources/application.yml`
 - 微服务配置: `origin-web/src/main/resources/application-microservice.yml`
 - 数据库初始化: `docs/sql/origin.sql`
 - API 文档: `http://localhost:8081/doc.html`

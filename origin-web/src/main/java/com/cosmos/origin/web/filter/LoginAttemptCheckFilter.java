@@ -8,6 +8,7 @@ import com.cosmos.origin.common.response.Response;
 import com.cosmos.origin.jwt.constant.JwtSecurityConstants;
 import com.cosmos.origin.jwt.utils.LoginResponseUtil;
 import tools.jackson.databind.ObjectMapper;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -42,7 +42,7 @@ public class LoginAttemptCheckFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull FilterChain filterChain) throws ServletException, IOException {
         // 如果功能未开启，直接放行
         if (!loginAttemptService.isEnabled()) {
             filterChain.doFilter(request, response);

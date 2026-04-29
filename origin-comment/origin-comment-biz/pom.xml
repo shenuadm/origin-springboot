@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!-- 指定父项目为 origin-comment -->
     <parent>
         <groupId>com.cosmos</groupId>
         <artifactId>origin-comment</artifactId>
@@ -11,9 +10,15 @@
 
     <artifactId>origin-comment-biz</artifactId>
     <name>${project.artifactId}</name>
-    <description>评论业务实现模块</description>
+    <description>评论 Controller 层（单体模式入口，微服务模式下可被 ability 替换）</description>
 
     <dependencies>
+        <!-- 业务逻辑层 -->
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-comment-logic</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.cosmos</groupId>
             <artifactId>origin-comment-api</artifactId>
@@ -34,10 +39,10 @@
             <artifactId>origin-jwt-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- MyBatis-Flex -->
+        <!-- Spring Web（Controller 必需） -->
         <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot4-starter</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- Spring Security -->
@@ -46,17 +51,17 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- MyBatis-Flex -->
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-spring-boot4-starter</artifactId>
+        </dependency>
+
         <!-- OpenAPI/Swagger 注解（仅编译期使用，运行时由 origin-web 的 Knife4j 提供） -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-common</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- 敏感词过滤 -->
-        <dependency>
-            <groupId>io.github.toolgood</groupId>
-            <artifactId>toolgood-words</artifactId>
         </dependency>
 
         <!-- 单元测试 -->

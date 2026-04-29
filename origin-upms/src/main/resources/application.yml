@@ -1,0 +1,75 @@
+# ===========================================
+# UPMS 统一权限管理服务配置
+# ===========================================
+server:
+  port: 7070
+
+spring:
+  application:
+    name: origin-upms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+        import-check:
+          enabled: false
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://127.0.0.1:5432/origin}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:wzw123!@#}
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: UpmsHikariPool
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+# JWT 配置（供 origin-jwt-starter 使用，防止 Bean 初始化失败）
+# TODO: 后续应切换为 OAuth2 Resource Server，通过 UAA /oauth2/jwks 验证 RSA-JWT
+jwt:
+  issuer: "origin-upms"
+  secret: ${JWT_SECRET:HpOdsqmwOqtJcq3AzargcLbYKTp7qijmrPv4Mx9rLbGcS2mB0USGdmsPYJXso9zTVzWA/Tmrh/iW1irD8nYYTQ==}
+  tokenExpireTime: 1440
+  rememberMeExpireTime: 10080
+  refreshTokenExpireTime: 43200
+  tokenHeaderKey: Authorization
+  tokenPrefix: Bearer
+
+# 日志配置
+logging:
+  level:
+    com.cosmos.origin.upms: DEBUG
+
+# ===========================================
+# 可观测性配置（Actuator + Prometheus + Tracing）
+# ===========================================
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info,metrics,prometheus,loggers
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

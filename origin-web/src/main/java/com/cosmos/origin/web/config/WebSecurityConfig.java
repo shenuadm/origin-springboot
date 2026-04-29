@@ -204,6 +204,8 @@ public class WebSecurityConfig {
                     authorize.requestMatchers(JwtSecurityConstants.DEFAULT_LOGIN_URL, "/logout", "/test").permitAll();
                     // Knife4j 接口文档
                     authorize.requestMatchers("/doc.html", "/v3/api-docs/**", "/favicon.ico", "/webjars/**", "/.well-known/**").permitAll();
+                    // Actuator 可观测性端点
+                    authorize.requestMatchers("/actuator/**").permitAll();
                     // websocket 接口
                     authorize.requestMatchers("/ws/**").permitAll();
                     // 管理后台接口需要系统管理员权限

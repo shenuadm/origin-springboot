@@ -20,7 +20,9 @@
     <modules>
         <!-- 管理后台 API 接口定义 -->
         <module>origin-admin-api</module>
-        <!-- 管理后台业务实现 -->
+        <!-- 管理后台业务逻辑（无 Controller，可被单体/微服务复用） -->
+        <module>origin-admin-logic</module>
+        <!-- 管理后台业务实现（Controller 层） -->
         <module>origin-admin-biz</module>
     </modules>
 

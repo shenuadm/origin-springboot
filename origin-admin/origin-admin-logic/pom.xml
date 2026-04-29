@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.cosmos</groupId>
+        <artifactId>origin-admin</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>origin-admin-logic</artifactId>
+    <name>${project.artifactId}</name>
+    <description>管理后台业务逻辑模块（无 Controller，可被单体/微服务复用）</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-admin-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-jwt-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-redis-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-oss-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- 评论模块 API -->
+        <dependency>
+            <groupId>com.cosmos</groupId>
+            <artifactId>origin-comment-api</artifactId>
+        </dependency>
+
+        <!-- MyBatis-Flex -->
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-spring-boot4-starter</artifactId>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- User-Agent 解析 -->
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+        </dependency>
+
+        <!-- IP 地址解析 -->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+        </dependency>
+
+        <!-- OpenAPI/Swagger 注解（仅编译期） -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
